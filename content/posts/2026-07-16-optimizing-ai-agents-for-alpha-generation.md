@@ -24,9 +24,9 @@ Introducing a novel scientific investment research framework for optimizing AI a
 | Layer         | Sections                                                                                                                   | Time      |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- |
 | **Skim**      | [Key findings](#key-findings) → [Headline results](#headline-results) → [Implications](#implications)                      | ~5 min    |
-| **Implement** | [How we tested](#how-we-tested) → [Framework](#the-systematic-ai-agent-optimization-framework)                             | ~20 min   |
+| **Implement** | [How we tested](#how-we-tested) → [Framework](#the-systematic-ai-agent-optimization-framework) → [Who it's for](#who-is-this-framework-for) | ~20 min   |
 | **Verify**    | [Analytics](#analytics-beyond-headline-kpis) → [Iterations](#step-6-iterations) → [Sophistication](#output-sophistication) | ~30 min   |
-| **Reference** | [Appendix](#appendix) — terminology, checklists, theory digest, cost                                                       | as needed |
+| **Reference** | [Appendix](#appendix) — terminology, checklists, theory digest, [cost](#appendix-c--cost-and-data) | as needed |
 
 
 ---
@@ -52,21 +52,7 @@ Introducing a novel scientific investment research framework for optimizing AI a
 
 ## Headline results from framework demonstration
 
-One strategy, one KPI stack, one grounding grid — **9 agent configurations + ex-ante** at h1 (K = 3, Pearson). Sorted by **residual NW *t***:
-
-
-| Agent configuration         | Residual IC | NW *t*   |
-| --------------------------- | ----------- | -------- |
-| **Ex-ante agent**           | 0.139       | **3.24** |
-| Floor LLM (MiMo)            | **0.167**   | 2.67     |
-| Floor LLM (MiMo, no memory) | 0.165       | 2.62     |
-| Floor LLM (MiniMax)         | 0.097       | 2.15     |
-| Trading agent               | 0.127       | 2.10     |
-| Floor LLM (Grok 4.3)        | 0.091       | 1.70     |
-| OpenClaw agent              | 0.077       | 1.35     |
-| Floor LLM (Grok 4.5)        | 0.058       | 1.24     |
-| Floor LLM (GLM)             | 0.058       | 1.21     |
-
+One strategy, one KPI stack, one grounding grid — **9 agent configurations + ex-ante** at h1 (K = 3, Pearson). Sorted by **residual NW *t*** (charts below).
 
 {{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
 
@@ -88,7 +74,7 @@ Full setup, [KPI pipeline](#headline-kpi-pipeline), and grid design: [How we tes
 
 **If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it;** Your current setup is **likely suboptimal** — possibly **worse than a simpler, cheaper** variant albeit with larger uncertainty. A single-run backtest will not suffice. Credible optimization requires: **defined strategy and KPIs**; **K repeats and ensembling**; a **grounding grid**; **one-knob iterations**; analytics beyond headline KPIs (stochasticity, twin continuity, factor attribution). This demonstration alone: **~16k ticker-views**, **11 agent configurations**, **one** agent with credible headline KPIs.
 
-The good news: this post presents a scalable **framework** and (soon) an open-source platform — Delorean — to run it end-to-end. The same logic extends to any scorable AI output in an investment process (daily brief, sentiment extract). Cost and audience notes: [Appendix C](#appendix-c--cost-data-and-audience).
+I ran the grid on **Delorean**, an **open-source** research stack that implements this workflow (PIT backtests, K repeats, compare, residual promotion). The same logic extends to any scorable AI output in an investment process (daily brief, sentiment extract). Who it is for and what it cost: [Who it's for](#who-is-this-framework-for) · [Appendix C](#appendix-c--cost-and-data).
 
 ---
 
@@ -96,11 +82,13 @@ The good news: this post presents a scalable **framework** and (soon) an open-so
 
 One shared backtest design for every agent configuration — same strategy, data world, KPI stack, and ensembling rules.
 
+**Execution.** All runs were orchestrated in **Delorean** (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports ([`static/data/`](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data) in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
+
 
 | Element                   | Choice                                                                                                                                                                                                       |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Strategy**              | Fundamental equity analyst: each agent rates a company’s **risk/reward profile** (~1y risk-adjusted reward). A **rating**, not sizing, stops, or timing.                                                     |
-| **Data (PIT-controlled)** | **Massive** (primary): US prices, fundamentals, news, filings; **Brave** (secondary): web search/snippets where tools/prefetch allow. Cached locally; see [Appendix C](#appendix-c--cost-data-and-audience). |
+| **Data (PIT-controlled)** | **Massive** (primary): US prices, fundamentals, news, filings; **Brave** (secondary): web search/snippets where tools/prefetch allow. Cached locally; see [Appendix C](#appendix-c--cost-and-data). |
 | **Universe**              | DJIA-30; **point-in-time index constituents** per decision date (`dow30` preset) — survivorship-bias controlled                                                                                              |
 | **Backtest window**       | **16** quarterly decision dates Jul 2022–Apr 2026 → **T = 15** non-overlapping h1 return periods (last date has no forward label).                                                                           |
 | **Horizon**               | **h1** primary — forward return from one decision date to the next (one quarter, non-overlapping). h2+ reference only (overlapping holds, weaker power at T ~ 15).                                           |
@@ -317,11 +305,11 @@ Read the themes as **framework validation**, not production proof:
 
 ## Bonus chart: Output sophistication
 
-Across **~4.3k** rationales in the main grid (480 per agent configuration × date × ticker; 9 agent configurations), an **LLM classifier** (blind to score and agent configuration) rated each rationale on a **fixed 0–4 sophistication scale**: 0 stat recital → 1 single-factor → 2 multi-factor synthesis → 3 franchise/moat → 4 strategic synthesis.
+Across **~4.3k** rationales in the main grid (480 per agent configuration × date × ticker; 9 agent configurations), a **LLM classifier** (blind to score and agent configuration) rated each rationale on a **fixed 0–4 sophistication scale**: 0 stat recital → 1 single-factor → 2 multi-factor synthesis → 3 franchise/moat → 4 strategic synthesis.
 
 Sophistication climbs a clean "intuitive" ladder — **agent scaffolds > floor LLM > weaker model**. **Floor LLM (MiMo)** posts the highest mean residual IC with modest sophistication; **OpenClaw** writes materially deeper rationales but clears neither residual IC significance nor gross IC edge; **Trading agent** tops the sophistication chart yet trails the floor LLM on residual IC and NW *t*. **Ex-ante** is the partial exception — structured depth *and* the only agent with residual NW *t* > 3 — but not the most eloquent on the ladder.
 
-We could conflate **articulate synthesis** with **correct, additive skill** — a distinction that collapses when the output space reduces from the semantic to quantitative dimensions. More agentic structure buys richer prose and more strategic vocabulary; it also buys stochasticity, tool tax, and error-amplification paths that can destroy ranking edge.
+We could conflate **articulate synthesis** with stock-picking **skill** — a distinction that collapses when the output space reduces from the semantic to quantitative dimensions. More agentic structure buys richer prose and more strategic vocabulary; it also buys stochasticity, tool tax, and error-amplification paths that can destroy its edge.
 
 Never judge a book by its cover — same goes for your AI agent.
 
@@ -407,17 +395,39 @@ Once a near-optimal agent configuration is confirmed, generate iterative runs �
 - **PIT control first.** All dossiers or tools must enforce PIT strictly so the agent can only access data on or before the backtest date. Underlying LLMs may still encode look-ahead — frontier models, or a backtest window extending beyond model training (common for lower-frequency strategies or regime testing). Identifier masking (Glasserman & Lin, 2023) is imperfect and often impractical with the wide information sets current agents access; we often want inherent LLM asset knowledge for judgments. Practical mitigations: KPI buffers; focus on **delta between iterative agent configurations** vs absolute levels; factor controls for biases.
 - **Simulate deployed autonomy.** Close the backtest–live gap. Some critical features/data may not satisfy PIT or be too costly to implement live — simulate what you can. Example: if the agent uses tools to explore its information space, generate a twin MCP server with hardcoded PIT controls for the original skills/tools and expose that instead.
 - **Good to have:**
-  - **Strategy- and agent-agnostic infrastructure** — standardized runner and schema to feed data and catch outputs for comparability; central Delorean YAML to swap model, scaffold, components, and key variables (e.g. thinking level, temperature) for fingerprints and runtime traces.
+  - **Strategy- and agent-agnostic infrastructure** — standardized runner and schema to feed data and catch outputs for comparability; central YAML to swap model, scaffold, components, and key variables (e.g. thinking level, temperature) for fingerprints and runtime traces.
   - **Concurrency** — runs are heavy and numerous; parallelism without sacrificing features (e.g. separate gateways if sub-agents cannot spawn in a local session).
   - **Retry mechanisms** — minimum impact when a single agent fails.
   - **Run-time diagnostics** — API/tool call failures happen more often than you expect.
   - **Cost tracing**
 
-### Delorean
+### Who is this framework for?
 
-Delorean captures the end-to-end framework as a research tool — an **agentic skill** where the agent (or a researcher) can simply import and launch the backtest for itself (or for other agents) and run analysis **end-to-end via CLI**: `configure`, `run` / `repeat`, `report`, `compare`. With Delorean, I have significantly reduced the time and cost to backtest and compare a new agent configuration.
+- **Enthusiast/retail investors building their own agents — yes.** I am one. Total spend **~$300** for the full demonstration grid — **almost entirely LLM tokens** (OpenRouter), with data APIs (Massive/Brave) a small add-on thanks to caching. Justifiable for optimizing an agent behind the average personal portfolio. Nonetheless, I **controlled** model spend via open-weight models (would love OpenAI/Anthropic but restricted in my location; Gemini next), a smaller universe of DJIA-30, quarterly cadence, 16 dates. If you want a **high-frequency S&P 500** strategy with frontier models: LLM cost could **implode**. I have spent far more resources on infrastructure than on tokens; I could not find an open-source, agent-agnostic stack that handled K-repeat compare + residual promotion at this scale — **Delorean** (below) is what I built to run this study.
+- **Institutions or funds.** Cost is less of a concern; rigor is often imposed. Most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework also applies **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimize against metrics you care about. For **direct alpha generation**, this demonstration is a systematic framework to **power or inspire** your own process.
 
-**Delorean will be published in [this repo](https://github.com/felixdaga/Optimized_Agent) when ready** — please **star it** if interested. Email me to join the project.
+Cost detail (tokens, data APIs, scaling): [Appendix C](#appendix-c--cost-and-data).
+
+### Execution stack (Delorean)
+
+Delorean is the research platform that implements the infrastructure above — PIT dossiers and MCP twins, K-repeat orchestration with parallel slots, Pearson `report` / `compare`, and the export path behind this post. It is also packaged as an **agentic skill**: an agent (or researcher) can configure, launch repeats, and pull compare analytics end-to-end via CLI — `configure`, `run` / `repeat`, `report`, `compare`.
+
+Swap model, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
+
+```yaml
+run_id: floor_llm_v1          # or optimized_agent_full, tradingagent_v2, …
+universe:
+  preset: dow30
+agent:
+  kind: plugin
+  class: "delorean.agents.direct_llm.DirectLLMAgent"   # scaffold swap
+  init:
+    model: "openrouter/xiaomi/mimo-v2.5-pro"           # model axis
+```
+
+Example grid run: `python -m delorean repeat configs/floor_llm_v1.yaml --k 3 --parallel`
+
+Open source; codebase and docs are being prepared for release in [this repo](https://github.com/felixdaga/Optimized_Agent) alongside the paper exports.
 
 ---
 
@@ -516,7 +526,7 @@ That specification is what we call the **ex-ante near-optimal** agent configurat
 
 Floor LLM — one PIT dossier, one LLM call. OpenClaw — ReAct + MCP tools. Trading agent — sequential tool specialists + Bull/Bear + PM. Ex-ante — prefetch, specialists, verifier, PM. OpenClaw ~ tool-heavy SAS; trading agent ~ tool+MAS/debate; ex-ante ~ low tool autonomy + centralized verification (qualitative Kim et al. alignment, not transferred coefficients).
 
-### Appendix C — Cost, data, and audience
+### Appendix C — Cost and data
 
 Token and API spend are logged per run (`cost_summary.json` in each run directory). Totals below sum **K = 3** repeats on the **16-date** panel (Jul 2022–Apr 2026), all **11 agent configurations** in the demonstration: **9** in the initial KPI grid (6 floor LLM variants + OpenClaw + trading agent + ex-ante) **+ 2** Step 6 iterations. OpenClaw ledger pricing was incomplete; **~$70** is estimated from token volume (~150M tokens in) at MiMo list rates. Analytics (reports, compare viewer, twin tests, rationale coding) run **offline** — no further LLM spend.
 
@@ -537,16 +547,11 @@ Token and API spend are logged per run (`cost_summary.json` in each run director
 | **Demonstration total** | **~352M** | **~54M** | **~$291**  | ~406M tokens in+out          |
 
 
-**Data (Massive + Brave).** LLM tokens dominate; **market-data API spend is secondary** but constrains design. **Massive** — US-equity prices, fundamentals, ticker-scoped news, filings; sentiment fields from ~Jul 2024 only (thinner controls on earlier dates). **Brave** — PIT web search/snippets for tool-heavy scaffolds and ex-ante prefetch; cached on disk. Data cost stays small because Delorean **reuses cache** across K and agent configurations.
+**Data (Massive + Brave).** **LLM tokens dominate total spend** (~$291 of ~$300 in this demo — see table above); market-data API fees are secondary but constrain design. **Massive** — US-equity prices, fundamentals, ticker-scoped news, filings; sentiment fields from ~Jul 2024 only (thinner controls on earlier dates). **Brave** — PIT web/search snippets for tool-heavy scaffolds and ex-ante prefetch; cached on disk. Delorean **reuses that PIT data cache** across K repeats and agent configurations — so you do not re-bill Massive/Brave for the same dossier on every repeat. That keeps **data API** cost negligible; it does **not** reduce model token spend.
 
 **Models.** Mostly **open-weight via OpenRouter** (MiMo default; GLM, MiniMax, Grok on floor LLMs). **Anthropic / OpenAI** would be natural comparators but **API access is restricted from my location** — this grid is not a full frontier shootout.
 
-**Scaling law.** Spend scales roughly linearly with **K**, **universe**, **dates**, **agent configurations in the grid**, **LLM calls per ticker**, and **model $/token**. Rule of thumb: **O(universe × dates × K × agent configurations × calls-per-ticker)**. A quarterly DJIA study at floor LLM scale is enthusiast-affordable; **high-frequency S&P 500** with agentic scaffolds is not without institutional budget. Delorean amortizes data and parallelizes runs; it does not change the exponent.
-
-#### Who is this framework for?
-
-- **Enthusiast/retail investors building their own agents — yes.** I am one. Total spend **~$300** on LLM (OpenRouter) and data APIs (Massive/Brave Search) for the full demonstration grid — justifiable for optimizing an agent behind the average personal portfolio. I have spent far more time on infrastructure; I am not aware of an open-source, agent-agnostic backtesting platform that parallels this framework. Focus now: open-sourcing Delorean. I **controlled** for costs via open-source models (would love OpenAI/Anthropic but restricted in my location; Gemini next), DJIA-30, quarterly cadence, 16 dates. **High-frequency S&P 500** with agentic scaffolds: cost could **implode**.
-- **Institutions or funds.** Cost is less of a concern; rigor is often imposed. Most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework also applies **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimize against metrics you care about. For **direct alpha generation**, this demonstration is a systematic framework to **power or inspire** your own process.
+**Scaling law.** Spend scales roughly linearly with **K**, **universe**, **dates**, **agent configurations in the grid**, **LLM calls per ticker**, and **model $/token**. Rule of thumb: **O(universe × dates × K × agent configurations × calls-per-ticker)**. A quarterly DJIA study at floor LLM scale is enthusiast-affordable; **high-frequency S&P 500** with agentic scaffolds is not without institutional budget. Delorean **parallelizes runs** and **amortizes data fetches** via cache; it does not change the LLM cost exponent.
 
 ### Appendix D — Theory digest (Kim, Liu, error taxonomy)
 
