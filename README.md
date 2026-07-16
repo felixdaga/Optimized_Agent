@@ -32,3 +32,13 @@ Open http://localhost:1313/Optimized_Agent/
 ## Publish
 
 Push to `main`. GitHub Actions builds with [Hugo PaperMod](https://github.com/adityatelange/hugo-PaperMod) and deploys to GitHub Pages.
+
+## Study data & charts
+
+Paper charts load from `static/data/` (reports, compare JSON, decision files). Re-export after new Delorean runs:
+
+```bash
+python scripts/export_study_data.py --delorean-root ../delorean
+```
+
+Then commit `static/data/` and push. Charts use the same rendering logic as Delorean's cache viewer compare tab.

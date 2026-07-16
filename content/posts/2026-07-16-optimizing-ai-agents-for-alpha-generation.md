@@ -12,6 +12,7 @@ tags:
 ShowToc: true
 TocOpen: true
 draft: false
+paperCharts: true
 ---
 
 ## Mission statement
@@ -347,7 +348,9 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 
 **Key stats.** Mean score std spans **0.029–0.129** — a **4.4×** spread across nine configs on identical inputs. **OpenClaw** is the outlier: ~**4×** the MiMo floor’s score std and the lowest rank corr (0.66 vs 0.85 on MiMo). Agentic paths fork early (tool order, debate depth, growing context); one-shot floors stay tight. Trading agent is a split read: score-level agreement is high (sign agreement 0.99) but **rank corr is low** (0.65) — runs agree on direction more than on the cross-sectional book. The four metrics move together: high score std pairs with low sign agreement and rank corr.
 
-*(Chart: **Output stochasticity across run** — cache viewer Layer 3 · compare tab.)*
+{{< paper-chart section="layer3-stochasticity" set="main" >}}
+
+{{< paper-chart section="layer3-dynamic" set="main" >}}
 
 #### Ensembling — ensemble vs mean single-run gross IC
 
@@ -357,7 +360,7 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 
 **Key stats.** Per-run gross IC spread reaches **0.04+** on the noisier floors (Grok 4.5, MiniMax, GLM) and OpenClaw — vs **0.008** on MiMo (no mem), the tightest cell. **OpenClaw** and **ex-ante** show the largest ensemble lift given their per-run wobble; **MiMo floor** barely moves (paths already co-move). That matches forecast-combination logic (Bates & Granger, 1969): averaging cancels uncorrelated cross-run noise when the generator is wide; when paths are already aligned, K = 3 buys little extra. **Live implication:** report and deploy the **same K-then-average** object used in eval — a lucky or unlucky single seed is not the estimand.
 
-*(Chart: **Ensemble vs single-run IC** (wobble) — cache viewer Layer 2 · compare tab, h1.)*
+{{< paper-chart section="layer2-ensemble-ic" set="main" >}}
 
 #### Factor attribution — style and sector loadings
 
@@ -369,7 +372,7 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 2. **Almost every config loads the same fundamental style triad: quality, earnings yield, low vol.** Operating profitability and earnings yield show up as significant positive β on nearly all floors and on the structured agents; low-vol loads on most configs too. That aligns with the mandate — rating **risk-adjusted reward** from fundamentals and valuation — and with what the PIT dossier emphasises (profitability, cheapness vs history, downside risk). The models are not inventing exotic style bets; they are **re-expressing a quality/value/defensive screen** the control bundle already knows.
 3. **Sector tilts are shared and DJIA-shaped: overweight Financials, underweight Industrials.** All three agents lean the same way — bullish Financials, bearish Industrials — and floors show the same sign with **stronger magnitude** (floors concentrate sector bets more; agents dilute them slightly). **Materials** and **Consumer Discretionary** are also consistently underweight across the grid.
 
-*(Charts: **Controls & factor loadings** — cache viewer compare tab: mean R², style β bars, sector-tilt chart.)*
+{{< paper-chart section="factor-loadings" set="main" >}}
 
 ### Step 6 — Iterative ablations and study close
 
@@ -410,7 +413,7 @@ Despite both ablations underperforming ex-ante, they exhibit neighbouring **inve
 
 **Bottom line:** Wrong knobs hurt KPIs predictably; **character** persists — small iterations are stable enough to walk toward a nearer optimum one ablation at a time.
 
-*(Charts: compare tab — include **iterative agent (remove verifier)** and **iterative agent (with memory and performance reflection)** alongside ex-ante; residual IC / NW t, factor loadings, output stochasticity.)*
+{{< paper-chart section="ablation" set="ablation" >}}
 
 ### Demonstration summary
 
@@ -452,7 +455,7 @@ We could conflate **articulate synthesis** with **correct, additive skill** — 
 
 Never judge a book by its cover — same goes for your AI agent.
 
-*(Charts: **Output coherence and sophistication** — cache viewer compare tab: mean sophistication; **Sophistication level distribution (L0–L4)**.)*
+{{< paper-chart section="sophistication" set="main" >}}
 
 ## Appendix
 

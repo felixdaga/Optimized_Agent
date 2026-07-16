@@ -1,0 +1,2210 @@
+{
+  "run_id": "floor_llm_minimax_m3_memory_r2",
+  "decision_date": "2026-01-01",
+  "universe": [
+    "AAPL",
+    "AMGN",
+    "AMZN",
+    "AXP",
+    "BA",
+    "CAT",
+    "CRM",
+    "CSCO",
+    "CVX",
+    "DIS",
+    "GS",
+    "HD",
+    "HON",
+    "IBM",
+    "JNJ",
+    "JPM",
+    "KO",
+    "MCD",
+    "MMM",
+    "MRK",
+    "MSFT",
+    "NKE",
+    "NVDA",
+    "PG",
+    "SHW",
+    "TRV",
+    "UNH",
+    "V",
+    "VZ",
+    "WMT"
+  ],
+  "portfolio_before": {
+    "cash": 1000000.0,
+    "positions": {}
+  },
+  "agent_response": {
+    "views": {
+      "IBM": {
+        "symbol": "IBM",
+        "score": -0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "IBM trades at 48x P/E and 10x P/B with only 9% net margins and flat-to-declining revenue trajectory, while the stock has already rallied +34.5% over the past year — valuation looks stretched relative to fundamentals.",
+        "key_factors": [
+          "pe_diluted=48.141x near top of 1y range 31.4..51.2",
+          "p_b=10.179x with roe=0.211",
+          "revenue trajectory: 16.98B (Q2'25) vs 17.55B (Q4'24) — flat/declining",
+          "ret_1y=+34.5% already priced in",
+          "net_margin=0.091 with operating_margin=0.098 — thin profitability"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "IBM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=48.141 p_b=10.179 p_s=4.385 net_margin=0.091 roe=0.211 gross_margin=0.576 operating_margin=0.098"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "IBM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "1y range: pe_diluted 31.4..51.2"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "IBM/2025-07-24",
+            "relevance": 1.0,
+            "excerpt": "revenue=16.98B net_income=2.19B eps_diluted=2.31"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "IBM/2025-07-24",
+            "relevance": 1.0,
+            "excerpt": "2025-06-30 rev=16.98B eps=2.31; 2025-03-31 rev=14.54B eps=1.12; 2024-12-31 rev=62.75B eps=6.43; 2024-12-31 rev=17.55B eps=3.11"
+          },
+          {
+            "source_type": "price",
+            "source_id": "IBM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=296.21 ret_3m=+3.3% ret_1y=+34.5%"
+          }
+        ]
+      },
+      "AAPL": {
+        "symbol": "AAPL",
+        "score": 0.15,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "AAPL trades at a rich 36.4x P/E with modest 7.8% one-year return and slowing revenue trajectory, but its 26.9% net margin, 151.9% ROE, and improving news sentiment provide a mild long lean.",
+        "key_factors": [
+          "P/E 36.4x near upper end of 27.2-41.5 one-year range",
+          "Revenue trajectory: FY rev 416.16B vs quarterly run-rate ~95-102B suggesting deceleration",
+          "Net margin 26.9% and ROE 151.9% indicate exceptional profitability",
+          "News sentiment positive bias with 8 of 14 days positive in last two weeks",
+          "One-year return +7.8% lagging broader market"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "AAPL/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=36.442"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "AAPL/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.269 roe=1.519"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AAPL/2025-10-31",
+            "relevance": 1.0,
+            "excerpt": "revenue=416.16B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AAPL/2025-10-31",
+            "relevance": 1.0,
+            "excerpt": "rev=102.47B"
+          },
+          {
+            "source_type": "price",
+            "source_id": "AAPL/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "ret_1y=+7.8%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "AAPL/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "+0.14 (n=7)"
+          }
+        ]
+      },
+      "JPM": {
+        "symbol": "JPM",
+        "score": 0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Excellent fundamentals and positive momentum offset by stretched valuation near 1y PE high, yielding a mild long bias.",
+        "key_factors": [
+          "Strong fundamentals: ROE 15.5%, net margin 31%, operating margin 39.8%",
+          "EPS growth +16% YoY (5.07 vs 4.37), revenue +9% YoY (46.43B vs 42.65B)",
+          "PE 17.17x near top of 1y range (11.2-17.5), limiting upside",
+          "Price up +34.6% over 1y to $322.22, momentum extended",
+          "News sentiment mostly positive (multiple +1.00 scores in late Dec)"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "JPM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=17.173 p_b=2.67 net_margin=0.31 roe=0.155 operating_margin=0.398"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "JPM/2025-11-04",
+            "relevance": 1.0,
+            "excerpt": "revenue=46.43B net_income=14.39B eps_diluted=5.07 total_equity=360.21B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "JPM/2025-11-04",
+            "relevance": 1.0,
+            "excerpt": "2024-09-30 rev=42.65B eps=4.37"
+          },
+          {
+            "source_type": "price",
+            "source_id": "JPM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=322.22 ret_1y=+34.6% ret_3m=+4.8%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "JPM/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=2)"
+          }
+        ]
+      },
+      "JNJ": {
+        "symbol": "JNJ",
+        "score": 0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "Quality compounder with strong margins and reasonable valuation, but a +44% 1y rally and modest ~1% revenue growth leave risk-adjusted reward only mildly attractive.",
+        "key_factors": [
+          "PE 20.0x sits mid-range of 16.3-29.0 1y band — fairly valued, not cheap",
+          "High-quality fundamentals: ROE 31.7%, net margin 27.3%, operating margin 34.2%",
+          "+44.4% 1y return already prices in much of the positive news flow",
+          "Modest revenue growth (~1% YoY Q3 vs Q2) limits earnings upside",
+          "Positive news sentiment (avg ~+0.6) with FDA prostate cancer approval and BofA target hike"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "JNJ/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=20.009 roe=0.317 net_margin=0.273 operating_margin=0.342"
+          },
+          {
+            "source_type": "price",
+            "source_id": "JNJ/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=206.95 ret_1y=+44.4% ret_3m=+11.3%"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "JNJ/2025-10-22",
+            "relevance": 1.0,
+            "excerpt": "revenue=23.99B net_income=5.15B eps_diluted=2.12 cash=18.56B"
+          },
+          {
+            "source_type": "news",
+            "source_id": "JNJ/2025-12-15",
+            "relevance": 1.0,
+            "excerpt": "Johnson & Johnson Wins FDA Nod For First Precision Combo For Mutated Prostate Cancer"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "JNJ/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "net_score=+1.00 (n=1)"
+          }
+        ]
+      },
+      "VZ": {
+        "symbol": "VZ",
+        "score": 0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "Valuation near the low end of its 1y P/E range with stable, modestly growing fundamentals and a high dividend yield offers a mild long lean, though the lack of a strong growth catalyst and persistent underperformance cap conviction.",
+        "key_factors": [
+          "P/E diluted 16.77x near low end of 15.6-19.1 1y range, suggesting relative cheapness",
+          "Revenue growing steadily 32.80B → 33.33B → 33.48B → 34.50B with ROE 10.5% and operating margin 16.3%",
+          "1y total return only +2.9% with -6.2% over 3m — underperformance creates mean-reversion setup",
+          "News flow dominated by high-yield/dividend narrative; sentiment mildly positive (avg ~+0.10)",
+          "Earnings catalyst on 2026-01-30 could be a re-rating trigger"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "VZ/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=16.769 p_b=1.762 p_s=1.282 net_margin=0.076 roe=0.105 operating_margin=0.163"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "VZ/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "1y range: pe_diluted 15.6..19.1"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "VZ/2025-07-25",
+            "relevance": 1.0,
+            "excerpt": "revenue=34.50B net_income=5.12B eps_diluted=1.18 operating_income=8.17B total_equity=104.36B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "VZ/2025-07-25",
+            "relevance": 1.0,
+            "excerpt": "2025-03-31 rev=33.48B eps=1.15; 2024-09-30 rev=33.33B eps=0.78; 2024-06-30 rev=32.80B eps=1.09"
+          },
+          {
+            "source_type": "price",
+            "source_id": "VZ/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=40.73 ret_3m=-6.2% ret_1y=+2.9%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "VZ/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "Verizon to report earnings January 30, 2026"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "VZ/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "+0.75 (n=4)"
+          }
+        ]
+      },
+      "AMZN": {
+        "symbol": "AMZN",
+        "score": 0.5,
+        "conviction": 0.65,
+        "time_horizon": "year",
+        "rationale": "AMZN is a quality compounder trading at a compressed multiple (PE near 1y low) with accelerating fundamentals and positive sentiment — attractive risk-adjusted reward over a 1-year horizon.",
+        "key_factors": [
+          "PE compressed to 32.73x, near the low end of 1y range (30.3..52.1) — meaningful multiple compression vs recent history",
+          "Q3 revenue $180.17B (+7.4% QoQ) and EPS $1.95 (+16% QoQ) show accelerating fundamentals; annualized run-rate ~$720B vs FY24 $638B",
+          "1y return only +4.3% makes AMZN a Mag 7 laggard with re-rating potential into 2026 per multiple news narratives",
+          "Strong balance sheet (D/E 0.149) and high ROE (20.7%) with operating margin 11% support earnings power",
+          "News sentiment consistently positive, latest reading +0.60 on 2025-12-31 with rising volume (n=5..14)"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "AMZN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=32.73x (1y range 30.3..52.1)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "AMZN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "roe=0.207 debt_to_equity=0.149 operating_margin=0.11"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AMZN/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=180.17B eps_diluted=1.95"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AMZN/2025-06-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=167.70B eps_diluted=1.68"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AMZN/2024-12-31",
+            "relevance": 1.0,
+            "excerpt": "revenue=637.96B eps_diluted=5.53"
+          },
+          {
+            "source_type": "price",
+            "source_id": "AMZN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=230.82 ret_1y=+4.3% ret_3m=+3.8%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "AMZN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_sentiment=+0.60 (n=5)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "AMZN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "How the Mag 7's 2025 Laggards Could Turn Into 2026 Winners"
+          }
+        ]
+      },
+      "AXP": {
+        "symbol": "AXP",
+        "score": 0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Best-in-class franchise with elite ROE/margins, but trading near the top of its 1y PE range after a 24% run-up limits risk-adjusted upside to a mild long lean.",
+        "key_factors": [
+          "PE 24.3x near top of 1y range (16.5-25.3) — valuation stretched",
+          "Exceptional fundamentals: ROE 32.5%, net margin 26.1%, operating margin 33.4%",
+          "EPS growth: $3.64 (Q1) → $4.08 (Q2) → $4.14 (Q3) 2025, vs FY24 $14.01 annualized",
+          "Price already up +24.4% over 1y and +11.9% over 3m — much of the good news priced in",
+          "News sentiment overwhelmingly positive (Buffett holding, top-stock lists) but sentiment is a contrarian risk at highs"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "AXP/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=24.322 (1y range 16.5..25.3)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "AXP/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "roe=0.325 net_margin=0.261 operating_margin=0.334"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AXP/2025-10-17",
+            "relevance": 1.0,
+            "excerpt": "revenue=10.41B net_income=2.90B eps_diluted=4.14"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AXP/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "eps=4.14 (Q3), prior Q2=4.08, Q1=3.64"
+          },
+          {
+            "source_type": "price",
+            "source_id": "AXP/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=369.95 ret_3m=+11.9% ret_1y=+24.4%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "AXP/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net sentiment +1.00 (n=1)"
+          }
+        ]
+      },
+      "PG": {
+        "symbol": "PG",
+        "score": 0.3,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Quality compounder with PE near 1-year low and accelerating EPS, but consumer-staples multiple compression and modest top-line growth cap upside.",
+        "key_factors": [
+          "PE diluted 22.53x sits near the bottom of the 21.7-28.7 1-year range, valuation reset after -14.2% 1y return",
+          "ROE 29.7% and operating margin 23.8% confirm high-quality franchise",
+          "Q1 FY26 EPS $1.95 vs $1.61 YoY (+21%) with revenue +3% to $22.39B shows margin/buyback-driven earnings momentum",
+          "News sentiment broadly positive (mostly +0.5 to +1.0) with dividend/defensive narrative intact"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "PG/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=22.53x (1y range 21.7..28.7), roe=0.297, operating_margin=0.238"
+          },
+          {
+            "source_type": "price",
+            "source_id": "PG/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=143.31, ret_1y=-14.2%, ret_3m=-5.7%"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "PG/2025-10-24",
+            "relevance": 1.0,
+            "excerpt": "revenue=22.39B, eps_diluted=1.95 (vs 1.61 YoY)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "PG/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "net score +1.00 (n=1)"
+          }
+        ]
+      },
+      "HON": {
+        "symbol": "HON",
+        "score": 0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "Quality industrial at a fair multiple with improving EPS and positive industry tailwinds, but mid-range P/E and negative 1Y momentum cap upside — mild long lean.",
+        "key_factors": [
+          "High-quality compounder: ROE 31.7%, operating margin 20.1%, net margin 15.1%",
+          "EPS growing: Q2'25 $2.45 vs Q2'24 $2.36 (+3.8% YoY), with sequential improvement $2.22→$2.45",
+          "Valuation mid-range: P/E 22.4x sits in middle of 19.8-26.0 1y band — not cheap, not stretched",
+          "Negative price action: -8.7% 1Y, -1.9% 3M, but stabilizing in $188-$200 range",
+          "Positive news sentiment (mostly +1.00) with automation/security tailwinds"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "HON/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=195.09 ret_3m=-1.9% ret_1y=-8.7%"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "HON/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=22.395 p_b=7.1 net_margin=0.151 roe=0.317 debt_to_equity=1.541 operating_margin=0.201"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "HON/2025-07-24",
+            "relevance": 1.0,
+            "excerpt": "revenue=9.32B net_income=1.57B eps_diluted=2.45"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "HON/2025-04-24",
+            "relevance": 1.0,
+            "excerpt": "2025-03-31 rev=8.93B eps=2.22"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "HON/2024-07-25",
+            "relevance": 1.0,
+            "excerpt": "2024-06-30 rev=9.58B eps=2.36"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "HON/2025-12-22",
+            "relevance": 1.0,
+            "excerpt": "net score +1.00 (n=1)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "HON/2025-12-13",
+            "relevance": 1.0,
+            "excerpt": "Warehouse Automation Market Size to Exceed $71.25 Billion by 2033, at 15.93% CAGR"
+          }
+        ]
+      },
+      "MCD": {
+        "symbol": "MCD",
+        "score": 0.25,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "High-quality compounder with elite margins and growing EPS has lagged the market (+5.5% 1y), creating a mild value entry point despite incomplete PE/PS data limiting conviction.",
+        "key_factors": [
+          "Exceptional margins: operating_margin=0.461, net_margin=0.32 in latest quarter",
+          "Growing fundamentals: Q3 revenue=7.08B (up from 6.84B Q2, 5.96B Q1), EPS=3.18 (up from 3.14, 2.60)",
+          "Flat price action despite quality: ret_1y=+5.5%, ret_3m=+1.9%, last_close=305.63 — market not rewarding the earnings growth",
+          "Positive news sentiment with 'Undervalued Dividend Stock' framing (2025-12-17) and 'Dividend Powerhouse' tag (2025-12-12)",
+          "Negative total_equity=-2.16B reflects aggressive buybacks, not financial weakness"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "fundamentals",
+            "source_id": "MCD/2025-11-05",
+            "relevance": 1.0,
+            "excerpt": "revenue=7.08B net_income=2.28B eps_diluted=3.18 operating_income=3.36B total_equity=-2.16B"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "MCD/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.32 operating_margin=0.461"
+          },
+          {
+            "source_type": "price",
+            "source_id": "MCD/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=305.63 ret_3m=+1.9% ret_1y=+5.5%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "MCD/2025-12-17",
+            "relevance": 1.0,
+            "excerpt": "Is McDonald's an Undervalued Dividend Stock to Buy for 2026?"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "MCD/2025-12-17",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=2)"
+          }
+        ]
+      },
+      "TRV": {
+        "symbol": "TRV",
+        "score": 0.35,
+        "conviction": 0.65,
+        "time_horizon": "year",
+        "rationale": "Attractive valuation near 1-year P/E low combined with a sharp earnings recovery from Q1 catastrophe losses and high-quality 18.6% ROE supports a mild long bias, though insurance cat-loss risk tempers conviction.",
+        "key_factors": [
+          "P/E diluted 11.2x sits near the low end of 1y range (10.1..14.9), offering valuation cushion",
+          "Q3 2025 EPS of $8.24 (rev $12.47B) shows strong recovery from weak Q1 ($1.70), implying FY25 EPS well above FY24's $21.47",
+          "ROE 18.6% and operating margin 15.1% indicate high-quality earnings power",
+          "Recent news sentiment positive (+1.00 on 2025-09-16 and 2025-11-07) with stock flat-to-up modestly (+3.6% 3m) despite strong fundamentals"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "TRV/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=11.234x (1y range 10.1..14.9)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "TRV/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "roe=0.186 operating_margin=0.151 net_margin=0.121"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "TRV/2025-10-16",
+            "relevance": 1.0,
+            "excerpt": "revenue=12.47B net_income=1.89B eps_diluted=8.24"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "TRV/2025-04-16",
+            "relevance": 1.0,
+            "excerpt": "2025-03-31 rev=11.81B eps=1.7"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "TRV/2025-01-31",
+            "relevance": 1.0,
+            "excerpt": "2024-12-31 rev=46.42B eps=21.47"
+          },
+          {
+            "source_type": "price",
+            "source_id": "TRV/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=290.06 ret_3m=+3.6% ret_1y=+20.9%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "TRV/2025-11-07",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "TRV/2025-09-16",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          }
+        ]
+      },
+      "CAT": {
+        "symbol": "CAT",
+        "score": 0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "Strong fundamentals and improving trajectory support a mild long lean, but stretched valuation near the top of its 1-year P/E range and a +57.8% 1-year return cap the risk-adjusted upside.",
+        "key_factors": [
+          "P/E diluted 27.5x near top of 1y range (12.4..30.0) — valuation stretched",
+          "Strong fundamentals: ROE 55%, operating margin 19.2%, sequential EPS growth Q1 $4.20 → Q2 $4.62 → Q3 $4.88",
+          "Stock up +57.8% over 1y and +16.8% over 3m — much upside already captured",
+          "News sentiment overwhelmingly positive (+1.00 on most days) — potential contrarian risk",
+          "Recent consolidation from $625 peak to $572.87 suggests momentum cooling"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "CAT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=572.87, ret_1y=+57.8%, ret_3m=+16.8%"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "CAT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=27.505, p_b=15.125, roe=0.55, operating_margin=0.192, 1y pe range 12.4..30.0"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CAT/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=17.64B, eps_diluted=4.88, net_income=2.30B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CAT/2025-06-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=16.57B, eps=4.62"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CAT/2025-03-31",
+            "relevance": 1.0,
+            "excerpt": "revenue=14.25B, eps=4.2"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "CAT/2025-12-17",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "CAT/2025-12-10",
+            "relevance": 1.0,
+            "excerpt": "Caterpillar Inc. Maintains Dividend"
+          }
+        ]
+      },
+      "MRK": {
+        "symbol": "MRK",
+        "score": 0.3,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "MRK offers a favorable risk-adjusted setup: PE 13.8x is cheap versus its 1y range, profitability metrics (ROE 36.7%, net margin 29.6%) are best-in-class, and revenue is accelerating into Q3, though the +17.6% 3-month rally tempers conviction.",
+        "key_factors": [
+          "PE diluted 13.8x sits below the 1y midpoint of the 10.7–21.1 range, indicating reasonable valuation",
+          "Strong fundamentals: net margin 29.6%, ROE 36.7%, operating margin 34%",
+          "Revenue growing QoQ: 15.53B → 15.81B → 17.28B across 2025 quarters",
+          "News sentiment skews positive (multiple +0.5 to +1.0 daily scores) with dividend/high-yield narrative",
+          "3-month return +17.6% creates some near-term mean-reversion risk despite attractive setup"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "MRK/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=13.807x (1y range 10.7..21.1)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "MRK/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.296 roe=0.367 operating_margin=0.34"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "MRK/2025-11-05",
+            "relevance": 1.0,
+            "excerpt": "revenue=17.28B net_income=5.79B eps_diluted=2.32 (Q3 2025)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "MRK/2025-11-05",
+            "relevance": 1.0,
+            "excerpt": "QoQ revenue: 15.53B → 15.81B → 17.28B"
+          },
+          {
+            "source_type": "price",
+            "source_id": "MRK/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=105.26 ret_3m=+17.6% ret_1y=+7.0%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "MRK/2025-12-27",
+            "relevance": 1.0,
+            "excerpt": "net sentiment +0.50 (n=2)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "MRK/2025-12-27",
+            "relevance": 1.0,
+            "excerpt": "3 Drug Stocks to Buy at a Discount"
+          }
+        ]
+      },
+      "WMT": {
+        "symbol": "WMT",
+        "score": -0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Valuation is the dominant factor: a 46x PE on a low-margin retailer near its 1-year high, combined with sequential EPS softness and a +23% trailing return, makes risk-adjusted reward unattractive despite decent revenue growth and ROE.",
+        "key_factors": [
+          "PE diluted 46.0x near top of 1y range (28.8..48.2) — stretched for a 4.3% operating margin retailer",
+          "Operating margin only 4.3% and net margin 2.8% leave thin cushion against cost shocks",
+          "Sequential EPS decline Q2→Q3 ($0.88 → $0.77) signals earnings softness despite revenue growth to $179.5B",
+          "Stock already up +23% over 1y and +9.5% over 3m — limited margin of safety at $111.41",
+          "News sentiment neutral-to-positive but no WMT-specific catalysts to justify further re-rating"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "WMT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=46.024 p_b=9.929 operating_margin=0.043 net_margin=0.028"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "WMT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "1y range: pe_diluted 28.8..48.2"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "WMT/2025-12-03",
+            "relevance": 1.0,
+            "excerpt": "revenue=179.50B eps_diluted=0.77"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "WMT/2025-09-04",
+            "relevance": 1.0,
+            "excerpt": "2025-07-31 rev=177.40B eps=0.88"
+          },
+          {
+            "source_type": "price",
+            "source_id": "WMT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=111.41 ret_3m=+9.5% ret_1y=+23.0%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "WMT/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "2025-12-29: +0.00 (n=2)"
+          }
+        ]
+      },
+      "AMGN": {
+        "symbol": "AMGN",
+        "score": -0.15,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "Stretched valuation (PE 41.9x at top of range, P/B 23.6x) and high leverage (D/E 8.0x) offset solid fundamentals and positive FDA news, yielding a mildly unfavorable risk-reward over a 1-year horizon.",
+        "key_factors": [
+          "PE diluted 41.94x at top of 1y range (33.1-44.3), limiting upside",
+          "P/B 23.57x and D/E 8.02x signal stretched valuation and high leverage risk",
+          "Revenue trajectory solid: 8.15B→9.18B→9.56B sequential, ~12% YoY in Q3 2025",
+          "ROE 56.2% and Dec 12 FDA approval for UPLIZNA in gMG support fundamentals",
+          "Stock already up +26.2% 1Y with recent pullback from ~345 to 327.31"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "AMGN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=41.939 p_b=23.569 debt_to_equity=8.024 roe=0.562"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AMGN/2025-11-05",
+            "relevance": 1.0,
+            "excerpt": "revenue=9.56B net_income=3.22B eps_diluted=5.93"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "AMGN/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "rev=9.56B eps=5.93 vs prior Q3 2024 rev=8.50B eps=5.22"
+          },
+          {
+            "source_type": "price",
+            "source_id": "AMGN/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=327.31 ret_1y=+26.2% ret_3m=+10.1%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "AMGN/2025-12-12",
+            "relevance": 1.0,
+            "excerpt": "FDA Approves Amgen's UPLIZNA for generalized myasthenia gravis"
+          }
+        ]
+      },
+      "MSFT": {
+        "symbol": "MSFT",
+        "score": 0.35,
+        "conviction": 0.6,
+        "time_horizon": "year",
+        "rationale": "MSFT combines mid-range valuation (not stretched), best-in-class fundamentals (35.7% net margin, 28.9% ROE, $102B net cash), and a bullish narrative shift after 2025 underperformance, creating an attractive catch-up setup into 2026.",
+        "key_factors": [
+          "Valuation mid-range of 1y: pe_diluted=34.4x (range 29.3-40.6), ev_to_ebit=26.1x (range 23.1-32.3) — not stretched",
+          "Exceptional fundamentals: net_margin=35.7%, operating_margin=46.3%, ROE=28.9%, cash=102.01B vs debt=43.21B (net cash)",
+          "2025 underperformance: ret_1y=+13.8% vs market at ATHs, ret_3m=-6.2% — creates catch-up potential flagged by multiple 2026-winner articles",
+          "Bullish news sentiment: recent scores +0.43 (12-30) and +0.40 (12-31), with explicit \"perfectly poised for 2026 after underperforming in 2025\" framing",
+          "Positive growth trajectory: Q1 FY26 revenue=77.67B (vs 76.44B prior Q, 70.07B year-ago), EPS=3.72 (vs 3.65, 3.46)"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "MSFT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=34.417 ev_to_ebit=26.129 net_margin=0.357 roe=0.289"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "MSFT/2025-10-29",
+            "relevance": 1.0,
+            "excerpt": "revenue=77.67B net_income=27.75B eps_diluted=3.72 cash=102.01B total_debt=43.21B"
+          },
+          {
+            "source_type": "price",
+            "source_id": "MSFT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=483.62 ret_3m=-6.2% ret_1y=+13.8%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "MSFT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net sentiment +0.40 (n=5)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "MSFT/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "Microsoft Perfectly Poised for 2026 After Underperforming in 2025"
+          }
+        ]
+      },
+      "KO": {
+        "symbol": "KO",
+        "score": 0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "KO offers high-quality defensive characteristics at a reasonable (not cheap) valuation, with strong fundamentals and positive sentiment, but flat recent price action caps near-term upside.",
+        "key_factors": [
+          "P/E diluted 24.7x sits in the lower half of 1y range (23.2-30.0), reasonable for a quality compounder",
+          "Exceptional fundamentals: ROE 40.4%, net margin 25.9%, gross margin 61.4%",
+          "Strong balance sheet with $12.25B cash vs $30.18B equity; Q2'25 revenue $12.54B / EPS $0.88 up sequentially from $11.13B / $0.77",
+          "Overwhelmingly positive news sentiment (mostly +1.00) with dividend/Buffett/\"hold forever\" themes",
+          "Price action flat-to-soft near $70 (last close 69.91), limiting near-term momentum despite +12.7% 1y return"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "KO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=69.91, ret_3m=+5.8%, ret_1y=+12.7%"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "KO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=24.724, p_b=9.995, p_s=6.41, net_margin=0.259, roe=0.404, gross_margin=0.614, operating_margin=0.28, 1y pe range 23.2..30.0"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "KO/2025-07-24",
+            "relevance": 1.0,
+            "excerpt": "revenue=12.54B, net_income=3.80B, eps_diluted=0.88, cash=12.25B, total_equity=30.18B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "KO/2025-04-29",
+            "relevance": 1.0,
+            "excerpt": "rev=11.13B, eps=0.77 (Q1 2025)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "KO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net sentiment +1.00 (n=1)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "KO/2025-12-18",
+            "relevance": 1.0,
+            "excerpt": "3 Warren Buffett Stocks to Hold Forever; 58% of Buffett's $318B Portfolio in 4 Unstoppable Stocks"
+          }
+        ]
+      },
+      "V": {
+        "symbol": "V",
+        "score": 0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Exceptional, durable profitability and steady growth in a secularly expanding digital-payments market support a mild long bias, though the absence of explicit PE/EV multiples and a +11% 1Y run temper conviction.",
+        "key_factors": [
+          "Best-in-class profitability: net_margin=50.1%, operating_margin=60%, ROE=52.9% (FY2025)",
+          "Steady revenue growth trajectory: $9.59B → $10.17B → $10.72B across FY2025 quarters (~12% sequential)",
+          "Strong secular tailwind: global credit card transaction value projected to exceed $17.73T by 2030 (Mordor Intelligence, 2025-12-30)",
+          "Price action constructive but not stretched: +11.2% 1Y, +1.4% 3M, with mild pullback from $355.14 to $350.71 into year-end",
+          "News sentiment mildly positive (mostly +1.00 daily scores) with no material negative catalysts"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "fundamentals",
+            "source_id": "V/2025-11-06",
+            "relevance": 1.0,
+            "excerpt": "revenue=40.00B net_income=20.06B operating_income=23.99B total_equity=37.91B"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "V/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.501 roe=0.529 operating_margin=0.6"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "V/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "rev=10.72B (Q3 FY2025)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "V/2025-06-30",
+            "relevance": 1.0,
+            "excerpt": "rev=10.17B (Q2 FY2025)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "V/2025-03-31",
+            "relevance": 1.0,
+            "excerpt": "rev=9.59B (Q1 FY2025)"
+          },
+          {
+            "source_type": "price",
+            "source_id": "V/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=350.71 ret_3m=+1.4% ret_1y=+11.2%"
+          },
+          {
+            "source_type": "price",
+            "source_id": "V/2025-12-24",
+            "relevance": 1.0,
+            "excerpt": "close=355.14 (recent high)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "V/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "Global Credit Cards Transaction Value to Exceed $17.73T by 2030 (Mordor Intelligence)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "V/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "daily net score +1.00 (n=1)"
+          }
+        ]
+      },
+      "MMM": {
+        "symbol": "MMM",
+        "score": -0.1,
+        "conviction": 0.35,
+        "time_horizon": "year",
+        "rationale": "Full valuation near the top of its P/E range combined with stalling momentum and elevated leverage offset otherwise decent margins, leaving risk-adjusted reward mildly unattractive.",
+        "key_factors": [
+          "P/E diluted 20.0x near top of 1y range (16.7-21.7), limiting upside from multiple expansion",
+          "Price stalled: ret_3m=+0.8% with recent pullback from $173.09 (12/03) to $160.10 (12/31), -7.5% in under a month",
+          "Elevated leverage with debt_to_equity=2.979x and very high P/B=19.4x despite ROE=96.8% (boosted by buybacks)",
+          "Modest revenue growth: Q1 $5.95B → Q2 $6.34B → Q3 $6.52B, with volatile EPS ($2.04 → $1.34 → $1.55)",
+          "No company-specific catalysts; news flow is tangential industry market-size reports"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "MMM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=160.10, ret_3m=+0.8%, ret_1y=+24.0%"
+          },
+          {
+            "source_type": "price",
+            "source_id": "MMM/2025-12-03",
+            "relevance": 1.0,
+            "excerpt": "close=173.09 (recent peak)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "MMM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=20.034x, p_b=19.387x, debt_to_equity=2.979x, roe=0.968, net_margin=0.179"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "MMM/2025-10-21",
+            "relevance": 1.0,
+            "excerpt": "Q3 2025 revenue=6.52B, eps_diluted=1.55"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "MMM/2025-09-30",
+            "relevance": 1.0,
+            "excerpt": "Q2 2025 revenue=6.34B, eps=1.34; Q1 2025 revenue=5.95B, eps=2.04"
+          },
+          {
+            "source_type": "news",
+            "source_id": "MMM/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "Epoxy Resin Market Size — tangential industry report, no MMM-specific catalyst"
+          }
+        ]
+      },
+      "HD": {
+        "symbol": "HD",
+        "score": -0.15,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "Persistent downtrend (-12.9% 3m, -11.6% 1y) combined with multiple securities-fraud investigations and predominantly negative news sentiment outweigh reasonable valuation and decent Q3 fundamentals.",
+        "key_factors": [
+          "Price down 12.9% over 3 months and 11.6% over 1 year to $344.10, clear downtrend",
+          "Multiple securities-fraud investigations (Pomerantz 2025-12-30, Schall 2025-12-24) creating legal overhang",
+          "P/E diluted 23.5x sits at low end of 1y range (22.5-28.9), offering some valuation support but not deeply cheap",
+          "Q3 2025 revenue +3.7% YoY ($41.35B vs $39.70B) and EPS +20% YoY ($3.62 vs $3.01) show decent fundamental trajectory",
+          "News sentiment skewed negative in recent weeks (Dec 24, 30, 31 all -1.00)"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "HD/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=344.10 ret_3m=-12.9% ret_1y=-11.6%"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "HD/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=23.464x (1y range 22.5..28.9)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "HD/2025-11-25",
+            "relevance": 1.0,
+            "excerpt": "revenue=41.35B eps_diluted=3.62 (Q3 2025)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "HD/2025-02-02",
+            "relevance": 1.0,
+            "excerpt": "revenue=39.70B eps=3.01 (Q4 2024 prior-year comp)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "HD/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "Pomerantz Law Firm Investigates Claims On Behalf of Investors of The Home Depot"
+          },
+          {
+            "source_type": "news",
+            "source_id": "HD/2025-12-24",
+            "relevance": 1.0,
+            "excerpt": "HD Investors Have Opportunity to Join The Home Depot Fraud Investigation with the Schall Law Firm"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "HD/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "sentiment=-1.00 (n=1)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "HD/2025-12-24",
+            "relevance": 1.0,
+            "excerpt": "sentiment=-1.00 (n=1)"
+          }
+        ]
+      },
+      "NKE": {
+        "symbol": "NKE",
+        "score": -0.2,
+        "conviction": 0.5,
+        "time_horizon": "year",
+        "rationale": "Despite a 14.7% one-year price decline, NKE still trades at 37.4x PE near the top of its 1-year range with weak 5.4% net margins and 6.6% operating margins, meaning the multiple has expanded as earnings fell rather than the stock becoming cheap.",
+        "key_factors": [
+          "PE diluted 37.383x near top of 1y range (17.5-38.1), indicating valuation has not de-rated despite -14.7% 1y return",
+          "Operating margin only 6.6% and net margin 5.4% — structurally weak profitability for a 37x PE stock",
+          "Four consecutive years of value loss per news; Bill Ackman sold position; NKE was a top-10 large cap loser week of Dec 15-19",
+          "Offsetting positives: insider buying signal, Apple/Tim Cook partnership boost, oversold technical signals, and sequential EPS improvement from $0.49 (Aug) to $0.53 (Nov)",
+          "Sentiment turned positive late December (Dec 24-29 mostly +0.33 to +1.00) after sharp Dec 19 selloff from $67 to $58.71"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "NKE/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=37.383 p_b=6.699 net_margin=0.054 operating_margin=0.066"
+          },
+          {
+            "source_type": "price",
+            "source_id": "NKE/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=63.71 ret_1y=-14.7% ret_3m=-14.6%"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "NKE/2025-11-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=12.43B eps_diluted=0.53"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "NKE/2025-08-31",
+            "relevance": 1.0,
+            "excerpt": "revenue=11.72B eps_diluted=0.49"
+          },
+          {
+            "source_type": "news",
+            "source_id": "NKE/2025-12-26",
+            "relevance": 1.0,
+            "excerpt": "Nike Stock Has Lost Value 4 Years Straight. Will 2026 Be Different?"
+          },
+          {
+            "source_type": "news",
+            "source_id": "NKE/2025-12-24",
+            "relevance": 1.0,
+            "excerpt": "Nike Gets a Confidence Boost as Insider Buying Signals Belief in the Turnaround"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "NKE/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "NKE/2025-12-19",
+            "relevance": 1.0,
+            "excerpt": "-1.00 (n=4)"
+          }
+        ]
+      },
+      "CSCO": {
+        "symbol": "CSCO",
+        "score": -0.15,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "Valuation is stretched near the top of its 1-year P/E range while revenue growth is modest and the stock has already run +30% over the past year, leaving limited risk-adjusted upside despite solid fundamentals.",
+        "key_factors": [
+          "P/E diluted 29.78x near 1-year high (range 23.2-31.0x) — valuation stretched",
+          "Modest sequential revenue growth: Q1 FY26 $14.88B vs Q4 FY25 $14.67B (+1.4% QoQ)",
+          "Strong 1-year price return of +30.1% and 3-month +12.8% — limited near-term upside",
+          "Solid fundamentals: ROE 22%, operating margin 22.1%, net margin 17.9%",
+          "No CSCO-specific positive catalysts in recent news; sentiment mildly positive but uninformative"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "CSCO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=29.778x (1y range 23.2..31.0)"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "CSCO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "roe=0.22 operating_margin=0.221 net_margin=0.179"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CSCO/2025-11-18",
+            "relevance": 1.0,
+            "excerpt": "revenue=14.88B eps_diluted=0.72 (Q1 FY26)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CSCO/2025-07-26",
+            "relevance": 1.0,
+            "excerpt": "revenue=14.67B eps=0.64 (Q4 FY25)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CSCO/2025-07-26",
+            "relevance": 1.0,
+            "excerpt": "revenue=56.65B eps=2.55 (FY25 full year)"
+          },
+          {
+            "source_type": "price",
+            "source_id": "CSCO/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=77.03 ret_1y=+30.1% ret_3m=+12.8%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "CSCO/2025-12-26",
+            "relevance": 1.0,
+            "excerpt": "net sentiment +0.00 (n=1) — no CSCO-specific catalyst"
+          }
+        ]
+      },
+      "GS": {
+        "symbol": "GS",
+        "score": -0.1,
+        "conviction": 0.35,
+        "time_horizon": "year",
+        "rationale": "Despite strong fundamentals (28.4% net margin, 36.2% operating margin), GS has run +53.3% in the past year and trades at 16.61x PE near the top of its 1-year range (11.4-18.3x), with a late-December pullback from $911 to $879 suggesting mean-reversion risk outweighs further upside.",
+        "key_factors": [
+          "PE diluted 16.61x near top of 1-year range 11.4-18.3x — valuation stretched",
+          "1-year return +53.3% and 3-month +12.8% — significant run already priced in",
+          "Strong fundamentals: net_margin=0.284, operating_margin=0.362, ROE=0.134 support premium but cap further multiple expansion",
+          "Late-December pullback from $911.03 (12/11) to $879.00 (12/31) signals exhaustion",
+          "News sentiment mostly neutral-to-positive (avg ~+0.15) with tariff uncertainty headwind on 12/18"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "GS/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=16.61x, 1y range 11.4-18.3x"
+          },
+          {
+            "source_type": "price",
+            "source_id": "GS/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=879.00, ret_1y=+53.3%, ret_3m=+12.8%"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "GS/2025-10-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.284, operating_margin=0.362, ROE=0.134, revenue=15.18B, eps=12.25"
+          },
+          {
+            "source_type": "price",
+            "source_id": "GS/2025-12-11",
+            "relevance": 1.0,
+            "excerpt": "close=911.03 (recent high before pullback)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "GS/2025-12-18",
+            "relevance": 1.0,
+            "excerpt": "sentiment=-0.33 (n=3) on tariff concerns"
+          }
+        ]
+      },
+      "BA": {
+        "symbol": "BA",
+        "score": -0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "Despite a strong 23% one-year rally and some positive defense catalysts, Boeing's deeply negative fundamentals (ongoing losses, negative gross/operating margins, impaired balance sheet with -$3.30B equity) make the risk-adjusted reward unattractive at current levels where recovery optimism appears priced in.",
+        "key_factors": [
+          "Negative book equity of -$3.30B with $53.14B total debt signals balance sheet impairment",
+          "Q2 2025 EPS -$0.92, net margin -14.2%, gross margin -0.3% — still deeply unprofitable",
+          "Stock up +23.0% over 1y to $217.12, with sharp December rally from ~$186 to ~$217 (~17% in a month) suggesting overextension",
+          "P/S of 2.181x is not cheap for a loss-making industrial; PE/EV-EBIT N/A due to losses",
+          "Mixed news: positive $8.6B F-15 contract offset by 'Overhyped Stocks' cautionary article and SpaceX competitive concerns"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "fundamentals",
+            "source_id": "BA/2025-07-29",
+            "relevance": 1.0,
+            "excerpt": "revenue=22.75B net_income=-612.00M eps_diluted=-0.92 total_debt=53.14B total_equity=-3.30B"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "BA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "p_s=2.181 net_margin=-0.142 gross_margin=-0.003 operating_margin=-0.123"
+          },
+          {
+            "source_type": "price",
+            "source_id": "BA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=217.12 ret_1y=+23.0%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "BA/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "Pentagon Awards Boeing $8.6 Billion Contract For Israeli F-15 Fighter Jets"
+          },
+          {
+            "source_type": "news",
+            "source_id": "BA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "3 Overhyped Stocks That Could Turn $100,000 Into Nothing"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "BA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "-1.00 (n=1)"
+          }
+        ]
+      },
+      "NVDA": {
+        "symbol": "NVDA",
+        "score": 0.3,
+        "conviction": 0.6,
+        "time_horizon": "year",
+        "rationale": "Exceptional fundamentals (52% net margin, 87% ROE, accelerating revenue) and overwhelmingly bullish 2026 AI capex narrative justify a mild long lean, but a 52.8x P/E and +35.6% trailing-year return cap the risk-adjusted upside.",
+        "key_factors": [
+          "Accelerating sequential revenue: Q3 $57.01B vs Q2 $46.74B (+22% QoQ) and Q1 $44.06B",
+          "Exceptional profitability: net_margin=52.4%, roe=86.5%, operating_margin=58.1%",
+          "Premium but in-range valuation: pe_diluted=52.8x within 1y range 32.1-70.0x; p_b=45.7x, p_s=27.7x",
+          "Strong balance sheet: debt_to_equity=0.085, total_debt=$8.47B vs equity $118.90B",
+          "Persistently positive news sentiment through Dec 2025 (avg ~+0.5, peak +0.82) with multiple 2026 AI-rally bullish pieces",
+          "Price consolidation: ret_3m=-1.3% after ret_1y=+35.6%, last_close=186.50"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "price",
+            "source_id": "NVDA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=186.50, ret_3m=-1.3%, ret_1y=+35.6%"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "NVDA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=52.833, p_b=45.692, p_s=27.692, net_margin=0.524, roe=0.865, debt_to_equity=0.085, gross_margin=0.698, operating_margin=0.581"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "NVDA/2025-11-19",
+            "relevance": 1.0,
+            "excerpt": "revenue=57.01B, net_income=31.91B, eps_diluted=1.3, gross_profit=41.85B, operating_income=36.01B, total_debt=8.47B, total_equity=118.90B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "NVDA/2025-07-27",
+            "relevance": 1.0,
+            "excerpt": "rev=46.74B, eps=1.08"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "NVDA/2025-04-27",
+            "relevance": 1.0,
+            "excerpt": "rev=44.06B, eps=0.76"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "NVDA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "+0.25 (n=12)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "NVDA/2025-12-18",
+            "relevance": 1.0,
+            "excerpt": "+0.82 (n=11)"
+          },
+          {
+            "source_type": "news",
+            "source_id": "NVDA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "Why Nvidia's AI Power-Play Could Drive the Next Major Rally in 2026"
+          },
+          {
+            "source_type": "news",
+            "source_id": "NVDA/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "Semiconductor Spending Is Set to Hit $1 Trillion in 2026"
+          }
+        ]
+      },
+      "UNH": {
+        "symbol": "UNH",
+        "score": 0.25,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "Valuation has compressed sharply (PE 16.3x vs 38.7x 1y high) and management's 23-point action plan is a constructive response, but still-falling EPS (Q3 $2.59 vs FY24 $15.51) keeps conviction moderate — a mild long lean on a beaten-down name with execution risk.",
+        "key_factors": [
+          "PE diluted compressed to 16.3x vs 1y range 9.5-38.7x, near the low end of recent history",
+          "EPS trajectory deteriorating: Q3 2025 $2.59 vs Q2 $3.74 vs Q1 $6.85 vs FY2024 $15.51 — annualized run rate ~$10.36, ~33% below FY24",
+          "Revenue still growing: Q3 $113.16B vs Q2 $111.62B vs Q1 $109.58B; ROE holds at 18.1%",
+          "Stock down 35% over 1y (last close $330.11) but up ~37% from August lows per 12/03 coverage",
+          "23-point action plan unveiled 12/22 following independent business audit — constructive but execution-dependent"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "UNH/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=16.314, 1y range 9.5..38.7, roe=0.181, net_margin=0.042"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "UNH/2025-10-28",
+            "relevance": 1.0,
+            "excerpt": "revenue=113.16B, eps_diluted=2.59, net_income=2.54B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "UNH/2025-07-29",
+            "relevance": 1.0,
+            "excerpt": "revenue=111.62B, eps=3.74"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "UNH/2025-04-22",
+            "relevance": 1.0,
+            "excerpt": "revenue=109.58B, eps=6.85"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "UNH/2025-01-30",
+            "relevance": 1.0,
+            "excerpt": "revenue=400.28B, eps=15.51 (FY2024)"
+          },
+          {
+            "source_type": "price",
+            "source_id": "UNH/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=330.11, ret_1y=-35.0%, ret_3m=-6.7%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "UNH/2025-12-22",
+            "relevance": 1.0,
+            "excerpt": "UnitedHealth Unveils 23-Point Action Plan Following Independent Business Audit"
+          },
+          {
+            "source_type": "news",
+            "source_id": "UNH/2025-12-22",
+            "relevance": 1.0,
+            "excerpt": "2 Undervalued Stocks Down 40% and 45% to Buy For 2026"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "UNH/2025-12-22",
+            "relevance": 1.0,
+            "excerpt": "net score -0.50 (n=2)"
+          }
+        ]
+      },
+      "SHW": {
+        "symbol": "SHW",
+        "score": 0.2,
+        "conviction": 0.45,
+        "time_horizon": "year",
+        "rationale": "High-quality compounder with elite ROE and accelerating EPS, but premium 31x P/E and 2.2x leverage limit margin of safety; mild long lean as recent pullback brings valuation toward the lower end of its range.",
+        "key_factors": [
+          "Exceptional ROE of 58.1% signals a high-quality compounder",
+          "P/E of 31.4x sits at the lower end of 1-year range (29.7-37.1), modestly de-rated from peak",
+          "Strong EPS trajectory: $2.00 → $3.00 → $3.35 across Q1-Q3 2025, ~67% growth YTD",
+          "3-month price return of -5.8% and 1-year of -4.3% offer a better entry after pullback",
+          "Elevated debt/equity of 2.185 and rich P/B of 18.2x cap upside and add risk"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "SHW/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=31.372 p_b=18.232 roe=0.581 debt_to_equity=2.185 gross_margin=0.489 operating_margin=0.109"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "SHW/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "1y range: pe_diluted 29.7..37.1"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "SHW/2025-10-28",
+            "relevance": 1.0,
+            "excerpt": "revenue=6.36B net_income=833.10M eps_diluted=3.35"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "SHW/2025-06-30",
+            "relevance": 1.0,
+            "excerpt": "rev=6.31B eps=3"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "SHW/2025-03-31",
+            "relevance": 1.0,
+            "excerpt": "rev=5.31B eps=2"
+          },
+          {
+            "source_type": "price",
+            "source_id": "SHW/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=324.03 ret_3m=-5.8% ret_1y=-4.3%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "SHW/2025-12-04",
+            "relevance": 1.0,
+            "excerpt": "Paints and Coatings Market Size to Hit USD 348.04 Bn by 2034"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "SHW/2025-12-04",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          }
+        ]
+      },
+      "CVX": {
+        "symbol": "CVX",
+        "score": -0.1,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "CVX trades at the top of its 1-year P/E range while earnings are down ~25% YoY, leaving risk-adjusted reward skewed modestly negative despite a strong dividend narrative already reflected in sentiment and price.",
+        "key_factors": [
+          "P/E diluted 22.99x sits at the top of 1y range (13.8..23.8) — expensive vs own history",
+          "Q3'25 EPS $1.82 annualized ~$7.28 vs FY24 $9.72 — earnings down ~25% YoY",
+          "3m return -0.6%, 1y return +6.5% — flat price action despite strong narrative",
+          "News sentiment overwhelmingly positive (+1.00 on most days) — dividend/energy thesis already priced in",
+          "Solid balance sheet with $195.6B total equity provides downside cushion"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "CVX/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=22.994x (1y range 13.8..23.8)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CVX/2025-11-06",
+            "relevance": 1.0,
+            "excerpt": "Q3'25 rev=49.73B eps=1.82; FY24 rev=202.79B eps=9.72"
+          },
+          {
+            "source_type": "price",
+            "source_id": "CVX/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=152.41 ret_3m=-0.6% ret_1y=+6.5%"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "CVX/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "daily net score +1.00 (n=1)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CVX/2025-11-06",
+            "relevance": 1.0,
+            "excerpt": "total_equity=195.60B"
+          }
+        ]
+      },
+      "DIS": {
+        "symbol": "DIS",
+        "score": 0.25,
+        "conviction": 0.55,
+        "time_horizon": "year",
+        "rationale": "Disney trades at 16.6x P/E near the bottom of its 1-year range (14.9-41.9x) with solid 14.2% net margins and a fresh OpenAI content deal catalyst, but a flat 1-year return and weak Q4 EPS of $0.73 temper conviction.",
+        "key_factors": [
+          "P/E diluted 16.6x vs 1-year range 14.9-41.9x — near historical low, attractive entry",
+          "FY2025 revenue $94.42B, net margin 14.2%, ROE 11.7%, debt/equity 0.37 — solid fundamentals",
+          "OpenAI deal (2025-12-11) adds long-term growth layer per news",
+          "Recent uptrend: $101.94 (11-24) to $113.77 (12-31), +11.6% in ~5 weeks",
+          "Q4 FY2025 EPS only $0.73 vs Q3 $2.92 — quarterly softness is a risk flag"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "DIS/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=16.609x (1y range 14.9..41.9)"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "DIS/2025-11-13",
+            "relevance": 1.0,
+            "excerpt": "revenue=94.42B net_income=13.43B eps_diluted=6.85 operating_income=17.55B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "DIS/2025-11-13",
+            "relevance": 1.0,
+            "excerpt": "Q4 2025-09-27 rev=22.46B eps=0.73"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "DIS/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "net_margin=0.142 roe=0.117 debt_to_equity=0.367 operating_margin=0.186"
+          },
+          {
+            "source_type": "price",
+            "source_id": "DIS/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "close=113.77 ret_3m=+1.5% ret_1y=+2.7%"
+          },
+          {
+            "source_type": "price",
+            "source_id": "DIS/2025-11-24",
+            "relevance": 1.0,
+            "excerpt": "close=101.94"
+          },
+          {
+            "source_type": "news",
+            "source_id": "DIS/2025-12-11",
+            "relevance": 1.0,
+            "excerpt": "Disney Gets a Lift as OpenAI Deal Adds a New Layer to Its Long-Term Growth Story"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "DIS/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          }
+        ]
+      },
+      "CRM": {
+        "symbol": "CRM",
+        "score": -0.1,
+        "conviction": 0.4,
+        "time_horizon": "year",
+        "rationale": "Valuation remains rich (P/E 41.65x) for modest ~5-9% revenue growth, and the recent +10.9% 3-month rally may have overshot despite a strong balance sheet and positive December sentiment.",
+        "key_factors": [
+          "P/E diluted 41.65x sits at the low end of 1y range (35.4-75.5) but is still elevated for single-digit revenue growth (Q2 rev $10.24B vs Q1 $9.83B, ~4% sequential)",
+          "Strong balance sheet with D/E 0.138 and 77.2% gross margin / 19% operating margin provides downside support",
+          "3-month return +10.9% and Dec rally from $247 to $265 suggests momentum may be overextended short-term",
+          "News includes '2025's Most Downgraded Stocks' headline flagging analyst skepticism despite positive Dec sentiment (+1.00 on multiple late-Dec days)",
+          "1-year return -21.1% indicates the stock has already been significantly de-rated but trailing P/E still implies premium pricing"
+        ],
+        "sources_cited": [
+          {
+            "source_type": "ratios",
+            "source_id": "CRM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "pe_diluted=41.653 p_b=4.218 p_s=6.809 net_margin=0.164 roe=0.101 debt_to_equity=0.138 gross_margin=0.772 operating_margin=0.19"
+          },
+          {
+            "source_type": "ratios",
+            "source_id": "CRM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "1y range: pe_diluted 35.4..75.5"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CRM/2025-09-04",
+            "relevance": 1.0,
+            "excerpt": "revenue=10.24B net_income=1.89B eps_diluted=1.96 gross_profit=7.99B operating_income=2.33B total_debt=8.44B total_equity=61.33B"
+          },
+          {
+            "source_type": "fundamentals",
+            "source_id": "CRM/2025-09-04",
+            "relevance": 1.0,
+            "excerpt": "2025-04-30 rev=9.83B eps=1.59"
+          },
+          {
+            "source_type": "price",
+            "source_id": "CRM/2025-12-31",
+            "relevance": 1.0,
+            "excerpt": "last_close=264.91 ret_3m=+10.9% ret_1y=-21.1%"
+          },
+          {
+            "source_type": "news",
+            "source_id": "CRM/2025-12-30",
+            "relevance": 1.0,
+            "excerpt": "2025's Most Downgraded Stocks: Buy, Sell, or Hold in 2026"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "CRM/2025-12-29",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          },
+          {
+            "source_type": "news_sentiment",
+            "source_id": "CRM/2025-12-23",
+            "relevance": 1.0,
+            "excerpt": "+1.00 (n=1)"
+          }
+        ]
+      }
+    },
+    "trace": {
+      "final_explanation": "LLM-only baseline: 30/30 views on 2026-01-01 via minimax/minimax-m3.",
+      "steps": [
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:08:58.554768Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2982,
+          "tokens_out": 534,
+          "cost_usd": 0.00150468,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-IBM",
+          "payload": {
+            "ticker": "IBM",
+            "reasoning_tokens": 533
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:08:58.921125Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2956,
+          "tokens_out": 430,
+          "cost_usd": 0.00137208,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-AAPL",
+          "payload": {
+            "ticker": "AAPL",
+            "reasoning_tokens": 429
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:06.566165Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2946,
+          "tokens_out": 1203,
+          "cost_usd": 0.0046548,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-JPM",
+          "payload": {
+            "ticker": "JPM",
+            "reasoning_tokens": 477
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:09.486412Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2995,
+          "tokens_out": 1319,
+          "cost_usd": 0.0049626,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-JNJ",
+          "payload": {
+            "ticker": "JNJ",
+            "reasoning_tokens": 592
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:11.023131Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2987,
+          "tokens_out": 1525,
+          "cost_usd": 0.0054522,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-VZ",
+          "payload": {
+            "ticker": "VZ",
+            "reasoning_tokens": 613
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:12.239407Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2986,
+          "tokens_out": 1618,
+          "cost_usd": 0.0056748,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-AMZN",
+          "payload": {
+            "ticker": "AMZN",
+            "reasoning_tokens": 627
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:12.248889Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2973,
+          "tokens_out": 1319,
+          "cost_usd": 0.0049494,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-AXP",
+          "payload": {
+            "ticker": "AXP",
+            "reasoning_tokens": 512
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:12.915557Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2903,
+          "tokens_out": 1383,
+          "cost_usd": 0.005061,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-PG",
+          "payload": {
+            "ticker": "PG",
+            "reasoning_tokens": 744
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:12.939112Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2858,
+          "tokens_out": 1665,
+          "cost_usd": 0.0057108,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-HON",
+          "payload": {
+            "ticker": "HON",
+            "reasoning_tokens": 731
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:14.252804Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2717,
+          "tokens_out": 1434,
+          "cost_usd": 0.0050718,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-MCD",
+          "payload": {
+            "ticker": "MCD",
+            "reasoning_tokens": 709
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:14.494294Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2628,
+          "tokens_out": 1470,
+          "cost_usd": 0.0051048,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-TRV",
+          "payload": {
+            "ticker": "TRV",
+            "reasoning_tokens": 522
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:14.497513Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2713,
+          "tokens_out": 1360,
+          "cost_usd": 0.0048918,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-CAT",
+          "payload": {
+            "ticker": "CAT",
+            "reasoning_tokens": 540
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:14.909028Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2974,
+          "tokens_out": 1389,
+          "cost_usd": 0.005118,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-MRK",
+          "payload": {
+            "ticker": "MRK",
+            "reasoning_tokens": 486
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:15.018867Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2913,
+          "tokens_out": 1398,
+          "cost_usd": 0.005103,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-WMT",
+          "payload": {
+            "ticker": "WMT",
+            "reasoning_tokens": 591
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:15.044695Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 3026,
+          "tokens_out": 1602,
+          "cost_usd": 0.0056604,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-AMGN",
+          "payload": {
+            "ticker": "AMGN",
+            "reasoning_tokens": 803
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:15.333239Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 3023,
+          "tokens_out": 1530,
+          "cost_usd": 0.0054858,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-MSFT",
+          "payload": {
+            "ticker": "MSFT",
+            "reasoning_tokens": 616
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:16.294250Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2915,
+          "tokens_out": 1482,
+          "cost_usd": 0.0053058,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-KO",
+          "payload": {
+            "ticker": "KO",
+            "reasoning_tokens": 600
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:16.424855Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 3018,
+          "tokens_out": 1660,
+          "cost_usd": 0.0057948,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-V",
+          "payload": {
+            "ticker": "V",
+            "reasoning_tokens": 721
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:16.519102Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2902,
+          "tokens_out": 1968,
+          "cost_usd": 0.0064644,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-MMM",
+          "payload": {
+            "ticker": "MMM",
+            "reasoning_tokens": 1108
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:16.691713Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2947,
+          "tokens_out": 2051,
+          "cost_usd": 0.0066906,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-HD",
+          "payload": {
+            "ticker": "HD",
+            "reasoning_tokens": 1132
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:17.440194Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2959,
+          "tokens_out": 1892,
+          "cost_usd": 0.0063162,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-NKE",
+          "payload": {
+            "ticker": "NKE",
+            "reasoning_tokens": 979
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:17.777073Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 3035,
+          "tokens_out": 1642,
+          "cost_usd": 0.0057618,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-CSCO",
+          "payload": {
+            "ticker": "CSCO",
+            "reasoning_tokens": 727
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:20.556793Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2918,
+          "tokens_out": 1931,
+          "cost_usd": 0.0063852,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-GS",
+          "payload": {
+            "ticker": "GS",
+            "reasoning_tokens": 1182
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:20.677464Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2913,
+          "tokens_out": 1596,
+          "cost_usd": 0.0055782,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-BA",
+          "payload": {
+            "ticker": "BA",
+            "reasoning_tokens": 820
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:21.521882Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2974,
+          "tokens_out": 2282,
+          "cost_usd": 0.0072612,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-NVDA",
+          "payload": {
+            "ticker": "NVDA",
+            "reasoning_tokens": 1001
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:21.660488Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2953,
+          "tokens_out": 2005,
+          "cost_usd": 0.0065838,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-UNH",
+          "payload": {
+            "ticker": "UNH",
+            "reasoning_tokens": 857
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:22.236051Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2714,
+          "tokens_out": 1653,
+          "cost_usd": 0.0055956,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-SHW",
+          "payload": {
+            "ticker": "SHW",
+            "reasoning_tokens": 650
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:24.200035Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2943,
+          "tokens_out": 1680,
+          "cost_usd": 0.0057978,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-CVX",
+          "payload": {
+            "ticker": "CVX",
+            "reasoning_tokens": 1001
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:09:27.507364Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 2962,
+          "tokens_out": 2036,
+          "cost_usd": 0.0066636,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-DIS",
+          "payload": {
+            "ticker": "DIS",
+            "reasoning_tokens": 957
+          }
+        },
+        {
+          "kind": "llm_call",
+          "started_at": "2026-07-09T14:10:01.969384Z",
+          "duration_ms": 0,
+          "model": "openrouter/minimax/minimax-m3",
+          "tokens_in": 3053,
+          "tokens_out": 2379,
+          "cost_usd": 0.00370926,
+          "cache_hit": true,
+          "parent_step_id": null,
+          "step_id": "llm-CRM",
+          "payload": {
+            "ticker": "CRM",
+            "reasoning_tokens": 1575
+          }
+        }
+      ],
+      "metadata": {
+        "agent": "direct_llm",
+        "version": "0.4.0",
+        "model": "minimax/minimax-m3",
+        "mode": "llm_only_toolcall",
+        "n_tickers": 30,
+        "n_views": 30,
+        "errors": []
+      }
+    }
+  },
+  "target_weights": {
+    "weights": {}
+  },
+  "orders": [],
+  "context_hash": "5eca674ef5833d66"
+}
