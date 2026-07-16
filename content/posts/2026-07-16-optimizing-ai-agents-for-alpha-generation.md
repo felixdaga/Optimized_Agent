@@ -300,6 +300,7 @@ Headline metrics at **h1** on the grounding set + ex-ante agent (K = 3, Pearson 
 | Floor (Grok 4.5)        | 0.058       | 1.24     |
 | Floor (GLM)             | 0.058       | 1.21     |
 
+{{< paper-chart section="layer1-residual-kpi" set="main" >}}
 
 **Key takeaway.** Floor (MiMo) posts the **highest mean residual IC** (0.167) — but only the **ex-ante agent** clears a credible significance bar at **NW t > 3** (3.24). That is the idiosyncratic-alpha read: orthogonal edge that is also **stable across periods**, not just a strong average inflated by factor reload or a lucky quarter. Every other cell sits at or below conventional |t| ≈ 2.7; OpenClaw does not clear |t| ≈ 2 at all on the residual.
 

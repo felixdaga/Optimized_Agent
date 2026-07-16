@@ -17,7 +17,7 @@
 
   async function manifest() {
     if (!_manifest) {
-      _manifest = await fetch(`${BASE}/study/manifest.json`).then((r) => {
+      _manifest = await fetch(`${BASE}/manifest.json`).then((r) => {
         if (!r.ok) throw new Error(`manifest ${r.status}`);
         return r.json();
       });
@@ -28,7 +28,7 @@
   async function loadCompare(set) {
     const man = await manifest();
     const file = man.compare_files[set] || `compare-${set}.json`;
-    return fetch(`${BASE}/study/${file}`).then((r) => {
+    return fetch(`${BASE}/${file}`).then((r) => {
       if (!r.ok) throw new Error(`compare ${r.status}`);
       return r.json();
     });
@@ -54,6 +54,42 @@
   function horizonKeys(runs) {
     const allHk = runs.length ? Object.keys(runs[0].horizons || {}) : [];
     return cmpHorizonKeys(allHk.length ? allHk : ["1"]);
+  }
+
+  function renderLayer1ResidualKpi(runs, hk) {
+    const sortH = cmpFurthestH(hk);
+    const sortNote = cmpSortNoteH(sortH);
+    const byResidIc = cmpSortBy(runs, (r) => r.horizons[sortH]?.residual_mean_ic, { higherIsBetter: true });
+    const icChart = buildCmpBarChart({
+      groups: hk.map((h) => `h${h}`),
+      series: byResidIc.map((r) => ({
+        label: r.short,
+        color: r._color,
+        values: hk.map((h) => r.horizons[h]?.residual_mean_ic ?? null),
+      })),
+      yLabel: `Residual mean IC by horizon — factor-neutralised alpha magnitude. ${sortNote}`,
+      zeroLine: true,
+      fmt: (v) => v.toFixed(3),
+    });
+    const byResidNw = cmpSortBy(runs, (r) => r.horizons[sortH]?.residual_nw_t, { higherIsBetter: true });
+    const nwChart = buildCmpBarChart({
+      groups: hk.map((h) => `h${h}`),
+      series: byResidNw.map((r) => ({
+        label: r.short,
+        color: r._color,
+        values: hk.map((h) => r.horizons[h]?.residual_nw_t ?? null),
+      })),
+      yLabel: `Residual mean-IC NW t (HAC, lag = h−1) — significance. ±1.96 = 95%, +3.0 = credible. ${sortNote}`,
+      zeroLine: true,
+      fmt: (v) => v.toFixed(2),
+      refLines: [
+        { value: 1.96, label: "1.96 · 95%", color: "var(--muted)", dash: "5 3" },
+        { value: -1.96, label: "−1.96", color: "var(--muted)", dash: "5 3" },
+        { value: 3.0, label: "3.0 · credible", color: "var(--muted)", dash: "2 4" },
+      ],
+    });
+    return `<div class="chart-block"><h3 class="chart-title">Residual mean IC by horizon (headline KPI)</h3>${icChart}</div>
+<div class="chart-block"><h3 class="chart-title">Residual NW t by horizon (headline KPI)</h3>${nwChart}</div>`;
   }
 
   function renderLayer3Charts(runs) {
@@ -129,6 +165,7 @@
   }
 
   const SECTIONS = {
+    "layer1-residual-kpi": (runs, hk) => renderLayer1ResidualKpi(runs, hk),
     "layer3-stochasticity": (runs, hk) => renderLayer3Charts(runs),
     "layer2-ensemble-ic": (runs, hk) => renderLayer2Ensemble(runs, hk),
     "factor-loadings": (runs) => renderCmpBetas(runs),
