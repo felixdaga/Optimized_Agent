@@ -35,10 +35,11 @@ Push to `main`. GitHub Actions builds with [Hugo PaperMod](https://github.com/ad
 
 ## Study data & charts
 
-Paper charts load from `static/data/` (reports, compare JSON, decision files). Re-export after new Delorean runs:
+Paper embeds **static SVG charts** under `static/charts/`, built from Pearson `report.json` files in `static/data/`.
 
 ```bash
 python scripts/export_study_data.py --delorean-root ../delorean
+python scripts/export_paper_charts.py
 ```
 
-Then commit `static/data/` and push. Charts use the same rendering logic as Delorean's cache viewer compare tab.
+Then commit `static/data/` + `static/charts/` and push.

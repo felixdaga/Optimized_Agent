@@ -19,20 +19,21 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 OUT_ROOT = REPO_ROOT / "static" / "data"
 
+# Pearson-face reports — match the paper headline KPIs (residual IC / NW t).
 MAIN_BATCHES = [
-    "floor_llm_v1_report",
-    "floor_llm_v1_memory_report",
-    "floor_llm_v1_glm_memory_report",
-    "floor_llm_minimax_m3_memory_report",
-    "floor_llm_grok_4_3_memory_report",
-    "floor_llm_grok_4_5_memory_report",
-    "agent_v1_memory_report",
-    "tradingagent_v2_report",
-    "optimized_agent_full_report",
+    "floor_llm_v1_pearson_report",
+    "floor_llm_v1_memory_pearson_report",
+    "floor_llm_v1_glm_memory_pearson_report",
+    "floor_llm_minimax_m3_memory_pearson_report",
+    "floor_llm_grok_4_3_memory_pearson_report",
+    "floor_llm_grok_4_5_memory_pearson_report",
+    "agent_v1_memory_pearson_report",
+    "tradingagent_v2_pearson_report",
+    "optimized_agent_full_pearson_report",
 ]
 
 ABLATION_BATCHES = [
-    "optimized_agent_full_report",
+    "optimized_agent_full_pearson_report",
     "optimized_agent_no_verify_pearson_report",
     "optimized_agent_feedback_pearson_report",
 ]

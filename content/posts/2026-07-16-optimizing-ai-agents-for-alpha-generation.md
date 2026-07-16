@@ -12,7 +12,6 @@ tags:
 ShowToc: true
 TocOpen: true
 draft: false
-paperCharts: true
 ---
 
 ## Mission statement
@@ -300,7 +299,9 @@ Headline metrics at **h1** on the grounding set + ex-ante agent (K = 3, Pearson 
 | Floor (Grok 4.5)        | 0.058       | 1.24     |
 | Floor (GLM)             | 0.058       | 1.21     |
 
-{{< paper-chart section="layer1-residual-kpi" set="main" >}}
+{{< chart "main-residual-mean-ic.svg" "Residual mean IC by horizon" >}}
+
+{{< chart "main-residual-nw-t.svg" "Residual NW t by horizon" >}}
 
 **Key takeaway.** Floor (MiMo) posts the **highest mean residual IC** (0.167) — but only the **ex-ante agent** clears a credible significance bar at **NW t > 3** (3.24). That is the idiosyncratic-alpha read: orthogonal edge that is also **stable across periods**, not just a strong average inflated by factor reload or a lucky quarter. Every other cell sits at or below conventional |t| ≈ 2.7; OpenClaw does not clear |t| ≈ 2 at all on the residual.
 
@@ -349,9 +350,9 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 
 **Key stats.** Mean score std spans **0.029–0.129** — a **4.4×** spread across nine configs on identical inputs. **OpenClaw** is the outlier: ~**4×** the MiMo floor’s score std and the lowest rank corr (0.66 vs 0.85 on MiMo). Agentic paths fork early (tool order, debate depth, growing context); one-shot floors stay tight. Trading agent is a split read: score-level agreement is high (sign agreement 0.99) but **rank corr is low** (0.65) — runs agree on direction more than on the cross-sectional book. The four metrics move together: high score std pairs with low sign agreement and rank corr.
 
-{{< paper-chart section="layer3-stochasticity" set="main" >}}
+{{< chart "main-stochasticity.svg" "Output stochasticity — mean score std" >}}
 
-{{< paper-chart section="layer3-dynamic" set="main" >}}
+{{< chart "main-score-std-by-date.svg" "Mean score std by decision date" >}}
 
 #### Ensembling — ensemble vs mean single-run gross IC
 
@@ -361,7 +362,7 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 
 **Key stats.** Per-run gross IC spread reaches **0.04+** on the noisier floors (Grok 4.5, MiniMax, GLM) and OpenClaw — vs **0.008** on MiMo (no mem), the tightest cell. **OpenClaw** and **ex-ante** show the largest ensemble lift given their per-run wobble; **MiMo floor** barely moves (paths already co-move). That matches forecast-combination logic (Bates & Granger, 1969): averaging cancels uncorrelated cross-run noise when the generator is wide; when paths are already aligned, K = 3 buys little extra. **Live implication:** report and deploy the **same K-then-average** object used in eval — a lucky or unlucky single seed is not the estimand.
 
-{{< paper-chart section="layer2-ensemble-ic" set="main" >}}
+{{< chart "main-ensemble-wobble.svg" "Ensemble vs single-run IC" >}}
 
 #### Factor attribution — style and sector loadings
 
@@ -373,7 +374,9 @@ Stochasticity and ensembling sit **before** the headline KPI table in the read o
 2. **Almost every config loads the same fundamental style triad: quality, earnings yield, low vol.** Operating profitability and earnings yield show up as significant positive β on nearly all floors and on the structured agents; low-vol loads on most configs too. That aligns with the mandate — rating **risk-adjusted reward** from fundamentals and valuation — and with what the PIT dossier emphasises (profitability, cheapness vs history, downside risk). The models are not inventing exotic style bets; they are **re-expressing a quality/value/defensive screen** the control bundle already knows.
 3. **Sector tilts are shared and DJIA-shaped: overweight Financials, underweight Industrials.** All three agents lean the same way — bullish Financials, bearish Industrials — and floors show the same sign with **stronger magnitude** (floors concentrate sector bets more; agents dilute them slightly). **Materials** and **Consumer Discretionary** are also consistently underweight across the grid.
 
-{{< paper-chart section="factor-loadings" set="main" >}}
+{{< chart "main-mean-r2.svg" "Mean R² — style + sector controls" >}}
+
+{{< chart "main-style-betas.svg" "Style-factor loadings" >}}
 
 ### Step 6 — Iterative ablations and study close
 
@@ -414,7 +417,11 @@ Despite both ablations underperforming ex-ante, they exhibit neighbouring **inve
 
 **Bottom line:** Wrong knobs hurt KPIs predictably; **character** persists — small iterations are stable enough to walk toward a nearer optimum one ablation at a time.
 
-{{< paper-chart section="ablation" set="ablation" >}}
+{{< chart "ablation-residual-mean-ic.svg" "Ablation — residual mean IC" >}}
+
+{{< chart "ablation-residual-nw-t.svg" "Ablation — residual NW t" >}}
+
+{{< chart "ablation-stochasticity.svg" "Ablation — output stochasticity" >}}
 
 ### Demonstration summary
 
@@ -456,7 +463,9 @@ We could conflate **articulate synthesis** with **correct, additive skill** — 
 
 Never judge a book by its cover — same goes for your AI agent.
 
-{{< paper-chart section="sophistication" set="main" >}}
+{{< chart "main-sophistication-mean.svg" "Mean sophistication" >}}
+
+{{< chart "main-sophistication-dist.svg" "Sophistication level distribution (L0–L4)" >}}
 
 ## Appendix
 

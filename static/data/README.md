@@ -1,20 +1,18 @@
 # Study data (paper charts + replication)
 
-Exported from Delorean with `scripts/export_study_data.py`.
-
-| Path | Contents |
-|------|----------|
-| `manifest.json` | Batch sets (`main` = 9-config grid, `ablation` = 3 cells) |
-| `compare-main.json` | Compare payload for cross-config charts (from `report.json`) |
-| `compare-ablation.json` | Ablation compare payload |
-| `reports/*_report/report.json` | Full Delorean reports (~600 KB each) |
-| `decisions/{run_id}/*.json` | Raw agent decision files (one per quarterly date) |
-
-## Re-export
+Exported from Delorean with:
 
 ```bash
 python scripts/export_study_data.py --delorean-root ../delorean
-python scripts/export_study_data.py --skip-decisions   # charts only
+python scripts/export_paper_charts.py
 ```
 
-Charts on the blog load `compare-*.json` at read time; dynamic per-config charts fetch `reports/{batch}/report.json` for `per_cell` variance and per-ticker score series.
+| Path | Contents |
+|------|----------|
+| `manifest.json` | Batch sets (`main`, `ablation`) — **Pearson-face** reports |
+| `compare-main.json` / `compare-ablation.json` | Compare payloads for chart export |
+| `reports/*_pearson_report/report.json` | Full Delorean reports |
+| `decisions/{run_id}/*.json` | Raw agent decision files |
+| `../charts/*.svg` | Static SVGs embedded in the post |
+
+Charts are **static SVGs** (not live JS). Re-run both scripts after new Delorean results, then commit `static/data/` and `static/charts/`.

@@ -1,0 +1,5 @@
+{{- $file := .Get 0 -}}
+{{- $alt := .Get 1 | default $file -}}
+<figure class="paper-chart">
+  <img src="{{ printf "charts/%s" $file | relURL }}" alt="{{ $alt }}" loading="lazy" style="width:100%;max-width:1100px;height:auto;background:#0f1117;border-radius:8px;">
+</figure>
