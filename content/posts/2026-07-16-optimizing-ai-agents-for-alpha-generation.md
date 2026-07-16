@@ -1,7 +1,7 @@
 ---
 title: "Optimizing AI Agents for Alpha Generation"
 date: 2026-07-16T12:00:00+08:00
-author: "Felix Daga"
+author: "Felix Lin"
 description: "A systematic framework for optimizing AI agents as an additive source of alpha — with a full DJIA demonstration on Delorean."
 tags:
   - AI Agents
@@ -620,8 +620,8 @@ This is a conceptual and directional framework for now until we can directly mea
 If you reference this work, please cite:
 
 ```bibtex
-@misc{daga2026optimizing,
-  author       = {Daga, Felix},
+@misc{lin2026optimizing,
+  author       = {Lin, Felix},
   title        = {Optimizing {AI} Agents for Alpha Generation},
   year         = {2026},
   howpublished = {GitHub},
