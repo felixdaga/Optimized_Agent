@@ -291,6 +291,148 @@ def wobble_chart(runs: list[dict], *, title: str) -> str:
     return "\n".join(parts)
 
 
+def score_by_ticker_chart(runs: list[dict], *, ticker: str, title: str) -> str:
+    """Per-ticker decision score over dates — K faint repeats + bold mean per config."""
+    if not runs:
+        return hbar_chart(title=title, rows=[])
+
+    date_set: set[str] = set()
+    for r in runs:
+        prs = (r.get("output") or {}).get("per_run_scores") or {}
+        for rid in r.get("run_labels") or sorted(prs):
+            for pt in (prs.get(rid) or {}).get(ticker) or []:
+                if pt.get("date"):
+                    date_set.add(pt["date"])
+    all_dates = sorted(date_set)
+    if not all_dates:
+        return hbar_chart(title=title, rows=[])
+
+    labels = [short_label(r) for r in runs]
+    cols = 2 if max(len(lab) for lab in labels) > 24 else 3
+    legend_rows = (len(runs) + cols - 1) // cols
+    left, right, top = 56, 24, 40
+    note_h = 18
+    bottom = 28 + legend_rows * 18 + note_h
+    W = 960
+    H = 280 + legend_rows * 18 + note_h
+    iW = W - left - right
+    iH = H - top - bottom
+
+    all_vals: list[float] = []
+    for r in runs:
+        prs = (r.get("output") or {}).get("per_run_scores") or {}
+        for rid in r.get("run_labels") or sorted(prs):
+            by_date = {pt["date"]: pt["score"] for pt in (prs.get(rid) or {}).get(ticker) or []}
+            for d in all_dates:
+                v = by_date.get(d)
+                if v is not None:
+                    all_vals.append(float(v))
+    if not all_vals:
+        return hbar_chart(title=title, rows=[])
+
+    lo, hi = min(all_vals + [0.0]), max(all_vals + [0.0])
+    span = hi - lo or 0.2
+    pad = span * 0.12
+    lo -= pad if lo < 0 else 0.0
+    hi += pad
+    span = hi - lo
+
+    def x(i: int) -> float:
+        return left + (i / max(len(all_dates) - 1, 1)) * iW
+
+    def y(v: float) -> float:
+        return top + iH - ((v - lo) / span) * iH
+
+    repeat_opacity = [0.35, 0.65, 1.0]
+
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(title)}">',
+        f'<rect width="{W}" height="{H}" fill="#0f1117"/>',
+        f'<text x="{left}" y="24" fill="#e6eaf2" font-size="14" font-family="{FONT}" font-weight="600">{esc(title)}</text>',
+    ]
+    for t in (0.0, 0.25, 0.5, 0.75, 1.0):
+        v = lo + t * span
+        yy = y(v)
+        parts.append(f'<line x1="{left}" y1="{yy:.1f}" x2="{W - right}" y2="{yy:.1f}" stroke="#2a3140" stroke-dasharray="4 4"/>')
+        parts.append(
+            f'<text x="{left - 8}" y="{yy:.1f}" fill="#8b95a8" font-size="11" text-anchor="end" dominant-baseline="middle" font-family="{FONT}">{v:.2f}</text>'
+        )
+    if lo < 0 < hi:
+        parts.append(
+            f'<line x1="{left}" y1="{y(0):.1f}" x2="{W - right}" y2="{y(0):.1f}" stroke="#8b95a8" stroke-width="1.2" stroke-dasharray="5 3"/>'
+        )
+
+    for r in runs:
+        prs = (r.get("output") or {}).get("per_run_scores") or {}
+        run_ids = list(r.get("run_labels") or sorted(prs))
+        # K repeat traces (lighter)
+        for ki, rid in enumerate(run_ids):
+            by_date = {pt["date"]: float(pt["score"]) for pt in (prs.get(rid) or {}).get(ticker) or []}
+            pts = []
+            for i, d in enumerate(all_dates):
+                v = by_date.get(d)
+                if v is None:
+                    continue
+                pts.append(f"{x(i):.1f},{y(v):.1f}")
+            if len(pts) >= 2:
+                op = repeat_opacity[ki] if ki < len(repeat_opacity) else 0.35
+                parts.append(
+                    f'<polyline points="{" ".join(pts)}" fill="none" stroke="{r["_color"]}" stroke-width="1.5" opacity="{op:.2f}"/>'
+                )
+            for i, d in enumerate(all_dates):
+                v = by_date.get(d)
+                if v is None:
+                    continue
+                op = repeat_opacity[ki] if ki < len(repeat_opacity) else 0.35
+                parts.append(
+                    f'<circle cx="{x(i):.1f}" cy="{y(v):.1f}" r="2.8" fill="{r["_color"]}" opacity="{op:.2f}">'
+                    f'<title>{esc(short_label(r))} r{ki + 1} · {d}: {v:.2f}</title></circle>'
+                )
+        # ensemble mean (bold)
+        mean_pts = []
+        for i, d in enumerate(all_dates):
+            vs = []
+            for rid in run_ids:
+                by_date = {pt["date"]: float(pt["score"]) for pt in (prs.get(rid) or {}).get(ticker) or []}
+                if d in by_date:
+                    vs.append(by_date[d])
+            if not vs:
+                continue
+            mv = sum(vs) / len(vs)
+            mean_pts.append(f"{x(i):.1f},{y(mv):.1f}")
+        if len(mean_pts) >= 2:
+            parts.append(
+                f'<polyline points="{" ".join(mean_pts)}" fill="none" stroke="{r["_color"]}" stroke-width="2.5" opacity="1"/>'
+            )
+
+    step = max(1, len(all_dates) // 7)
+    for i, d in enumerate(all_dates):
+        if i % step and i != len(all_dates) - 1:
+            continue
+        parts.append(
+            f'<text x="{x(i):.1f}" y="{top + iH + 14}" fill="#8b95a8" font-size="10" text-anchor="middle" font-family="{FONT}">{esc(d[:7])}</text>'
+        )
+
+    col_w = (W - left - right) / cols
+    for i, r in enumerate(runs):
+        col = i % cols
+        row = i // cols
+        lx = left + col * col_w
+        ly = top + iH + 28 + row * 18
+        parts.append(f'<rect x="{lx:.0f}" y="{ly - 8}" width="10" height="10" fill="{r["_color"]}"/>')
+        parts.append(
+            f'<text x="{lx + 14:.0f}" y="{ly:.0f}" fill="#c8ceda" font-size="11" dominant-baseline="middle" font-family="{FONT}">{esc(short_label(r))}</text>'
+        )
+
+    note_y = top + iH + 28 + legend_rows * 18 + 4
+    parts.append(
+        f'<text x="{left}" y="{note_y}" fill="#8b95a8" font-size="10" font-family="{FONT}">'
+        f'{esc(ticker)} · 9 grounding-grid configs · faint lines = K=3 repeats · bold = mean · h1 panel</text>'
+    )
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
 def line_by_date(runs: list[dict], *, title: str, get_series) -> str:
     """Line chart with end labels deconflicted and full names in a bottom legend."""
     ordered = sort_runs(
@@ -594,6 +736,12 @@ def export_set(payload: dict, batches: list[str], out: Path, prefix: str) -> Non
         title="Mean score std by decision date",
         get_series=lambda r: (r.get("output") or {}).get("score_std_by_date") or {},
     ))
+    if prefix == "main":
+        write(out / f"{prefix}-score-by-ticker-jpm.svg", score_by_ticker_chart(
+            runs,
+            ticker="JPM",
+            title="Decision score by date — JPM",
+        ))
     r2, beta = factor_charts(runs)
     write(out / f"{prefix}-mean-r2.svg", r2)
     write(out / f"{prefix}-style-betas.svg", beta)
