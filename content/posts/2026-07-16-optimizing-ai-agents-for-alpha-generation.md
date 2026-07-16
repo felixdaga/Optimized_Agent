@@ -74,7 +74,7 @@ Full setup, [KPI pipeline](#headline-kpi-pipeline), and grid design: [How we tes
 
 **If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it;** Your current setup is **likely suboptimal** — possibly **worse than a simpler, cheaper** variant albeit with larger uncertainty. A single-run backtest will not suffice. Credible optimization requires: **defined strategy and KPIs**; **K repeats and ensembling**; a **grounding grid**; **one-knob iterations**; analytics beyond headline KPIs (stochasticity, twin continuity, factor attribution). This demonstration alone: **~16k ticker-views**, **11 agent configurations**, **one** agent with credible headline KPIs.
 
-I ran the grid on **Delorean**, an **open-source** research stack that implements this workflow (PIT backtests, K repeats, compare, residual promotion). The same logic extends to any scorable AI output in an investment process (daily brief, sentiment extract). Who it is for and what it cost: [Who it's for](#who-is-this-framework-for) · [Appendix C](#appendix-c--cost-and-data).
+The same framework applies to any scorable AI output in an investment process (daily brief, sentiment extract). **[Who the framework is for](#who-is-this-framework-for)** and **[what this demonstration cost](#appendix-c--cost-and-data)** — not a product pitch; the DJIA grid as a worked example.
 
 ---
 
@@ -82,7 +82,7 @@ I ran the grid on **Delorean**, an **open-source** research stack that implement
 
 One shared backtest design for every agent configuration — same strategy, data world, KPI stack, and ensembling rules.
 
-**Execution.** All runs were orchestrated in **Delorean** (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports ([`static/data/`](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data) in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
+**Execution.** All runs were orchestrated in **Delorean**, an **open-source** research stack (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports ([`static/data/`](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data) in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
 
 
 | Element                   | Choice                                                                                                                                                                                                       |
@@ -406,7 +406,7 @@ Once a near-optimal agent configuration is confirmed, generate iterative runs �
 - **Enthusiast/retail investors building their own agents — yes.** I am one. Total spend **~$300** for the full demonstration grid — **almost entirely LLM tokens** (OpenRouter), with data APIs (Massive/Brave) a small add-on thanks to caching. Justifiable for optimizing an agent behind the average personal portfolio. Nonetheless, I **controlled** model spend via open-weight models (would love OpenAI/Anthropic but restricted in my location; Gemini next), a smaller universe of DJIA-30, quarterly cadence, 16 dates. If you want a **high-frequency S&P 500** strategy with frontier models: LLM cost could **implode**. I have spent far more resources on infrastructure than on tokens; I could not find an open-source, agent-agnostic stack that handled K-repeat compare + residual promotion at this scale — **Delorean** (below) is what I built to run this study.
 - **Institutions or funds.** Cost is less of a concern; rigor is often imposed. Most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework also applies **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimize against metrics you care about. For **direct alpha generation**, this demonstration is a systematic framework to **power or inspire** your own process.
 
-Cost detail (tokens, data APIs, scaling): [Appendix C](#appendix-c--cost-and-data).
+Cost detail for this demonstration (tokens, data APIs, scaling): [Appendix C](#appendix-c--cost-and-data).
 
 ### Execution stack (Delorean)
 
