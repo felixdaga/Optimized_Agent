@@ -1,5 +1,11 @@
 {{- $file := .Get 0 -}}
 {{- $alt := .Get 1 | default $file -}}
+{{- $rel := printf "charts/%s" $file -}}
+{{- $src := $rel | relURL -}}
+{{- /* Bust browser/CDN cache whenever the SVG bytes change */ -}}
+{{- with readFile (printf "static/charts/%s" $file) -}}
+  {{- $src = printf "%s?v=%s" $src (md5 .) -}}
+{{- end -}}
 <figure class="paper-chart">
-  <img src="{{ printf "charts/%s" $file | relURL }}" alt="{{ $alt }}" loading="lazy" style="width:100%;max-width:1100px;height:auto;background:#0f1117;border-radius:8px;">
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async" style="width:100%;max-width:1100px;height:auto;background:#0f1117;border-radius:8px;">
 </figure>

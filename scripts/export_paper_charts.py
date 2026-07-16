@@ -72,7 +72,8 @@ def sort_runs(runs: list[dict], get_value, higher_is_better: bool = True) -> lis
     return sorted(runs, key=key)
 
 
-def label_width(labels: list[str], char_px: float = 7.2, pad: int = 16) -> int:
+def label_width(labels: list[str], char_px: float = 8.0, pad: int = 28) -> int:
+    """Generous left gutter so end-anchored labels never clip the viewBox."""
     return int(max((len(lab) for lab in labels), default=8) * char_px + pad)
 
 
