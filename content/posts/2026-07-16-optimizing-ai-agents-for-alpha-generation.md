@@ -2,7 +2,7 @@
 title: "Optimizing AI Agents for Alpha Generation"
 date: 2026-07-16T12:00:00+08:00
 author: "Felix Lin"
-description: "A systematic framework for optimizing AI agents as an additive source of alpha — with a full DJIA demonstration on Delorean."
+description: "A systematic framework for optimizing AI agents as an additive source of alpha"
 tags:
   - AI Agents
   - Backtesting
@@ -314,7 +314,7 @@ Never judge a book by its cover — same goes for your AI agent.
 
 ---
 
-## The generalized systematic AI agent optimization framework
+## The systematic AI agent optimization framework
 
 ### Step 1 — Setup and design choices
 
