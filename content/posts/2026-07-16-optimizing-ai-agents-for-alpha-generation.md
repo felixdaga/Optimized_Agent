@@ -22,10 +22,8 @@ draft: false
 
 ## Key findings
 
-**1. AI agent stochasticity is real and impactful.** Due to implementation constraints, virtually all LLMs are non-deterministic. Agentic capabilities further amplify this stochasticity, significantly impacting their potential investment outcomes; under identical set up and model, an OpenClaw agent could vary ~4× more by raw output, 1.5x by performance, compared to a single-turn agent. A single backtest from your AI agent is one draw from a distribution, not true skill. Nonetheless, they are mostly noise around a persistent character that can be modelled.
-
+1. **AI agent stochasticity is real and impactful.** Due to implementation constraints, virtually all LLMs are non-deterministic. Agentic capabilities further amplify this stochasticity, significantly impacting their potential investment outcomes; under identical set up and model, an OpenClaw agent could vary ~4× more by raw output, 1.5x by performance, compared to a single-turn agent. A single backtest from your AI agent is one draw from a distribution, not true skill. Nonetheless, they are mostly noise around a persistent character that can be modelled.
 2. **More agentic is not better...heck, even better model is not better!** Agent performance in real financial settings could detach from conventional understanding and benchmarks. In our study, single-turn agents (floor LLMs) consistently outperforms more sophisticated open source variants on performance metrics, ranging from +30 to +100% post-factor control. Within the floor LLMs, more intelligent but hallucination-proned models could also underperform peers; Grok 4.5 underperformed Grok 4.3 with 2x the hallucination rate. Furthermore, agentic components do not exhibit a monotopic interaction behaviour - a model performing better with one scaffold does not mean it will do so with another.
-
 3. **There is an explanation for the findings above - error rate. By understanding mechanics, we can configure an ex-ante optimal agent and iteratively improve.** Net performance gain ≈ capability gain − (base error × amplification). With this a principle, we first-shot an ex-ante agent which outperformed all previous configurations and became the only one clearing a credible significance bar (NW *t* > 3) for idiosyncratic IC. Practical learnings: memory/reflection/debates often introduce more noise/error than insights; a grounded mid-tier model beat a "smarter" one that hallucinates; split sub-agent roles by information stream; verify claims against the raw data; prefetch standard data packs instead of open-ended tool loops when possible...
 
 {{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
@@ -36,11 +34,7 @@ draft: false
 
 ## Implications
 
-Don't trust any single-shot AI benchmarks and backtests (basically everything out there)Own your benchmark optimization pipeline. The benchmark should capture KPIs from your specific AI-driven strategy or critical AI-driven workflow. Evaluation subject should be your full/deployed agentic configuration - not the model or scaffold in isolation. Once you have a framework and infrastruture, this can be a scalable process. 
-
-If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it; your current setup is likely suboptimal — possibly worse than a simpler, cheaper variant, with larger uncertainty than you think. One backtest is not enough. Credible optimization means: define what “good” means for your strategy; run each setup multiple times and average; compare against sensible baselines (including a floor LLM); change one thing at a time when iterating; look beyond a single correlation (run-to-run noise, factor overlap, whether repeats look like the same agent). This demonstration alone: ~16k company-ratings, 11 setups, one with credible significance on our bar.
-
-The same framework applies to any scorable AI output in an investment process (daily brief, sentiment extract). [Who the framework is for](#who-is-this-framework-for) and [what this demonstration cost](#appendix-c--cost-and-data) — not a product pitch; the DJIA grid as a worked example.
+Don't rely on generic AI benchmarks or intuition when configurating your AI agents. The objective, model and scaffold all interact non-monotically; your "latest and greatest" agent could be sub-optimal, introducing unesesary uncertainties and costs with lower performance. For alpha generation or critical workflows with AI, this should be thoroughly evaluated. Just like how AI labs adopt a systematic pipeline to improve model and harness performance, **own your benchmark optimization pipeline.** In this case, the benchmark captures the exact performance metrics you care about, the agents at your disposal (not just comparing across models or other agentic components in isolation) and becomes a scalable asset for you to accelerate AI adoption and generate alpha.
 
 ---
 
