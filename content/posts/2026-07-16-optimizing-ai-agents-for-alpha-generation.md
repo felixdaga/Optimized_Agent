@@ -1,23 +1,24 @@
 ---
-
-## title: "Optimizing AI Agents for Alpha Generation" date: 2026-07-16T12:00:00+08:00 author: "Felix Lin" description: "Optimizing AI agents for idiosyncratic and additive alpha" tags:   - AI Agents   - Backtesting   - Finance   - Delorean   - Systematic Investing ShowToc: true TocOpen: true draft: false
+title: "Optimizing AI Agents for Alpha Generation"
+date: 2026-07-16T12:00:00+08:00
+author: "Felix Lin"
+description: "Optimizing AI agents for idiosyncratic and additive alpha"
+tags:
+  - AI Agents
+  - Backtesting
+  - Finance
+  - Delorean
+  - Systematic Investing
+ShowToc: true
+TocOpen: true
+draft: false
+---
 
 ## Overview
 
 - Introducing a novel systematic investment research framework on optimizing AI agents as a direct source of idiosyncratic and additive alpha.
-- Demonstrating framework applicability to a generic fundamental equity strategy with backtested results indicating post-optimized agents could achieve statistically significant alpha compared to a range of generic agents and models.
+- Demonstrating framework applicability to a generic fundamental equity strategy with backtested results indicating post-optimized agents could achieve higher and statistically significant alpha compared to a range of generic agents and models.
 - Detailed framework specification for industry evaluation and replicability.
-
-### How to read this
-
-
-| Layer         | Sections                                                                                                                                    | Time      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| **Skim**      | [Key findings](#key-findings) → [Headline results](#headline-results) → [Implications](#implications)                                       | ~5 min    |
-| **Implement** | [How we tested](#how-we-tested) → [Framework](#the-systematic-ai-agent-optimization-framework) → [Who it's for](#who-is-this-framework-for) | ~20 min   |
-| **Verify**    | [Analytics](#analytics-beyond-headline-kpis) → [Iterations](#step-6-iterations) → [Sophistication](#output-sophistication)                  | ~30 min   |
-| **Reference** | [Appendix](#appendix) — terminology, checklists, theory digest, [cost](#appendix-c--cost-and-data)                                          | as needed |
-
 
 ## Key findings
 
@@ -27,25 +28,23 @@
 
 3. **There is an explanation for the findings above - error rate. By understanding mechanics, we can configure an ex-ante optimal agent and iteratively improve.** Net performance gain ≈ capability gain − (base error × amplification). With this a principle, we first-shot an ex-ante agent which outperformed all previous configurations and became the only one clearing a credible significance bar (NW *t* > 3) for idiosyncratic IC. Practical learnings: memory/reflection/debates often introduce more noise/error than insights; a grounded mid-tier model beat a "smarter" one that hallucinates; split sub-agent roles by information stream; verify claims against the raw data; prefetch standard data packs instead of open-ended tool loops when possible...
 
-Just don't hand OpenClaw or Claude Code the keys to your portfolio yet ;)
-
 {{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
 
 {{< chart "main-residual-nw-t.svg" "Residual NW t (h1)" >}}
 
+[See results here](#headline-results-from-framework-demonstration). 
+
 ## Implications
 
-**Don't trust any single-shot AI benchmarks and backtests (basically everything out there)**Own your benchmark optimization pipeline. The benchmark should capture KPIs from your specific AI-driven strategy or critical AI-driven workflow. Evaluation subject should be your full/deployed agentic configuration - not the model or scaffold in isolation. Once you have a framework and infrastruture, this can be a scalable process. 
+Don't trust any single-shot AI benchmarks and backtests (basically everything out there)Own your benchmark optimization pipeline. The benchmark should capture KPIs from your specific AI-driven strategy or critical AI-driven workflow. Evaluation subject should be your full/deployed agentic configuration - not the model or scaffold in isolation. Once you have a framework and infrastruture, this can be a scalable process. 
 
-**If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it;** your current setup is **likely suboptimal** — possibly **worse than a simpler, cheaper** variant, with larger uncertainty than you think. **One backtest is not enough.** Credible optimization means: **define what “good” means for your strategy**; **run each setup multiple times and average**; **compare against sensible baselines** (including a floor LLM); **change one thing at a time** when iterating; **look beyond a single correlation** (run-to-run noise, factor overlap, whether repeats look like the same agent). This demonstration alone: **~16k company-ratings**, **11 setups**, **one** with credible significance on our bar.
+If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it; your current setup is likely suboptimal — possibly worse than a simpler, cheaper variant, with larger uncertainty than you think. One backtest is not enough. Credible optimization means: define what “good” means for your strategy; run each setup multiple times and average; compare against sensible baselines (including a floor LLM); change one thing at a time when iterating; look beyond a single correlation (run-to-run noise, factor overlap, whether repeats look like the same agent). This demonstration alone: ~16k company-ratings, 11 setups, one with credible significance on our bar.
 
-The same framework applies to any scorable AI output in an investment process (daily brief, sentiment extract). **[Who the framework is for](#who-is-this-framework-for)** and **[what this demonstration cost](#appendix-c--cost-and-data)** — not a product pitch; the DJIA grid as a worked example.
+The same framework applies to any scorable AI output in an investment process (daily brief, sentiment extract). [Who the framework is for](#who-is-this-framework-for) and [what this demonstration cost](#appendix-c--cost-and-data) — not a product pitch; the DJIA grid as a worked example.
 
 ---
 
 ## Framework demonstration
-
-One shared backtest design for every agent configuration — same strategy, data world, KPI stack, and ensembling rules.
 
 **Execution.** All runs were orchestrated in **Delorean**, an **open-source** research stack (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
 
