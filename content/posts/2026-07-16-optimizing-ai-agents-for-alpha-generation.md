@@ -1,22 +1,12 @@
 ---
-title: "Optimizing AI Agents for Alpha Generation"
-date: 2026-07-16T12:00:00+08:00
-author: "Felix Lin"
-description: "A systematic framework for optimizing AI agents as an additive source of alpha"
-tags:
-  - AI Agents
-  - Backtesting
-  - Finance
-  - Delorean
-  - Systematic Investing
-ShowToc: true
-TocOpen: true
-draft: false
----
 
-## Mission statement
+## title: "Optimizing AI Agents for Alpha Generation" date: 2026-07-16T12:00:00+08:00 author: "Felix Lin" description: "Optimizing AI agents for idiosyncratic and additive alpha" tags:   - AI Agents   - Backtesting   - Finance   - Delorean   - Systematic Investing ShowToc: true TocOpen: true draft: false
 
-Introducing a novel scientific investment research framework for optimizing AI agents as an additive and durable source of alpha.
+## Overview
+
+- Introducing a novel systematic investment research framework on optimizing AI agents as a direct source of idiosyncratic and additive alpha.
+- Demonstrating framework applicability to a generic fundamental equity strategy with backtested results indicating post-optimized agents could achieve statistically significant alpha compared to a range of generic agents and models.
+- Detailed framework specification for industry evaluation and replicability.
 
 ### How to read this
 
@@ -29,43 +19,23 @@ Introducing a novel scientific investment research framework for optimizing AI a
 | **Reference** | [Appendix](#appendix) — terminology, checklists, theory digest, [cost](#appendix-c--cost-and-data)                                          | as needed |
 
 
-## Novelty
-
-- To our knowledge, the **first general framework** that joins **scientific agent design** with **systematic investment research** to optimize AI agents for alpha generation, including a method to specify a **near-optimal agent configuration** (model + scaffold + components) **based on a given strategy**.[^related-work]
-- **First systematic incorporation**, to our knowledge, of **run-to-run stochasticity** in investment agent backtests: run each setup several times, average before scoring, and check that repeats still look like the same agent — so one backtest is not treated as the whole story. Prior finance-agent papers (FinMem, FinAgent, TradingAgents, etc.) typically report one run or portfolio metrics without this layer.
-- **Demonstrated** statistically significant **residual** cross-sectional signal from an agent configuration specified **ex ante** through the framework.
-
-[^related-work]: Kim et al. (2026; MIT/Google) and Liu (2026; Amazon) study agent scaling and scaffold interference on general benchmarks — architecture and component priors, not a finance-native optimization loop. Agent-finance papers (FinMem, FinAgent, FINSABER; KTD-Fin; TradingAgents) compare architectures, model families, or desks on **portfolio returns**, Sharpe, or **reasoning** accuracy — not residual cross-sectional signal KPIs under one shared mandate, with K-repeat stochasticity and ex-ante configuration design. This work combines those literatures into a single end-to-end loop (strategy KPIs → grounding grid → ex-ante design → distributional evaluation → iteration), demonstrated on a DJIA fundamental-rating task.
-
 ## Key findings
 
-**1. Don't just run a single backtest.** Even with temperature 0, a frozen setup on identical data can produce different results run to run, due to inherent non-determinism from LLMs. Agentic capabilities amplify this stochasticity and can significantly affect investment outcomes; tool-heavy OpenClaw spread **~4.4×** wider than a floor LLM baseline. **One backtest is one draw from that distribution**, not the setup's true skill. Nonetheless, agent configurations retain recognizable identities (82–100% twin match vs ~8% by chance) — noise around a persistent character, not pure chaos.
+**1. AI agent stochasticity is real and impactful.** Due to implementation constraints, virtually all LLMs are non-deterministic. Agentic capabilities further amplify this stochasticity, significantly impacting their potential investment outcomes; under identical set up and model, an OpenClaw agent could vary ~4× more by raw output, 1.5x by performance, compared to a single-turn agent. A single backtest from your AI agent is one draw from a distribution, not true skill. Nonetheless, they are mostly noise around a persistent character that can be modelled.
 
-**2. More is not better — and smarter is not better either.** Agent performance in real financial settings could detach from conventional understanding. In our study, **floor LLMs consistently beat more sophisticated variants like OpenClaw on performance metrics**; **Grok 4.5 scored below Grok 4.3** despite higher benchmark intelligence, with a higher hallucination rate. **Net gain from an agentic component or model swap ≈ capability gain − (base error × amplification)**. Popular extras — feedback loops, memory — often flip the sign negative.
+2. **More agentic is not better...heck, even better model is not better!** Agent performance in real financial settings could detach from conventional understanding and benchmarks. In our study, single-turn agents (floor LLMs) consistently outperforms more sophisticated open source variants on performance metrics, ranging from +30 to +100% post-factor control. Within the floor LLMs, more intelligent but hallucination-proned models could also underperform peers; Grok 4.5 underperformed Grok 4.3 with 2x the hallucination rate. Furthermore, agentic components do not exhibit a monotopic interaction behaviour - a model performing better with one scaffold does not mean it will do so with another.
 
-**3. You can build a hypothetical optimal agent from the principle above.** We **specified one configuration — the "ex-ante agent" —** which outperformed all previous configurations and became the only agent that cleared a credible significance bar (**NW *t* > 3**) for idiosyncratic IC. Common trends: memory/reflection/debates often introduce more noise/error than insights; a grounded mid-tier model beat a "smarter" one that hallucinates more; split agent roles by information stream; **verify claims against the raw data and** prefetch and feed standard data packs instead of open-ended tool loops. Just **don't give OpenClaw the keys to your portfolio yet!**
+3. **There is an explanation for the findings above - error rate. By understanding mechanics, we can configure an ex-ante optimal agent and iteratively improve.** Net performance gain ≈ capability gain − (base error × amplification). With this a principle, we first-shot an ex-ante agent which outperformed all previous configurations and became the only one clearing a credible significance bar (NW *t* > 3) for idiosyncratic IC. Practical learnings: memory/reflection/debates often introduce more noise/error than insights; a grounded mid-tier model beat a "smarter" one that hallucinates; split sub-agent roles by information stream; verify claims against the raw data; prefetch standard data packs instead of open-ended tool loops when possible...
 
-## Headline results from framework demonstration
-
-**Same rating mandate, same KPI stack, same comparison set** — **9 agent configurations** at h1 (**K = 3**): six floor LLM variants, OpenClaw, trading agent, and ex-ante agent. **Headline KPIs** are **residual IC** and **residual NW *t*** after style + sector factor controls ([pipeline](#headline-kpi-pipeline)). Charts sorted by residual NW *t*.
+Just don't hand OpenClaw or Claude Code the keys to your portfolio yet ;)
 
 {{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
 
 {{< chart "main-residual-nw-t.svg" "Residual NW t (h1)" >}}
 
-**Floor LLM (MiMo)** posted the **highest residual IC** (0.167) — but only the **ex-ante agent** cleared a credible significance bar (**residual NW *t* > 3**, at 3.24): idiosyncratic edge that looks **stable across quarters**, not factor reload or one lucky period. Every other agent configuration sits at or below conventional |*t*| ≈ 2.7; OpenClaw does not reach |*t*| ≈ 2.
-
-**Gross → residual.** For almost every agent configuration, **residual IC and residual NW *t* fall below gross** — gross strength partly reloads known factor loadings from the same PIT sources. Exception: **Floor LLM (Grok 4.3)** ticks up slightly on NW *t* (gross 1.53 → residual 1.70) while IC still drops. **Ex-ante agent** is the standout: both metrics **rise** (gross IC 0.113 → residual IC 0.139; gross NW *t* 2.31 → residual NW *t* 3.24) — cleaner and more significant once factor exposure is removed.
-
-**Trends:**
-
-- **Floor LLM beat off-the-shelf scaffolds** — Floor LLM (MiMo) residual IC 0.167 / NW *t* 2.67 vs OpenClaw 0.077 / 1.35 and trading agent 0.127 / 2.10.
-- **Trading agent beat OpenClaw** — structured roles helped vs open tools, but both trail the floor LLM on headline KPIs.
-- **Higher benchmark IQ ≠ better picks** on the floor LLM model axis when hallucination rate is worse (Grok 4.5 vs 4.3).
-
-Full setup, [scoring pipeline](#headline-kpi-pipeline), and comparison grid: [How we tested](#how-we-tested). Deeper analytics: [below](#analytics-beyond-headline-kpis).
-
 ## Implications
+
+**Don't trust any single-shot AI benchmarks and backtests (basically everything out there)**Own your benchmark optimization pipeline. The benchmark should capture KPIs from your specific AI-driven strategy or critical AI-driven workflow. Evaluation subject should be your full/deployed agentic configuration - not the model or scaffold in isolation. Once you have a framework and infrastruture, this can be a scalable process. 
 
 **If you deploy or plan to deploy an AI agent on a sizable portfolio, you should optimize it;** your current setup is **likely suboptimal** — possibly **worse than a simpler, cheaper** variant, with larger uncertainty than you think. **One backtest is not enough.** Credible optimization means: **define what “good” means for your strategy**; **run each setup multiple times and average**; **compare against sensible baselines** (including a floor LLM); **change one thing at a time** when iterating; **look beyond a single correlation** (run-to-run noise, factor overlap, whether repeats look like the same agent). This demonstration alone: **~16k company-ratings**, **11 setups**, **one** with credible significance on our bar.
 
@@ -73,7 +43,7 @@ The same framework applies to any scorable AI output in an investment process (d
 
 ---
 
-## How we tested
+## Framework demonstration
 
 One shared backtest design for every agent configuration — same strategy, data world, KPI stack, and ensembling rules.
 
@@ -167,7 +137,27 @@ The ex-ante agent was specified and run once under the same rules as the groundi
 
 ---
 
-## Analytics beyond headline KPIs
+## Headline results from framework demonstration
+
+Same fundamental stock-rating strategy, 9 different agent configurations - six floor LLMs with varying models, OpenClaw agent , trading agent, and ex-ante agent (framework first-shot). Headline KPIs are residual IC and residual NW *t* on next rebalancing date (Q) after factor controls ([pipeline](#headline-kpi-pipeline)). DJIA 30 on 16 periods with 3 repeated runs for each configuration to incorporate stochasticity, totalling 12,960 samples of agent outputs. Point-in-time (PIT) control strictly enforced at tool-level but not model look-ahead bias - more emphasis on the delta between configurations than their absolute performance.
+
+{{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
+
+{{< chart "main-residual-nw-t.svg" "Residual NW t (h1)" >}}
+
+**Floor LLM (MiMo)** posted the **highest residual IC** (0.167) but only the **ex-ante agent** cleared a credible significance bar (**residual NW *t* > 3**, at 3.24), demonstrating idiosyncratic IC that is **stable across quarters**. Every other agent configuration sits below with Groks, GLM and openclaw below |*t*| ≈ 1.96.
+
+**Gross → residual.** Almost every agent configuration has lower IC and t post factor control — gross strength partly reloads known factor loadings from accessible sources or model bias. Exception: Ex-ante agent, and its later iterative variants, are the only configurations with higher residual IC and significance.
+
+**Trends:**
+
+- Floor LLM beat off-the-shelf agents — Floor LLM (MiMo) residual IC 0.167 / NW *t* 2.67 vs OpenClaw 0.077 / 1.35 and trading agent 0.127 / 2.10 that are powered by the same model
+- Trading agent beat OpenClaw — structured roles helped vs open tools, but both trail the floor LLM on headline KPIs.
+- Higher benchmark IQ ≠ better. Floor LLM performance across the model axis demonstrate more alignment to hallucination rates vs intelligence (Grok 4.5 < 4.3).
+
+Full setup, [scoring pipeline](#headline-kpi-pipeline), and comparison grid: [How we tested](#how-we-tested). Deeper analytics: [below](#analytics-beyond-headline-kpis).
+
+## Notable findings across layers
 
 Stochasticity and ensembling sit **before** the headline KPI table in the read order: if K repeats are pure noise with no agent-configuration identity, comparing agent configurations or averaging runs is ill-posed. Twin continuity clears that gate; output stochasticity quantifies repeat disagreement; ensembling shows whether averaging K runs buys a cleaner signal.
 
