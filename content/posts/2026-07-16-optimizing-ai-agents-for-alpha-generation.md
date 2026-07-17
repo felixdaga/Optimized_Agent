@@ -40,23 +40,19 @@ Don't rely on generic AI benchmarks or intuition when configuring your AI agents
 
 ## Framework demonstration
 
-**Execution.** All runs were orchestrated in **Delorean**, an **open-source** research stack (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
 
-
-| Element                   | Choice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Strategy**              | **Fundamental equity analyst** — same mandate on every agent configuration (floor dossier, OpenClaw, trading agent, ex-ante); only the **scaffold** changes how PIT evidence is gathered and synthesized. **Estimand:** rate each company’s **risk-adjusted reward over ~1 year** — attractiveness of ownership vs risk of ownership — on **[-1, +1]** (+0.5…+1 clearly attractive → −0.5…−1 clearly unattractive). **Rating only** — no sizing, stops, timing, or weights. **Judgment inputs** (agent picks emphasis per name): franchise/business quality; **financial trajectory** (revenue, earnings, margins, cash generation, balance-sheet resilience); **valuation vs the company’s own recent history** (multiples conditional on earnings quality — low multiple alone ≠ cheap; price momentum ≠ substitute for fundamentals); **price/return context** vs that fundamental path; **dated qualitative developments** and risks (news, filings, web snippets). **Weights:** quantitative fundamentals and valuation **dominate**; qualitative narrative is **supporting context** (specialists must not lean on narrative without fundamental support in the packs). **KPI target:** idiosyncratic (residual) cross-sectional signal after style + sector controls. |
-| **Data (PIT-controlled)** | **Massive** (primary): US prices, fundamentals, news, filings; **Brave** (secondary): web search/snippets where tools/prefetch allow. Cached locally; see [Appendix C](#appendix-c--cost-and-data).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **Universe**              | DJIA-30; **point-in-time index constituents** per decision date (`dow30` preset) — survivorship-bias controlled                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| **Backtest window**       | **16** quarterly decision dates Jul 2022–Apr 2026 → **T = 15** non-overlapping h1 return periods (last date has no forward label).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Horizon**               | **h1** primary — forward return from one decision date to the next (one quarter, non-overlapping). h2+ reference only (overlapping holds, weaker power at T ~ 15).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Output**                | Continuous score in **[-1, +1]** (attractive / mild / neutral / unattractive bands) + short rationale + evidenced key factors.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| **Ensembling**            | **K = 3** independent runs per frozen agent configuration; same world, independent sessions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Element                   | Choice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Strategy**              | **Fundamental equity analyst** — same mandate on every agent configuration (floor LLMs, OpenClaw, trading agent, ex-ante); slight prompt variations to accommodate **scaffold** differences (e.g. listing tools for tool-calling agents). **Estimand:** rate each company’s **risk-adjusted reward over ~1 year** — attractiveness of ownership vs risk of ownership — on **[-1, +1]** (+0.5…+1 clearly attractive → −0.5…−1 clearly unattractive). **Rating only** — no sizing, stops, timing, or weights. **Judgment inputs** (agent picks emphasis per name): franchise/business quality; **financial trajectory** (revenue, earnings, margins, cash generation, balance-sheet resilience); **valuation vs the company’s own recent history** (multiples conditional on earnings quality — low multiple alone ≠ cheap; price momentum ≠ substitute for fundamentals); **price/return context** vs that fundamental path; **qualitative developments** and risks (news, filings, web snippets). **KPI target:** idiosyncratic (residual) cross-sectional signal after style + sector controls. |
+| **Data (PIT-controlled)** | **Massive** (primary): US prices, fundamentals, news, filings; **Brave** (secondary): web search/snippets where tools/prefetch allow. Cached locally; see [Appendix C](#appendix-c--cost-and-data).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **Universe**              | DJIA-30; **point-in-time index constituents** per decision date (`dow30` preset) — survivorship-bias controlled                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Backtest window**       | **16** quarterly decision dates Jul 2022–Apr 2026 → **T = 15** non-overlapping h1 return periods (last date has no forward label).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| **Horizon**               | **h1** primary — forward return from one decision date to the next (one quarter, non-overlapping). h2+ reference only (overlapping holds, weaker power at T ~ 15).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| **Output Schema**         | Per (date, ticker) **view**: **score** in **[-1, +1]** (attractive / mild / neutral / unattractive bands); **conviction** in [0, 1]; **time_horizon** (~1 year); **rationale** (one sentence on the core call); **key_factors** (2–5 short, specific, evidenced drivers); **sources_cited** on floor LLMs — PIT `source_type`, `source_id`, and `excerpt` for each cited figure (every number in rationale/key_factors must trace to a citation where enforced). Multi-agent scaffolds emit the same core fields; citation discipline varies by scaffold. **Headline KPIs use score only**; rationale, factors, and citations support sense-checking, twin continuity, and sophistication analytics.                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Ensembling**            | **K = 3** independent runs per frozen agent configuration; same world, independent sessions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 
 ### Headline KPI pipeline
-
-The estimand is not a single backtest draw or a raw score. **Headline KPIs** are only the last two outputs: **residual IC** and **NW *t*** (Newey & West, 1987) on the residual IC series. Everything before that is signal processing.
 
 ```text
 raw score (K runs)
@@ -67,9 +63,9 @@ raw score (K runs)
   → NW t on residual IC series      ┘ headline KPIs
 ```
 
-- **Ensemble the signal.** Each agent configuration is run **K = 3** times. Z-score within each decision date *inside each run*, then **equal-weight average** across K per (date, ticker). Same rule should be used live (Framework [Step 4](#step-4--incorporation-of-stochasticity--initial-runs)).
+- **Ensemble the signal.** Each agent configuration is run **K = 3** times to control for stochasticity. Z-score within each decision date *inside each run*, then **equal-weight average** across K per (date, ticker). Same rule should be applied for live deployment (Framework [Step 4](#step-4--incorporation-of-stochasticity--initial-runs)).
 - **Gross IC.** Per date: Pearson correlation between ensemble score and realised h1 forward return. **Mean gross IC** averages over T dates, before factor controls.
-- **Factor controls + residual signal.** Each date, **Fama–MacBeth** (Fama & MacBeth, 1973) OLS: regress the ensemble signal on style factors + **GICS sector dummies**; take the **residual cross-section**. Gross IC can reload known factor loadings from the same PIT sources — especially on a short panel in a **momentum** regime (T ~ 15).
+- **Factor controls + residual signal.** Each date, **Fama–MacBeth** OLS: regress the ensemble signal on style factors + **GICS sector dummies**; take the **residual cross-section**. Gross IC can reload known factor loadings from the same PIT sources — especially on a short panel in a **momentum** regime (T ~ 15).
 
 **Headline KPIs:**
 
@@ -78,9 +74,9 @@ raw score (K runs)
 
 ### Grounding agent configurations
 
-The grounding grid covers **floor LLMs** and two **off-the-shelf** scaffolds — all under the setup above, each with K = 3.
+The grounding grid covers **floor LLMs** and two **off-the-shelf** configurations— all under the setup above, each with K = 3.
 
-**Floor LLM model axis.** One scaffold — one PIT dossier, one LLM call per ticker, no tools — with **base model** swaps (plus one memory iteration on MiMo). Checkpoints span **model intelligence vs hallucination rate** using published Artificial Analysis priors[^artificial-analysis-floor] — not a monotonic capability ladder:
+**Floor LLM model axis.** Identical set ups with **base model** differentiation (plus one memory iteration on MiMo). Checkpoints span **model intelligence vs hallucination rate** using published Artificial Analysis priors[^artificial-analysis-floor] — not a monotonic capability ladder:
 
 [^artificial-analysis-floor]: **Model intelligence** — Artificial Analysis [Intelligence Index](https://artificialanalysis.ai/methodology/intelligence-benchmarking). **Hallucination rate** — Artificial Analysis [AA-Omniscience Hallucination Rate](https://artificialanalysis.ai/evaluations/omniscience) (incorrect ÷ non-correct responses; lower is better). Scores as published at grid build time.
 
@@ -95,13 +91,13 @@ The grounding grid covers **floor LLMs** and two **off-the-shelf** scaffolds —
 
 
 
-| Agent configuration                            | Scaffold                         | Key features                                                                        | Role                                                                     |
-| ---------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Floor LLM (MiMo, no memory)**                | SAS — dossier LLM                | Full PIT dossier; no tools, no memory                                               | Capability floor — simplest implementation of the strategy               |
-| **Floor LLM (MiMo)**                           | Same + log memory                | Platform injects same-ticker prior views (PIT-strict)                               | Memory iteration (Liu: memory often net-negative on retrieval-like work) |
-| **Floor LLM (GLM / MiniMax / Grok 4.3 / 4.5)** | Same floor LLM scaffold          | Swap base model only; memory on                                                     | Model axis — intelligence vs groundedness                                |
-| **OpenClaw agent**                             | Tool-heavy SAS (ReAct)           | Per-ticker think → tool → observe; MCP tools; **model-chosen** tool order and depth | Off-the-shelf “give your agent tools” pattern[^tradingagents-lineage]    |
-| **Trading agent**                              | Multi-role desk (sequential MAS) | Fundamentals → narrative specialists (tool loops) → Bull → Bear → PM; memory off    | Off-the-shelf multi-agent desk pattern[^tradingagents-lineage]           |
+| Agent configuration                                 | Scaffold                                         | Key features                                                                             | Role                                                                     |
+| --------------------------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Floor LLM** **(MiMo, no memory)**                | SAS — dossier LLM                                | Full PIT dossier; no tools, no memory                                                    | Simplest agentic configuration                                           |
+| **Floor LLM** **(MiMo)**                           | Same + log memory                                | Platform injects same-ticker prior score and rationales (PIT-strict)                     | Memory iteration (Liu: memory often net-negative on retrieval-like work) |
+| **Floor LLM** **(GLM / MiniMax / Grok 4.3 / 4.5)** | Same floor LLM scaffold                          | Swap base model only; memory on                                                          | Model axis — intelligence vs groundedness                                |
+| **OpenClaw agent****(MiMo)**                       | Tool-calling single agent system (ReAct SAS)     | Per-ticker think → tool → observe; MCP tools; **model-chosen** tool order and depth      | Off-the-shelf “give your agent tools” pattern[^tradingagents-lineage]    |
+| **Trading agent****(MiMo)**                        | Tool-calling multi agent system (sequential MAS) | Fundamentals → narrative specialists (tool loops) → Bull-Bear debate → PM; no reflection | Off-the-shelf multi-agent desk pattern[^tradingagents-lineage]           |
 
 
 [^tradingagents-lineage]: Trading agent lineage from [TradingAgents](https://github.com/TauricResearch/TradingAgents) — reimplemented and **trimmed for speed** (sequential lanes, capped tool/debate rounds), keeping role split, bull/bear debate, PM synthesis. Contrast point for “popular upgrade” without centralized verification. Does not represent official repo performance.
@@ -110,20 +106,24 @@ All agent scaffolds above use **MiMo** so the scaffold axis is read holding mode
 
 ### Ex-ante agent
 
-Framework **Step 3** applied: a **first-shot agent configuration** from the ex-ante framework and grounding priors — the **trading agent information space**, with error amplifiers stripped and error reducers added.
+Framework **Step 3** applied: a **first-shot agent configuration** from the ex-ante framework and principle:
+
+ Net performance gain ≈ capability gain − (base error × amplification).
+
+Shares the same base configuration of Trading agent with error amplifing components stripped and error reducing components added.
 
 **Same skeleton as trading agent.** Identical universe, dates, model (MiMo), lookbacks, prefetch settings, and output schema. Same PIT data (prices, fundamentals/valuation, news, filings/web snippets).
 
 
-|                          | Trading agent                                                                           | Ex-ante agent                                                                                                  |
-| ------------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Workflow**             | Fund (tools) → Narr (tools) → Bull → Bear → PM                                          | Prefetch quant + qual packs → **Quant ‖ Qual** → **Verifier** → PM                                             |
-| **Tools at reason time** | On — ReAct rounds (`evidence_mode: tools`); tool-selection mistakes compound in context | Off — **prefetch** evidence packs only at synthesis                                                            |
-| **Specialist topology**  | Sequential fund → narrative; errors in lane 1 feed lane 2                               | **Parallel** quant ‖ qual — streams meet only at decision (Kim et al.: decomposable task → centralized MAS)    |
-| **Roles**                | Fundamentals + Narrative (trading-desk habit)                                           | Quantitative (prices, ratios, fundamentals, valuation) + Qualitative (news, filings, web) — strategy PIT lanes |
-| **Verification**         | Bull/Bear debate; no independent auditor vs raw evidence                                | **Centralized verifier** audits specialist reports against evidence packs; debate dropped                      |
-| **LLM calls / ticker**   | Variable (tool + debate depth)                                                          | **4** fixed (2 specialists + verifier + PM)                                                                    |
-| **Memory**               | Off                                                                                     | Off                                                                                                            |
+|                          | Trading agent                                                                           | Ex-ante agent                                                                                                                          |
+| ------------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Workflow**             | Fund (tools) → Narr (tools) → Bull → Bear → PM                                          | Prefetch quant + qual packs → **Quant ‖ Qual** → **Verifier** → PM                                                                     |
+| **Tools at reason time** | On — ReAct rounds (`evidence_mode: tools`); tool-selection mistakes compound in context | Off — **prefetch** evidence packs only at synthesis                                                                                    |
+| **Specialist topology**  | Sequential fund → narrative; errors in lane 1 feed lane 2                               | **Parallel** quant ‖ qual — streams meet only at decision (Kim et al.: decomposable task → centralized MAS)                            |
+| **Roles**                | Fundamentals + Narrative (trading-desk habit)                                           | Quantitative (prices, ratios, fundamentals, valuation) + Qualitative (news, filings, web) - to align with types of information streams |
+| **Verification**         | Bull/Bear debate; no independent auditor vs raw evidence                                | **Centralized verifier** audits specialist reports against evidence packs; debate dropped                                              |
+| **LLM calls / ticker**   | Variable (tool + debate depth)                                                          | **4** fixed (2 specialists + verifier + PM)                                                                                            |
+| **Memory**               | Off                                                                                     | Off                                                                                                                                    |
 
 
 The ex-ante agent was specified and run once under the same rules as the grounding grid — then compared on headline KPIs. Iterative agents (memory/feedback, verifier removed) are Step 6 iterations, not part of the grounding grid. Ex-ante design rationale and checklists: [Appendix A](#appendix-a--applying-the-ex-ante-framework).
@@ -148,11 +148,9 @@ Same fundamental stock-rating strategy, 9 different agent configurations - six f
 - Trading agent beat OpenClaw — structured roles helped vs open tools, but both trail the floor LLM on headline KPIs.
 - Higher benchmark IQ ≠ better. Floor LLM performance across the model axis demonstrate more alignment to hallucination rates vs intelligence (Grok 4.5 < 4.3).
 
-Full setup, [scoring pipeline](#headline-kpi-pipeline), and comparison grid: [How we tested](#how-we-tested). Deeper analytics: [below](#analytics-beyond-headline-kpis).
+Full setup, [headline KPI pipeline](#headline-kpi-pipeline), and comparison grid: [Framework demonstration](#framework-demonstration). Deeper analytics: [Notable findings across layers](#notable-findings-across-layers).
 
 ## Notable findings across layers
-
-Stochasticity and ensembling sit **before** the headline KPI table in the read order: if K repeats are pure noise with no agent-configuration identity, comparing agent configurations or averaging runs is ill-posed. Twin continuity clears that gate; output stochasticity quantifies repeat disagreement; ensembling shows whether averaging K runs buys a cleaner signal.
 
 ### Twin continuity (nearest-neighbour test)
 
@@ -175,7 +173,7 @@ For each of the **27 runs** (9 agent configurations × K = 3), find the closest 
 - **Rank** — Spearman on within-date score ranks, aggregated over the full schedule: do agent configurations reproduce the same *book*? 93% whole-run.
 - **Factor** — panel OLS loadings on seven style factors (~450 obs/run): do agent configurations share a *style fingerprint*? 82% — identity persists in how the signal loads on known factors.
 
-**Where it fails (expected).** Almost all rank/factor misses are **MiMo floor LLM ± memory** swapping nearest neighbours — adjacent iteration, same generator, one knob different. Distant agent configurations (OpenClaw, trading agent, ex-ante, model swaps) do not cross-match at random.
+**Where it fails:** Almost all rank/factor misses between **MiMo floor LLM with and without memory**. This suggests that the 2 configurations are too similiar to differentiate.
 
 ### Output stochasticity
 
@@ -193,7 +191,7 @@ Stochasticity is **real and economically large** — mean score std spans **0.02
 
 ### Ensembling — ensemble vs mean single-run gross IC
 
-Equal-weight averaging the K transformed scores per (date × ticker) **lifts gross IC everywhere** at h1 — most where stochasticity is highest (dots = per-run IC; ◆ = ensemble gross IC). Per-run gross IC spread reaches **0.04+** on Grok 4.5 and MiniMax — vs **~0.008** on MiMo (no memory). **Ex-ante** and **OpenClaw** show the largest ensemble lift; **MiMo floor LLM** barely moves (paths already co-move). Matches forecast-combination logic (Bates & Granger, 1969): averaging cancels uncorrelated cross-run noise when the generator is wide. **Live implication:** report and deploy the **same K-then-average** object used in eval — a lucky or unlucky single seed is not the estimand.
+Equal-weight averaging the K transformed scores per (date × ticker) **lifts gross IC everywhere** at h1 — most where stochasticity is highest (dots = per-run IC; ◆ = ensemble gross IC). Per-run gross IC spread reaches **0.04+** on Grok 4.5 and MiniMax — vs **~0.008** on MiMo (no memory). **Ex-ante** and **OpenClaw** show the largest ensemble lift; **MiMo floor LLM** barely moves (paths already co-move). Matches forecast-combination logic (Bates & Granger, 1969): averaging cancels uncorrelated cross-run noise when the generator is wide.
 
 {{< chart "main-ensemble-wobble.svg" "Ensemble vs single-run IC" >}}
 
@@ -201,9 +199,9 @@ Equal-weight averaging the K transformed scores per (date × ticker) **lifts gro
 
 Each date we regress the ensemble signal on seven style factors (value/earnings yield, 12–1 momentum, operating profitability, asset growth, inverse size, low-vol 60d, 1m reversal) plus **GICS sector dummies**; **mean R²** is the share of signal variance the bundle explains. Significant style **β** rows (|t| ≥ 2) show directional tilts; sector bias shows up in the sector-tilt chart.
 
-1. **All agents carry lower R² than every floor LLM.** Off-the-shelf scaffolds explain less of their own signal variance through the style + sector bundle — more idiosyncratic before orthogonalisation. Floor LLMs sit at the top of the R² stack.
+1. **All agents carry lower R² than every floor LLM.** Off-the-shelf agents explain less of their own signal variance through the style + sector bundle — more idiosyncratic before orthogonalisation. Floor LLMs sit at the top of the R² stack.
 2. **Almost every agent configuration loads the same fundamental style triad: quality, earnings yield, low vol.** Operating profitability and earnings yield show up as significant positive β on nearly all floor LLMs and on the structured agents; low-vol loads on most agent configurations too. Aligns with the strategy — rating **risk-adjusted reward** from fundamentals and valuation — and with what the PIT dossier emphasises. The models are **re-expressing a quality/value/defensive screen** the control bundle already knows.
-3. **Sector tilts are shared and DJIA-shaped: overweight Financials, underweight Industrials.** All three agents lean the same way; floor LLMs concentrate sector bets more. **Materials** and **Consumer Discretionary** are also consistently underweight across the grid.
+3. **Sector tilts are shared: overweight Financials, underweight Industrials.** All three agents lean the same way; floor LLMs concentrate sector bets more. **Materials** and **Consumer Discretionary** are also consistently underweight across the grid. This could be driven by limited constituents within DJIA where sectors represented by a few names only, so the fundamental health of the underlying company would dictate sector bias.
 
 {{< chart "main-mean-r2.svg" "Mean R² — style + sector controls" >}}
 
@@ -213,11 +211,7 @@ Each date we regress the ensemble signal on seven style factors (value/earnings 
 
 ## Step 6 iterations
 
-The ex-ante agent is a **first-shot**, not a claim of global optimum. Step 6 holds the best agent configuration fixed and turns **one component (or model/scaffold knob) at a time** — the only disciplined way to refine without confounding model, scaffold, and components. Results:
-
-{{< chart "ablation-residual-mean-ic.svg" "Iteration — residual IC (h1)" >}}
-
-{{< chart "ablation-residual-nw-t.svg" "Iteration — residual NW t (h1)" >}}
+The ex-ante agent is a **first-shot**, not a claim of global optimum. Step 6 holds the best agent configuration fixed and turns **one component at a time**.
 
 ### Iteration 1 — Remove verifier
 
@@ -234,20 +228,26 @@ The verifier emits a **structured advisory note** (forced tool call): severity, 
 
 **Iteration design.** Identical to ex-ante except `enable_verification: false` — **Quant ‖ Qual → PM** with no audit hop. Same prefetch, same specialists, same model.
 
-**Result.** **Worse than ex-ante** — residual IC and NW *t* both step down. Without the audit, specialist hallucinations, cross-lane contradictions, and omitted-risk calls propagate straight into the final score.
+**Result.** **Worse than ex-ante** — residual IC and NW *t* both step down. Without the audit, specialist hallucinations, cross-lane contradictions, and omitted-risk calls propagate straight into the final score. This finding is consistent with our error lens and Kim et al.: for decomposable parallel streams, a **centralized verifier** before synthesis materially cuts error amplification (~17× → ~4× in their traces).
 
 ### Iteration 2 — Performance reflection (learning loop)
 
-**Design.** Same ex-ante scaffold plus `memory.level: feedback`. After each decision date the runner records the score; once the forward window closes (h1), a **separate reflection call** compares prior view vs realised return and writes a short `performance_feedback` lesson. The PM sees prior lessons via **prompt inject only** — no `get_memory` tool, no re-fetch at reason time — and only on dates **strictly after** the outcome is realised (PIT-safe). Specialists and verifier unchanged.
+**Design.** Same ex-ante scaffold plus `memory.level: feedback`. After each decision date the runner records the score; once the forward window closes (h1), a **separate reflection call** compares prior view vs realised return with updated information and writes a short `performance_feedback` lesson. The PM sees prior lessons via **prompt inject only** — no `get_memory` tool, no re-fetch at reason time — and only on dates **strictly after** the outcome is realised (PIT-safe). Specialists and verifier unchanged.
 
 **Result.** **Worse again** — net gain negative vs ex-ante, though still above OpenClaw and the trading agent on headline KPIs. This is another “sophistication” feature commonly assumed to improve performance — in a learning loop where the PM is supposed to improve from past mistakes. Plausible reads: the loop is not yet well refined; reflection text **bloats PM context** with noisy coach-lessons that compete with the current PIT dossier; or error propagation — a wrong lesson from a lucky/unlucky quarter steers the next score.
+
+Results:
+
+{{< chart "ablation-residual-mean-ic.svg" "Iteration — residual IC (h1)" >}}
+
+{{< chart "ablation-residual-nw-t.svg" "Iteration — residual NW t (h1)" >}}
 
 ### What stayed stable
 
 Despite both iterations underperforming ex-ante, they exhibit neighbouring **investment character**:
 
 - **Gross → residual:** both still show **positive lift** in gross IC and NW *t* after style + sector factor controls — the same “signal gets cleaner under factor controls” signature as ex-ante.
-- **Agent ranking:** both iterations **rank above every other agent scaffold** on headline KPIs.
+- **Agent ranking:** both iterations **rank above every other agent configurations** on headline KPIs.
 - **Factor fingerprint:** style load directions **almost identical** to ex-ante (quality / earnings / defensiveness; Financials vs Industrials).
 
 **Bottom line:** Wrong knobs hurt KPIs predictably; **character** persists — small iterations are stable enough to walk toward a nearer optimum one iteration at a time.
@@ -256,40 +256,31 @@ Despite both iterations underperforming ex-ante, they exhibit neighbouring **inv
 
 ## Demonstration summary
 
-This study is a **real-life demonstration of the framework**, not a claim of a production-ready money-making agent. The bar was **headline KPIs** on a short quarterly panel (T ≈ 15, DJIA-30, K = 3). We cleared **credible headline KPIs in one agent only** (ex-ante; residual NW *t* > 3); every other result is directional or for reference. The deliverable is the **method** and the **themes below** — not a single backtest winner.
+This study is a **demonstration of the framework**, not a claim of a production-ready money-making agent. The bar was **headline KPIs** on a short quarterly panel (T ≈ 15, DJIA-30, K = 3). We cleared **credible headline KPIs in one agent only** (ex-ante; residual NW *t* > 3); every other result can be treated as directional. The deliverable is the **method** and the **themes below** — not a single backtest winner.
 
 **Themes (demo-specific beyond Key findings):**
 
 1. **Iteration stability.** One-knob turns moved headline KPIs predictably while preserving twin/factor fingerprint — further iteration is tractable.
-2. **Sophistication paradox.** Agent scaffolds write deeper rationales without better residual edge ([sophistication](#output-sophistication)); quantitative output is the bridge to portfolio impact, not the fact words.
-3. **Factor-reload vs additive synthesis.** Most agent configurations lose gross IC and NW *t* after factor controls; ex-ante is the only standout where residual metrics **improve** — the signature of additive synthesis rather than factor mimicry.
-4. **Scaffold–strategy fit.** Prefetch + parallel streams + centralized verification beat tool-heavy SAS and unverified debate for this fundamental rating task.
+2. **Factor-reload vs additive synthesis.** Most agent configurations lose gross IC and NW *t* after factor controls; ex-ante is the only standout where residual metrics **improve** — the signature of additive synthesis rather than factor mimicry.
+3. **Scaffold–strategy fit.** Prefetch + parallel streams + centralized verification beat tool-heavy SAS and unverified debate for this fundamental rating task.
 
 **Limitations**
 
-Read the themes as **framework validation**, not production proof:
-
-- **Framework maturity.** Still **in development** — demonstrated on one strategy. Other use cases (sequential planning, high-entropy discovery, overlay outputs) may need a different agent-configuration framework.
-- **Sample size.** T ≈ 15 quarterly h1 periods on DJIA-30 — adequate for demonstration but short.
+- **Framework maturity.** Still **in development** and to be tested for cross-strategy application.
+- **Sample size.** T ≈ 15 quarterly h1 periods on DJIA-30 — adequate for demonstration but short for production research
 - **Single strategy and universe.** One KPI stack, one factor-control bundle. Results need not transfer without re-running the loop.
 - **Model grid.** Mostly **open-weight via OpenRouter** (MiMo default on agents; floor model axis elsewhere).
 - **Look-ahead and regime.** Frontier LLMs may encode post-training knowledge; identifier masking is imperfect. Window (~Jul 2022–Apr 2026) spans a **strong momentum** stretch — residual IC after factor controls defines headline KPIs, not a substitute for live attribution or formal incremental-return regression.
 - **Off-the-shelf agents** depend on wiring; trading agent is a **reimplementation**, not official repo performance.
-- **Methodological bounds.** K = 3 is pragmatic — path-rich scaffolds may need higher K.
-- Kim et al. / Liu mappings are **qualitative priors**, not transferred coefficients. Error ↔ stochasticity in iterations is **consistent with** the framework but not variance-decomposed.
-- Ex-ante agent is **first-shot** near-optimal, not a searched global optimum.
+- **Methodological bounds.** K = 3 is pragmatic — path-rich scaffolds may need higher K
 
 ---
 
-## Bonus chart: Output sophistication
+## Bonus chart: The sophistication trap
 
 Across **~4.3k** rationales in the main grid (480 per agent configuration × date × ticker; 9 agent configurations), a **LLM classifier** (blind to score and agent configuration) rated each rationale on a **fixed 0–4 sophistication scale**: 0 stat recital → 1 single-factor → 2 multi-factor synthesis → 3 franchise/moat → 4 strategic synthesis.
 
-Sophistication climbs a clean "intuitive" ladder — **agent scaffolds > floor LLM > weaker model**. **Floor LLM (MiMo)** posts the highest mean residual IC with modest sophistication; **OpenClaw** writes materially deeper rationales but clears neither residual IC significance nor gross IC edge; **Trading agent** tops the sophistication chart yet trails the floor LLM on residual IC and NW *t*. **Ex-ante** is the partial exception — structured depth *and* the only agent with residual NW *t* > 3 — but not the most eloquent on the ladder.
-
-We could conflate **articulate synthesis** with stock-picking **skill** — a distinction that collapses when the output space reduces from the semantic to quantitative dimensions. More agentic structure buys richer prose and more strategic vocabulary; it also buys stochasticity, tool tax, and error-amplification paths that can destroy its edge.
-
-Never judge a book by its cover — same goes for your AI agent.
+Sophistication climbs a clean intuition ladder where **sophisticated agents > simple agents** and **smarter model  > weaker model**. We could conflate articulate synthesis with stock-picking skill — a distinction that collapses when the output space reduces from semantic to quantitative dimensions. More and better buy richer prose; they could also buy more stochasticity and errors. Never judge a book by its cover — same goes for your AI!
 
 {{< chart "main-sophistication-mean.svg" "Mean sophistication" >}}
 
@@ -307,9 +298,9 @@ Similar to how the AI industry leverages benchmarks during model training and ha
 - **Demonstrate additivity** — net of contribution from individual sources your agent has access to; why use AI when sources do better mechanistically?
 - **Avoid downstream implementation noise** — portfolio construction varies; cloud the direct agent contribution.
 
-Define the output schema (buy/sell/hold or continuous score). Include key rationale and citations for semantic understanding and sense-checking.
+Define the output schema for your strategy — continuous score (or buy/sell/hold) plus semantic fields: **rationale** (one-sentence thesis), **key_factors** (2–5 evidenced drivers), and **sources_cited** (PIT source pointers with excerpts, where grounding matters). Headline KPIs optimize the quantitative field; rationale, factors, and citations support audit, sense-checking, and downstream analytics.
 
-This demo implements the above as **headline KPIs** (residual IC + NW *t*) — see [pipeline](#headline-kpi-pipeline).
+This demo implements the above as **headline KPIs** (residual IC + NW *t*) on **score** — see [pipeline](#headline-kpi-pipeline).
 
 ### Step 2 — Grounding agent configurations
 
@@ -321,7 +312,7 @@ Include off-the-shelf agent configurations if available — they may substitute 
 
 ### Step 3 — Ex-ante near-optimal agent configuration
 
-Highly strategy-dependent and under-researched for financial application. This post synthesizes a practical framework from academic research and empirical findings ([How we tested](#how-we-tested)). Goal: **near-optimal agent configuration before running tests** — not a universal “best agent.”
+Highly strategy-dependent and under-researched for financial application. This post synthesizes a practical framework from academic research and the [Framework demonstration](#framework-demonstration). Goal: **near-optimal agent configuration before running tests** — not a universal “best agent.”
 
 **Core priors (detail in [Appendix D](#appendix-d--theory-digest-kim-liu-error-taxonomy)):**
 
@@ -355,7 +346,7 @@ Under identical agent configurations, agents still carry inherent investment cha
 
 ### Step 5 — Analytics
 
-Evaluate and compare **headline KPIs** across agent configurations (residual IC + NW *t*; [pipeline](#headline-kpi-pipeline)), plus insights in order:
+Evaluate and compare **headline KPIs** across agent configurations (residual IC + NW *t*; [pipeline](#headline-kpi-pipeline)), plus insights in order (demonstrated in [Notable findings across layers](#notable-findings-across-layers)):
 
 - Raw outputs — score distribution, score vs rationale correlation, semantic analysis
 - Stochasticity — twin run variations and nearest-neighbour (NN) tests (NN underlies the assumption that each agent configuration has differentiable, modelable characteristics)
@@ -388,6 +379,8 @@ Cost detail for this demonstration (tokens, data APIs, scaling): [Appendix C](#a
 
 ### Execution stack (Delorean)
 
+**Execution.** All runs were orchestrated in **Delorean**, an **open-source** research stack (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
+
 Delorean is the research platform that implements the infrastructure above — PIT dossiers and MCP twins, K-repeat orchestration with parallel slots, Pearson `report` / `compare`, and the export path behind this post. It is also packaged as an **agentic skill**: an agent (or researcher) can configure, launch repeats, and pull compare analytics end-to-end via CLI — `configure`, `run` / `repeat`, `report`, `compare`.
 
 Swap model, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
@@ -416,18 +409,19 @@ Open source; codebase and docs are being prepared for release in [this repo](htt
 Quick reference for terms used throughout this post.
 
 
-| Term                    | Meaning                                                                                                                                                      |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Agent**               | The running system that produces scores (or other outputs) on each decision date — what you would deploy or compare in practice.                             |
-| **Agent configuration** | How an agent is built: **model** + **scaffold** + **components** (tools at reason time, memory, verifier, reflection, etc.), plus prompts and data feed.     |
-| **Model**               | Base LLM (MiMo, Grok, GLM, …).                                                                                                                               |
-| **Scaffold**            | How the agent is organized — floor LLM (single call), OpenClaw (ReAct + tools), trading agent (sequential MAS), ex-ante (prefetch + specialists + verifier). |
-| **Components**          | Individual toggles within a scaffold (memory, tools at reason time, verifier, reflection, …).                                                                |
-| **Floor LLM**           | Simplest agent configuration in the grid: one PIT dossier, one LLM call per ticker, no tools — model swaps define the floor LLM **model axis**.              |
-| **Strategy**            | Investment job spec: universe, cadence, horizon, output schema, PIT data feed, and KPI stack.                                                                |
-| **Headline KPIs**       | **Residual IC** + **NW *t*** only — after style + sector factor controls. Use **gross IC** for the pre-control read.                                         |
-| **Framework Steps 1–6** | End-to-end optimization workflow (setup → grounding → ex-ante → stochasticity → analytics → iteration).                                                      |
-| **Repeat**              | One independent full backtest pass of a frozen agent configuration (K = 3 per configuration in this demo).                                                   |
+| Term                    | Meaning                                                                                                                                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Agent**               | The running system that produces scores (or other outputs) on each decision date — what you would deploy or compare in practice.                                                                                |
+| **Agent configuration** | How an agent is built: **model** + **scaffold** + **components** (tools at reason time, memory, verifier, reflection, etc.), plus prompts and data feed.                                                        |
+| **Model**               | Base LLM (MiMo, Grok, GLM, …).                                                                                                                                                                                  |
+| **Scaffold**            | How the agent is organized — floor LLM (single call), OpenClaw (ReAct + tools), trading agent (sequential MAS), ex-ante (prefetch + specialists + verifier).                                                    |
+| **Components**          | Individual toggles within a scaffold (memory, tools at reason time, verifier, reflection, …).                                                                                                                   |
+| **Floor LLM**           | Simplest agent configuration in the grid: one PIT dossier, one LLM call per ticker, no tools — model swaps define the floor LLM **model axis**.                                                                 |
+| **View**                | Per (date, ticker) agent output: **score**, **conviction**, **time_horizon**, **rationale**, **key_factors**, and optionally **sources_cited** (PIT citations with excerpts). Headline KPIs use **score** only. |
+| **Strategy**            | Investment job spec: universe, cadence, horizon, output schema, PIT data feed, and KPI stack.                                                                                                                   |
+| **Headline KPIs**       | **Residual IC** + **NW *t*** only — after style + sector factor controls. Use **gross IC** for the pre-control read.                                                                                            |
+| **Framework Steps 1–6** | End-to-end optimization workflow (setup → grounding → ex-ante → stochasticity → analytics → iteration).                                                                                                         |
+| **Repeat**              | One independent full backtest pass of a frozen agent configuration (K = 3 per configuration in this demo).                                                                                                      |
 
 
 ### Appendix A — Applying the ex-ante framework
