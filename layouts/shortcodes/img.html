@@ -1,0 +1,7 @@
+{{- $file := .Get 0 -}}
+{{- $alt := .Get 1 | default $file -}}
+{{- $rel := printf "images/%s" $file -}}
+{{- $src := $rel | relURL -}}
+<figure class="paper-chart">
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" decoding="async" style="width:100%;max-width:1100px;height:auto;border-radius:8px;">
+</figure>

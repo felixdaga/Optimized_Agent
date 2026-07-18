@@ -1,9 +1,11 @@
 ---
+
 title: "Optimizing AI Agents for Alpha Generation"
 date: 2026-07-16T12:00:00+08:00
 author: "Felix Lin"
 description: "Optimizing AI agents for idiosyncratic and additive alpha"
 tags:
+
 - AI Agents
 - Backtesting
 - Finance
@@ -12,6 +14,7 @@ tags:
 ShowToc: true
 TocOpen: true
 draft: false
+
 ---
 
 ## Overview
@@ -22,8 +25,8 @@ draft: false
 
 ## Key findings
 
-1. **AI agent stochasticity is real and impactful.** Due to implementation constraints, virtually all LLMs are non-deterministic. Agentic capabilities further amplify this stochasticity and can significantly affect investment outcomes; under identical setup and model, an OpenClaw agent varies ~4× more in raw output and ~1.5× more in performance than a single-turn agent. A single backtest from your AI agent is one draw from a distribution, not true skill. Nonetheless, outputs are mostly noise around a persistent character that can be modeled.
-2. **More agentic is not better — heck, even a better model is not better!** Agent performance in real financial settings can diverge from conventional understanding and benchmarks. In our study, single-turn agents (floor LLMs) consistently outperform more sophisticated open-source variants on performance metrics, by +30 to +100% after factor controls. Within floor LLMs, more intelligent but hallucination-prone models can also underperform peers; Grok 4.5 underperformed Grok 4.3 with twice the hallucination rate. Furthermore, agentic components do not interact monotonically — a model that performs better with one scaffold may not with another.
+1. **AI agent stochasticity is real and impactful.** Due to implementation constraints, virtually all LLMs are non-deterministic. Agentic capabilities further amplify this stochasticity and can significantly affect investment outcomes; under identical conditions, an OpenClaw agent could vary over 4× raw output and 1.5× in final performance than a single-turn agent. A single backtest from your AI agent is just one draw from a distribution, not true skill. Nonetheless, outputs are mostly noise around a persistent character that can be modeled through repeated runs and ensembling.
+2. **More agentic is not better — heck, even a better model is not better!** Agent performance in real financial settings can diverge from conventional understanding and benchmarks. In our study on idiosyncratic fundamental skills, single-turn agents (floor LLMs) consistently outperform more sophisticated open-source variants on performance metrics, by more than 30-100% after factor controls. Within floor LLMs, more intelligent but hallucination-prone models can also underperform peers; Grok 4.5 underperform Grok 4.3, having twice the hallucination rate. Furthermore, agentic components do not interact monotonically — a model that performs better with one scaffold may not with another.
 3. **There is an explanation for the findings above: error rate. By understanding the mechanics, we can configure an ex-ante optimal agent and improve iteratively.** Net performance gain ≈ capability gain − (base error × amplification). Using this principle, we first-shot an ex-ante agent that outperformed all previous configurations and became the only one to clear a credible significance bar (NW *t* > 3) for idiosyncratic IC. Practical learnings: memory, reflection, and debate often introduce more noise and error than insight; a grounded mid-tier model beat a "smarter" one that hallucinates; split sub-agent roles by information stream; verify claims against the raw data; prefetch standard data packs instead of open-ended tool loops when possible...
 
 {{< chart "main-residual-mean-ic.svg" "Residual IC (h1)" >}}
@@ -34,13 +37,13 @@ draft: false
 
 ## Implications
 
-Don't rely on generic AI benchmarks or intuition when configuring your AI agents. The objective, model, and scaffold interact non-monotonically; your "latest and greatest" agent could be suboptimal, adding unnecessary uncertainty and cost while delivering lower performance. For alpha generation, or any critical AI workflows with measurable outcomes, it warrants serious understanding and evaluation.
+Don't rely on generic AI benchmarks or intuition when configuring your AI agents. The objective, model, and scaffold interact non-monotonically; your "latest and greatest" agent could be suboptimal, adding uncertainty and cost while delivering lower performance. For alpha generation, or any critical AI workflows with measurable outcomes, it warrants serious understanding and evaluation.
 
-Just as AI labs adopt a systematic pipeline to improve model and harness performance across benchmarks, AI investors should own their benchmark optimization pipeline, in this case the benchmark is not a generic and hackable capability measure that looks at model/harness in isolation but one that directly reflects your strategy and agents. This pipeline, not the AI, is what will give you an edge in the age of AI investing.
+Just as AI labs adopt a systematic pipeline to improve model and harness performance across benchmarks, AI investors should **own their benchmark optimization pipeline**, in this case the benchmark is not a generic, hackable and isolated capability measure but one that directly reflects your strategy and agents. This pipeline, not the AI, is what will provide an edge in the age of AI investing.
 
 ---
 
-## Framework demonstration
+## The study
 
 
 | Element                           | Choice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
@@ -217,30 +220,15 @@ Each date we regress the ensemble signal on seven style factors (value/earnings 
 
 ## Step 6 iterations
 
-The ex-ante agent is a **first-shot**, not a claim of global optimum. Step 6 holds the best agent configuration fixed and turns **one component at a time**.
+The ex-ante agent is a **first-shot**, not a claim of global optimum. Step 6 holds the best agent configuration fixed and turns on/off **one component at a time**.
 
-### Iteration 1 — Remove verifier
 
-**Baseline verifier role.** Quant and qual specialists run **in parallel** on prefetch PIT packs; a **third LLM stage** audits both reports against the **raw evidence packs** (not against each other’s prose). It is **not** a second research analyst. Its job is an **adversarial audit** — flag:
+|                            | Iteration 1 — Remove verifier                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Iteration 2 — Add learning loop                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Component role**         | Quant and qual specialists run **in parallel** on prefetch PIT packs; a **third LLM stage** audits both reports against the **raw evidence packs** (not against each other’s prose). It is **not** a second research analyst. Its job is an **adversarial audit** — flag: - unsupported or numerically inconsistent claims vs what the packs actually contain; - material evidence present in the packs but omitted from a report; - valuation calls that ignore earnings quality or balance-sheet risk shown in the numbers; - narrative-heavy conclusions without fundamental support; - **cross-lane contradictions** (quant vs qual pointing different ways on the same fact); - lane violations (quant citing news text, qual inventing figures). The verifier emits a **structured advisory note** (forced tool call): severity, verified points, unsupported claims, and up to a few correction ids with required actions — plus an optional directional nudge (`KEEP` / `LOWER` / `RAISE` / `NEUTRALIZE`). The PM sees this block and is instructed to **weigh it but may override it**; it is not a hard veto gate. | **Performance reflection (learning loop).** Two-phase, deferred resolution: at each decision date the runner records the score as *pending* (no LLM); upon next reblancing window, a **separate reflection call** compares prior view vs realised return with latest information such as articles — prior score, rationale, and key factors against the ticker’s realised h1 return and fresh PIT evidence packs — and writes a short `performance_feedback` lesson. One reflection LLM call per ticker when the outcome resolves. The PM sees prior lessons via **prompt inject only** — no tool-calling to minimize error — and only on dates **strictly after** the outcome is realised (PIT-safe). Specialists and verifier unchanged. |
+| **Iteration design logic** | **Framework lens — strip error reduction.** Ex-ante priors: on decomposable parallel streams, specialist errors **amplify** at the PM without a centralized audit (`Base error × Amplification`). The verifier is predominantly an **error** reducer — it cuts amplification, not raw capability. This iteration tests removing that hop: `enable_verification: false` — **Quant ‖ Qual → PM**; same prefetch, same specialists, same model.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | **Framework lens — insight vs noise.** Ex-ante priors: a learning loop can add **insight** (capability gain from prior view vs realised return) but also raises **base error from noise** — coach-lessons that compete with the PIT dossier, or a wrong lesson from a lucky/unlucky quarter steers the next score. This iteration tests whether that marginal insight exceeds marginal error: `memory.level: feedback`; same prefetch, same specialists, same model, verifier unchanged.                                                                                                                                                                                                                                                  |
+| **Result (as expected)**   | **Worse as expected** — residual IC and NW *t* both step down. Without the audit, specialist hallucinations, cross-lane contradictions, and omitted-risk calls propagate straight into the final score. This finding is consistent with our error lens and Kim et al.'s architecture comparison: Independent MAS amplifies factual errors **~17×** vs single-agent baseline; Centralized coordination contains to **~4×** via orchestrator review (their Finance-Agent traces — analogous mechanism, not a verifier ablation in their paper).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | **Worse** — net gain negative vs ex-ante, though still above OpenClaw and the trading agent on headline KPIs. This is another “sophistication” feature commonly assumed to improve performance — in a learning loop where the PM is supposed to improve from past mistakes. Plausible reads: the loop is not yet well refined; reflection text **bloats PM context** with noisy coach-lessons that compete with the current PIT dossier; or error propagation — a wrong lesson from a lucky/unlucky quarter steers the next score.                                                                                                                                                                                                        |
 
-- unsupported or numerically inconsistent claims vs what the packs actually contain;
-- material evidence present in the packs but omitted from a report;
-- valuation calls that ignore earnings quality or balance-sheet risk shown in the numbers;
-- narrative-heavy conclusions without fundamental support;
-- **cross-lane contradictions** (quant vs qual pointing different ways on the same fact);
-- lane violations (quant citing news text, qual inventing figures).
-
-The verifier emits a **structured advisory note** (forced tool call): severity, verified points, unsupported claims, and up to a few correction ids with required actions — plus an optional directional nudge (`KEEP` / `LOWER` / `RAISE` / `NEUTRALIZE`). The PM sees this block and is instructed to **weigh it but may override it**; it is not a hard veto gate. Cost: **one fixed LLM call per ticker** (four calls total vs three when off).
-
-**Iteration design.** Identical to ex-ante except `enable_verification: false` — **Quant ‖ Qual → PM** with no audit hop. Same prefetch, same specialists, same model.
-
-**Result.** **Worse than ex-ante** — residual IC and NW *t* both step down. Without the audit, specialist hallucinations, cross-lane contradictions, and omitted-risk calls propagate straight into the final score. This finding is consistent with our error lens and Kim et al.: for decomposable parallel streams, a **centralized verifier** before synthesis materially cuts error amplification (~17× → ~4× in their traces).
-
-### Iteration 2 — Performance reflection (learning loop)
-
-**Design.** Same ex-ante scaffold plus `memory.level: feedback`. After each decision date the runner records the score; once the forward window closes (h1), a **separate reflection call** compares prior view vs realised return with updated information and writes a short `performance_feedback` lesson. The PM sees prior lessons via **prompt inject only** — no `get_memory` tool, no re-fetch at reason time — and only on dates **strictly after** the outcome is realised (PIT-safe). Specialists and verifier unchanged.
-
-**Result.** **Worse again** — net gain negative vs ex-ante, though still above OpenClaw and the trading agent on headline KPIs. This is another “sophistication” feature commonly assumed to improve performance — in a learning loop where the PM is supposed to improve from past mistakes. Plausible reads: the loop is not yet well refined; reflection text **bloats PM context** with noisy coach-lessons that compete with the current PIT dossier; or error propagation — a wrong lesson from a lucky/unlucky quarter steers the next score.
 
 Results:
 
@@ -296,19 +284,19 @@ Sophistication climbs a clean intuition ladder where **sophisticated agents > si
 
 ## The systematic AI agent optimization framework
 
-End-to-end optimization workflow: **setup → grounding → ex-ante → stochasticity → analytics → iteration**. Steps 1–6 are the method; the blocks after Step 6 cover infrastructure, audience, and the execution stack that runs the loop.
+End-to-end optimization workflow: **setup → grounding → ex-ante → stochasticity → analytics → iteration**.
 
 `1 Setup → 2 Ground → 3 Ex-ante → 4 Sample (K) → 5 Analyze → 6 Iterate`
 
 ### Step 1 — Setup and design choices
 
-**KPIs.** Similar to how the AI industry leverages benchmarks during model training and harness engineering, specify KPIs for a given investment strategy as quantifiable optimization objectives. The KPIs should:
+**KPIs.** Similar to how the AI industry leverage benchmarks during model training and harness engineering, specify KPIs for a given investment strategy as quantifiable optimization objectives. The KPIs should:
 
 - **Capture realistic agent performance** — standard backtest KPIs, e.g. IC/IR and adjacent metrics across key dimensions over long horizons and regimes, or with demonstrated controls.
-- **Demonstrate additivity** — net of contribution from individual sources your agent has access to; why use AI when sources do better mechanistically?
-- **Avoid downstream implementation noise** — portfolio construction varies; could cloud the direct agent contribution.
+- **Demonstrate additivity** — net of contribution from individual sources your agent has access to; why use AI when sources do better mechanistically? This depends on how you leverage the AI agent for the strategy. For certain tasks, additivity is given — usually when qualitative information has to be converted to or synthesized alongside quantitative — such as leveraging AI to extract sentiment from texts or dynamically weighing data based on market context which would not be possible without AI. However there could still be simpler, deterministic implementations at your disposal that should be factored in. In our study, we demonstrate this through factor controls that reflect the information set in the **data** our AI agents have access to — if the AI is simply re-expressing what those sources already imply mechanistically, gross IC should fall under controls and residual IC should not rise.
+- **Avoid downstream implementation capture** — portfolio implementation varies; could cloud the direct agent contribution.
 
-**Output schema.** Define the output schema for your strategy — continuous score (or buy/sell/hold) plus semantic fields: **rationale** (one-sentence thesis), **key_factors** (2–5 evidenced drivers), and **sources_cited** (PIT source pointers with excerpts, where grounding matters). Headline KPIs optimize the quantitative field; rationale, factors, and citations support audit, sense-checking, and downstream analytics.
+**Output schema.** Define the output schema for your strategy — continuous score (or buy/sell/hold) plus relevant semantic fields: **rationale** (one-sentence thesis), **key_factors** (2–5 evidenced drivers), and **sources_cited** (PIT source pointers with excerpts, where grounding matters). Headline KPIs optimize the quantitative field; rationale, factors, and citations support audit, sense-checking, and downstream analytics.
 
 **In this demo.** This demo implements the above as **headline KPIs** (residual IC + NW *t*) on **score**.
 
@@ -316,17 +304,17 @@ End-to-end optimization workflow: **setup → grounding → ex-ante → stochast
 
 Generate sensible agent configurations for grounding and comparison. Cover **floor LLM** agent configurations — the simplest implementation:
 
-- Each agent is an LLM fed with all relevant information (strategy prompt + raw data) to generate the output.
+- Each agent is an LLM fed with all relevant information (strategy prompt + fixed set of raw data) to generate the output.
 
-Include off-the-shelf agent configurations if available — they may substitute for the ex-ante agent if you skip Step 3.
+Include your current or off-the-shelf agents — they may substitute for the ex-ante agent if you skip Step 3.
 
 ### Step 3 — Ex-ante near-optimal agent configuration
 
-Highly strategy-dependent and under-researched for financial application. This post synthesizes a practical framework from academic research and empirical findings. Goal: **near-optimal agent configuration before running tests** — not a universal “best agent.” 
+Highly strategy-dependent. Presented below is a practical framework synthesized and expanded upon from academic research and empirical findings. Goal: **near-optimal agent configuration before running tests** — not a universal “best agent.” 
 
 Note: This is still in refinement and does not garantee corss-domain applicability.
 
-**Core priors (detail in [Appendix C](#appendix-c--theory-digest-kim-liu-error-taxonomy)):**
+**Core priors (detail in [Appendix B](#appendix-b--ex-ante-framework-details)):**
 
 - **Kim et al. (2026):** scaffold–task alignment beats agent count; decomposable parallel streams → centralized MAS + verification; sequential chains → SAS; tool-heavy + multi-agent pays a coordination tax.
 - **Liu (2026):** cross-component interference — more scaffolding is not better; Tool Use often dominates; Planning/Memory often net-negative on retrieval-like work.
@@ -335,19 +323,17 @@ Note: This is still in refinement and does not garantee corss-domain applicabili
 **Decision table.** Work top-down. Each row is one agent-configuration choice. The **Prefer** column is the prior; **This demo** is how we answered for this fundamental equity rating task.
 
 
-| #   | Decision                  | Ask                                                                      | Prefer                                                                                                  | This demo                                                           |
-| --- | ------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 1   | **Topology**              | Parallel independent information streams that only meet at the decision? | Yes → **centralized MAS** (specialists → PM). Sequential constraint chain → **SAS**                     | Parallel **quant ‖ qual** → PM                                      |
-| 2   | **Evidence access**       | Is the useful set knowable ex-ante as stable PIT packs?                  | Yes → **prefetch**; tools off at reason time. Must discover live → tools; accept higher stochasticity   | Prefetch packs; tools off at reason time unless nessesary           |
-| 3   | **Tools × agents**        | Multi-agent *and* open tool loops?                                       | Prefer **not** — strip tools at reason time if MAS (tool–coordination tax)                              | Tools stripped                                                      |
-| 4   | **Role split**            | How to split sub agent/specialists?                                      | By **information stream or natural task decomposition**, not conventional/ legacy roles                 | Quant (prices, fundamentals, valuation) ‖ Qual (news, filings, web) |
-| 5   | **Verification**          | Errors costly and streams decomposable?                                  | **Centralized verifier** audits vs **raw evidence** — advisory to PM (not debate-only; not a hard veto) | Verifier on; debate dropped                                         |
-| 6   | **Memory**                | Decisions largely independent across dates?                              | **Off** unless a strong continuity thesis                                                               | Off                                                                 |
-| 7   | **Planning / reflection** | Retrieval-like synthesis?                                                | Prompt-planning **off**; pre-split in the scaffold; prefer external verify over self-reflect-only       | Scaffold pre-split; no self-reflect stage                           |
-| 8   | **Model**                 | Capability gain vs base error (hallucination)?                           | Prefer a **grounded mid-tier** model when “smarter” raises hallucination rate                           | MiMo (AA priors + error lens)                                       |
+| #   | Decision                     | Ask                                                                                                                             | Prefer                                                                                                                                                                                                                                                           | This demo                                                                                                            |
+| --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Role and sub-agent split** | What is the natural role, task and information decomposition of your strategy, not the existing split in a pre-AI organisation? | Yes → **centralized MAS** (specialists → PM), split by **information stream or natural task decomposition**, not conventional/legacy roles. Sequential constraint chain → **SAS**. If MAS, prefer **not** open tool loops at reason time (tool–coordination tax) | Parallel **quant ‖ qual** → PM — Quant (prices, fundamentals, valuation) ‖ Qual (news, filings, web); tools stripped |
+| 2   | **Evidence access**          | Is the useful information set knowable ex-ante as stable PIT packs?                                                             | Yes → **prefetch**; tools off at reason time. Must discover live or further operations → tools; accept higher stochasticity                                                                                                                                      | Prefetch packs; tools off at reason time unless necessary                                                            |
+| 3   | **Verification**             | Errors costly and streams decomposable?                                                                                         | **Centralized verifier** audits vs **raw evidence** — advisory to PM (not a hard veto)                                                                                                                                                                           | Verifier on                                                                                                          |
+| 4   | **Memory**                   | Decisions largely independent across dates?                                                                                     | **Off** unless a strong continuity thesis                                                                                                                                                                                                                        | Off                                                                                                                  |
+| 5   | **Planning / reflection**    | Retrieval-like synthesis?                                                                                                       | Prompt-planning **off**; pre-split in the scaffold; prefer external verify over self-reflect-only                                                                                                                                                                | Scaffold pre-split; no self-reflect stage                                                                            |
+| 6   | **Model**                    | Does the task require more intelligence or groundedness?                                                                        | Prefer **grounded variants with comparable intelligence where possible**                                                                                                                                                                                         | MiMo v2.5 Pro                                                                                                        |
 
 
-That specification is the **ex-ante near-optimal** agent configuration: chosen from principles and grounding priors, then run under the same rules as floor LLMs and off-the-shelf scaffolds. It is “near-optimal” only relative to the strategy, KPIs, and grounding grid — later validated in the demonstration. You can skip Step 3 and rely on the grounding grid — **Step 6 iterative runs** ensure empirical alignment either way.
+Due to strategy complexity and non-monotonic behaviour of agentic configurations, this can only serve as a guide. At the end of the day you will have to apply the rest of the framework, especially iterative refinement, to empirically confirm.
 
 ### Step 4 — Incorporation of stochasticity + initial runs
 
@@ -357,97 +343,66 @@ That specification is the **ex-ante near-optimal** agent configuration: chosen f
 - Run the full backtest **K times in parallel** — same world, independent sessions. Start with **K = 3**; raise K when the scaffold is path-rich.
 - Per (date, ticker), equal-weight average raw quantitative outputs before KPIs — not average at the KPI level.
 
-**What it does:** averaging cancels diversifiable run-level stochasticity when paths are imperfectly correlated. Ensembled KPIs vs mean individual run KPIs tend to improve from noise reduction — more for stochastic scaffolds, less for near-deterministic floor LLMs; lockstep paths are diagnostic. **Live deployment** must use the same sampling methodology or what you trade ≠ what you test.
+**What it does:** averaging cancels diversifiable run-level stochasticity when paths are imperfectly correlated. Ensembled KPIs vs mean individual run KPIs tend to improve from noise reduction — more for stochastic scaffolds, less for near-deterministic floor LLMs; lockstep paths are diagnostic. **Live deployment** must use the same sampling methodology when possible or what you trade ≠ what you test.
 
 ### Step 5 — Analytics
 
-Evaluate and compare **headline KPIs** across agent configurations (residual IC + NW *t*), plus insights in order (demonstrated in [Notable findings across layers](#notable-findings-across-layers)):
+Evaluate and compare **headline KPIs** across agent configurations (residual IC + NW *t*), plus the following analytic layers in order (demonstrated in [Notable findings across layers](#notable-findings-across-layers)):
 
-**Analytics order:**
+**Analytic layers and examples:**
 
 - Raw outputs — score distribution, score vs rationale correlation, semantic analysis
 - Stochasticity — twin run variations and nearest-neighbour (NN) tests (NN underlies the assumption that each agent configuration has differentiable, modelable characteristics)
 - Raw KPI performance
 - Additivity tests — factor/bias controls
-
-Downstream implementation analytics (portfolio optimization) are not part of the framework.
+- Note: Downstream implementation and its analytics, such as portfolio optimization, are not part of the framework.
 
 ### Step 6 — Iterative runs and final agent configuration
 
 Once a near-optimal agent configuration is confirmed, generate iterative runs — hold everything else constant while changing one axis: swap model, add memory or feedback, fine-tune prompts, or explore feeding vs tool-calling.
 
-### Enabling the framework
+---
 
-#### Agent backtesting infrastructure
+## Closing off
 
-- **PIT control first.** All dossiers or tools must enforce PIT strictly so the agent can only access data on or before the backtest date. Underlying LLMs may still encode look-ahead — frontier models, or a backtest window extending beyond model training (common for lower-frequency strategies or regime testing). Identifier masking (Glasserman & Lin, 2023) is imperfect and often impractical with the wide information sets current agents access; we often want inherent LLM asset knowledge for judgments. Practical mitigations: KPI buffers; focus on **delta between iterative agent configurations** vs absolute levels; factor controls for biases.
-- **Simulate deployed autonomy.** Close the backtest–live gap. Some critical features/data may not satisfy PIT or be too costly to implement live — simulate what you can. Example: if the agent uses tools to explore its information space, generate a twin MCP server with hardcoded PIT controls for the original skills/tools and expose that instead.
+Who this framework is for, how to implement it in practice, and the execution stack used in this study.
+
+### Agent backtesting infrastructure
+
+- **Point-in-time (PIT) control first.** All dossiers or tools must enforce PIT strictly so the agent can only access data on or before the backtest date. Underlying LLMs may still encode look-ahead — frontier models, or a backtest window extending beyond model training (common for lower-frequency strategies or regime testing). Identifier masking (Glasserman & Lin, 2023) is plausible but imperfect and often impractical with the wide information sets current agents access; we often want inherent LLM asset knowledge for judgments.
+- **Respect agent autonomy.** Close the backtest–live gap, you must simulate as much as possible the agentic capability and autonomy. Some critical features/data may not satisfy PIT or be too costly to implement live — simulate what you can. Example: if the agent uses tools to explore its information space, generate a twin MCP server with hardcoded PIT controls for the original skills/tools and expose that instead.
 - **Good to have:**
   - **Strategy- and agent-agnostic infrastructure** — standardized runner and schema to feed data and catch outputs for comparability; central YAML to swap model, scaffold, components, and key variables (e.g. thinking level, temperature) for fingerprints and runtime traces.
-  - **Concurrency** — runs are heavy and numerous; parallelism without sacrificing features (e.g. separate gateways if sub-agents cannot spawn in a local session).
-  - **Retry mechanisms** — minimum impact when a single agent fails.
-  - **Run-time diagnostics** — API/tool call failures happen more often than you expect.
-  - **Cost tracing**
+  - **Data caching** — automatically cache PIT market data and prefetch packs on disk for repeated runs (K repeats, grid comparisons, Step 6 iterations). The same (universe, decision date, ticker, source) should hit cache instead of re-fetching from API — cutting unnecessary cost and speeding reruns.
+  - **Concurrency** — runs are heavy and numerous; parallelism without sacrificing features (e.g. separate gateways if sub-agents cannot spawn in a local session such as for OpenClaw-like agents).
+  - **Retry mechanisms** — minimum impact when a single cell fails. Preferable at the state-level leveraging langgraph capabilities.
+  - **Run-time diagnostics** — API/tool call failures happen more often than you expect and could poison your results
+  - **Cost tracing -** important factor for evaluation alongside additivity
 
-#### Who is this framework for?
+### Who is this framework for?
 
-- **Enthusiast/retail investors building their own agents — yes.** I am one. Total spend **~$300** for the full demonstration grid — **almost entirely LLM tokens** (OpenRouter), with data APIs (Massive/Brave) a small add-on thanks to caching. Justifiable for optimizing an agent behind the average personal portfolio. Nonetheless, I **controlled** model spend via open-weight models (would love OpenAI/Anthropic but restricted in my location; Gemini next), a smaller universe of DJIA-30, quarterly cadence, 16 dates. If you want a **high-frequency S&P 500** strategy with frontier models: LLM cost could **implode**. I have spent far more resources on infrastructure than on tokens; I could not find an open-source, agent-agnostic stack that handled K-repeat compare + residual promotion at this scale — **Delorean** (below) is what I built to run this study.
-- **Institutions or funds.** Cost is less of a concern; rigor is often imposed. Most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework also applies **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimize against metrics you care about. For **direct alpha generation**, this demonstration is a systematic framework to **power or inspire** your own process.
+- **Enthusiast/retail investors building their own agents:** Yes, since I am one. Total spend **~$300** for the full demonstration grid — **almost entirely LLM tokens** (OpenRouter), with data APIs (Massive/Brave) a small add-on thanks to caching. Justifiable for optimizing an agent behind the average personal portfolio. Nonetheless, I **controlled** model spend via open-weight models (would love OpenAI/Anthropic but restricted in my location; Gemini next), a smaller universe of DJIA-30, quarterly cadence, 16 dates. If you want a **high-frequency S&P 500** strategy with frontier models: LLM cost could **implode**. Infrastructure can potentially cost far more than the runs itself — there are currently no open-source, agent-agnostic options at this scale; I am developing one below.
+- **Institutions or funds.** Yes, since cost is less of a concern; rigor and similiar process for non-AI strategies is already common practise. However, most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework is still application **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimize against metrics you care about. For **direct alpha generation**, this framework is a systematic framework to **power or inspire** your own process.
 
-Cost detail for this demonstration (tokens, data APIs, scaling): [Appendix B](#appendix-b--cost-and-data).
+Cost detail for this demonstration (tokens, data APIs, scaling): [Appendix A](#appendix-a--cost-and-data).
 
-#### Execution stack (Delorean)
+### Execution stack (Delorean)
 
-**Execution.** All runs were orchestrated in **Delorean**, an **open-source** research stack (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its Pearson reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). K-repeat ensembling, residual IC promotion, and twin continuity all run through that pipeline *(implemented as K-repeat + ensemble + compare analytics)*.
+**Execution.** All runs were orchestrated in **Delorean**, a research stack that automated the framework end-to-end (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). Furthermore it is designed as an agentic skill for which your agent can import and run tests on itself!
 
-Delorean is the research platform that implements the infrastructure above — PIT dossiers and MCP twins, K-repeat orchestration with parallel slots, Pearson `report` / `compare`, and the export path behind this post. It is also packaged as an **agentic skill**: an agent (or researcher) can configure, launch repeats, and pull compare analytics end-to-end via CLI — `configure`, `run` / `repeat`, `report`, `compare`.
+Swap model and their key params, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
 
-Swap model, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
+{{< img "delorean-demo-1.png" "Delorean demo 1" >}}
 
-```yaml
-run_id: floor_llm_v1          # or optimized_agent_full, tradingagent_v2, …
-universe:
-  preset: dow30
-agent:
-  kind: plugin
-  class: "delorean.agents.direct_llm.DirectLLMAgent"   # scaffold swap
-  init:
-    model: "openrouter/xiaomi/mimo-v2.5-pro"           # model axis
-```
+{{< img "delorean-demo-2.png" "Delorean demo 2" >}}
 
-Example grid run: `python -m delorean repeat configs/floor_llm_v1.yaml --k 3 --parallel`
-
-Open source; codebase and docs are being prepared for release in [this repo](https://github.com/felixdaga/Optimized_Agent) alongside the paper exports.
+All runs and analytics in this study were done with Delorean. Plan to open source soon — please follow [this repo](https://github.com/felixdaga/Optimized_Agent).
 
 ---
 
 ## Appendix
 
-### Terminology
-
-Quick reference for terms used throughout this post.
-
-
-| Term                    | Meaning                                                                                                                                                                                                         |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Agent**               | The running system that produces scores (or other outputs) on each decision date — what you would deploy or compare in practice.                                                                                |
-| **Agent configuration** | How an agent is built: **model** + **scaffold** + **components** (tools at reason time, memory, verifier, reflection, etc.), plus prompts and data feed.                                                        |
-| **Model**               | Base LLM (MiMo, Grok, GLM, …).                                                                                                                                                                                  |
-| **Scaffold**            | How the agent is organized — floor LLM (single call), OpenClaw (ReAct + tools), trading agent (sequential MAS), ex-ante (prefetch + specialists + verifier).                                                    |
-| **Components**          | Individual toggles within a scaffold (memory, tools at reason time, verifier, reflection, …).                                                                                                                   |
-| **Floor LLM**           | Simplest agent configuration in the grid: one PIT dossier, one LLM call per ticker, no tools — model swaps define the floor LLM **model axis**.                                                                 |
-| **View**                | Per (date, ticker) agent output: **score**, **conviction**, **time_horizon**, **rationale**, **key_factors**, and optionally **sources_cited** (PIT citations with excerpts). Headline KPIs use **score** only. |
-| **Strategy**            | Investment job spec: universe, cadence, horizon, output schema, PIT data feed, and KPI stack.                                                                                                                   |
-| **Headline KPIs**       | **Residual IC** + **NW *t*** only — after style + sector factor controls. Use **gross IC** for the pre-control read.                                                                                            |
-| **Framework Steps 1–6** | End-to-end optimization workflow (setup → grounding → ex-ante → stochasticity → analytics → iteration).                                                                                                         |
-| **Repeat**              | One independent full backtest pass of a frozen agent configuration (K = 3 per configuration in this demo).                                                                                                      |
-
-
-### Appendix A — Agent configuration labels (short)
-
-Floor LLM — one PIT dossier, one LLM call. OpenClaw — ReAct + MCP tools. Trading agent — sequential tool specialists + Bull/Bear + PM. Ex-ante — prefetch, specialists, verifier, PM. OpenClaw ~ tool-heavy SAS; trading agent ~ tool+MAS/debate; ex-ante ~ low tool autonomy + centralized verification (qualitative Kim et al. alignment, not transferred coefficients).
-
-### Appendix B — Cost and data
+### Appendix A — Cost and data
 
 Token and API spend are logged per run (`cost_summary.json` in each run directory). Totals below sum **K = 3** repeats on the **16-date** panel (Jul 2022–Apr 2026), all **11 agent configurations** in the demonstration: **9** in the initial KPI grid (6 floor LLM variants + OpenClaw + trading agent + ex-ante) **+ 2** Step 6 iterations. OpenClaw ledger pricing was incomplete; **~$70** is estimated from token volume (~150M tokens in) at MiMo list rates. Analytics (reports, compare viewer, twin tests, rationale coding) run **offline** — no further LLM spend.
 
@@ -468,35 +423,38 @@ Token and API spend are logged per run (`cost_summary.json` in each run director
 | **Demonstration total** | **~352M** | **~54M** | **~$291**  | ~406M tokens in+out          |
 
 
-**Data (Massive + Brave).** **LLM tokens dominate total spend** (~$291 of ~$300 in this demo — see table above); market-data API fees are secondary but constrain design. **Massive** — US-equity prices, fundamentals, ticker-scoped news, filings; sentiment fields from ~Jul 2024 only (thinner controls on earlier dates). **Brave** — PIT web/search snippets for tool-heavy scaffolds and ex-ante prefetch; cached on disk. Delorean **reuses that PIT data cache** across K repeats and agent configurations — so you do not re-bill Massive/Brave for the same dossier on every repeat. That keeps **data API** cost negligible; it does **not** reduce model token spend.
+**Data (Massive + Brave).** **LLM tokens dominate total spend** (~$291 in this demo — see table above); market-data API fees are secondary but constrain design. **Massive** — US-equity prices, fundamentals, ticker-scoped news, filings; sentiment fields from ~Jul 2024 only (thinner controls on earlier dates). **Brave** — PIT web/search snippets for tool-heavy scaffolds and ex-ante prefetch; cached on disk. Delorean **reuses that PIT data cache** across K repeats and agent configurations — so you do not re-bill Massive/Brave for the same dossier on every repeat. That keeps **data API** cost negligible; it does **not** reduce model token spend.
 
 **Models.** Mostly **open-weight via OpenRouter** (MiMo default; GLM, MiniMax, Grok on floor LLMs). **Anthropic / OpenAI** would be natural comparators but **API access is restricted from my location** — this grid is not a full frontier shootout.
 
-**Scaling law.** Spend scales roughly linearly with **K**, **universe**, **dates**, **agent configurations in the grid**, **LLM calls per ticker**, and **model $/token**. Rule of thumb: **O(universe × dates × K × agent configurations × calls-per-ticker)**. A quarterly DJIA study at floor LLM scale is enthusiast-affordable; **high-frequency S&P 500** with agentic scaffolds is not without institutional budget. Delorean **parallelizes runs** and **amortizes data fetches** via cache; it does not change the LLM cost exponent.
+**Cost scaling.** Spend scales roughly linearly with **K**, **universe**, **dates**, **agent configurations in the grid**, **LLM calls per ticker**, and **model $/token**. Rule of thumb: **O(universe × dates × K × agent configurations × calls-per-ticker)**. A quarterly DJIA study at floor LLM scale is enthusiast-affordable; **high-frequency S&P 500** with agentic scaffolds is not without institutional budget. Delorean **parallelizes runs** and **amortizes data fetches** via cache; it does not change the LLM cost exponent.
 
-### Appendix C — Theory digest (Kim, Liu, error taxonomy)
+### Appendix B — Ex-ante framework details
 
-#### C.1 Kim et al. (2026)
+Selective key findings from Kim et al. and Liu (2026) used in Step 3 — not full paper summaries. B.3–B.4 add author synthesis on error rate.
+
+#### B.1 Kim et al. (2026)
 
 **Kim, Y., et al. (2026; MIT/Google). [Towards a Science of Scaling Agent Systems](https://arxiv.org/html/2512.08296).** arXiv:2512.08296 — *how agents are wired*:
 
-- Architecture–task alignment matters more than number of agents. Across 260 agent configurations in Kim et al.'s six benchmarks, a mixed-effects model (R² ≈ 0.37) predicts architecture choice at ~87% accuracy on held-out configurations *within those benchmarks*.
-- Three recurring patterns: (1) **capability saturation** — once a single-agent baseline is already strong, adding agents tends to hurt; (2) **tool–coordination trade-off** — tool-heavy work pays a multi-agent tax (token budget fragmentation); (3) **error amplification** — independent / unverified multi-agent traces amplify early errors ~17×; centralized verification cuts that to ~4×.
-- Decomposability is the governing task property: parallel, independent information streams → centralized multi-agent with verification; sequential / planning-like chains → single-agent; high-entropy search → more decentralized exploration.
-- On their **Finance-Agent** benchmark specifically (entry-level analyst / multi-step financial reasoning; factual-correctness metric), Finance is their *strongest MAS-positive* domain: all multi-agent topologies beat SAS, with Centralized best at **+80.8%** vs SAS (mean 0.631 vs 0.349), then Decentralized +74.5%, Hybrid +73.1%, and Independent still about +57%. Mechanism they give: the task naturally splits into parallel information streams (e.g. news/regulatory, filings, operational factors) that a centralized orchestrator can verify and synthesize.
+- Architecture–task alignment matters more than agent count alone. Across **180 controlled configurations** on **four** agentic benchmarks (Finance-Agent, BrowseComp-Plus, PlanCraft, Workbench), their mixed-effects scaling model explains **~51%** of held-out performance variance (5-fold CV R² ≈ 0.51); separately, leave-one-domain-out checks predict the best architecture on **~87%** of held-out task configurations.
+- Three recurring patterns:
+  1. **Capability ceiling** — when single-agent baseline already exceeds ~45% accuracy, adding agents tends to hurt.
+  2. **Tool–coordination trade-off** — tool-heavy tasks pay a multi-agent efficiency penalty.
+  3. **Error amplification** — Independent MAS amplifies factual errors ~17× vs single-agent baseline; Centralized coordination contains to ~4× via orchestrator review before aggregation.
+- **Task decomposability** matters more than complexity alone: parallel, subtask-decomposable work (Finance-Agent) sees large MAS gains; **strict sequential dependencies** (PlanCraft) see MAS degrade badly — sequential chains often favor SAS. Architecture choice stays domain-specific (e.g. BrowseComp-Plus: modest Decentralized gain; Independent underperforms SAS).
+- On **Finance-Agent** (entry-level analyst task; factual-correctness metric) — their strongest MAS-positive benchmark — all MAS topologies beat SAS: Centralized **+80.9%** (0.631 vs 0.349), Decentralized **+74.5%**, Hybrid **+73.2%**, Independent **~+57%**. They attribute this to parallel information streams an orchestrator can synthesize (not a guarantee for other finance tasks).
 
-#### C.2 Liu (2026)
+#### B.2 Liu (2026)
 
 **Liu, M. (2026; Amazon). [More Is Not Always Better: Cross-Component Interference in LLM Agent Scaffolding](https://arxiv.org/html/2605.05716).** arXiv:2605.05716 (posted 7 May 2026) — *which modules you turn on inside an agent*:
 
-- More scaffolding is not better. On retrieval QA, every proper subset matches or beats the “All-In” agent; on math, the optimal subset still beats All-In. Specific Shapley ranks are benchmark-specific, but the *directional* pattern (cross-component interference / CCI; gap shrinks with model scale) replicates across families.
-- On HotpotQA-style retrieval: Tool Use dominates value; Planning is often harmful; Memory is directionally negative; interactions are frequently **sign-flipping**, not gentle diminishing returns.
+- More scaffolding is not universally better. In **every setting they test**, some **proper subset** matches or beats the five-component “All-In” agent: on **HotpotQA** (Llama-3.1-8B), tool use alone beats All-In by 32%; on **GSM8K**, a three-component subset beats All-In by 79%. Shapley ranks and optimal component count are benchmark-specific, but the cross-component interference (CCI) pattern — best subset beats All-In; gap shrinks with model scale — replicates across families.
+- On **HotpotQA**-style retrieval (8B): Tool Use dominates Shapley value (~70% of scaffold mass); Planning is significantly negative; Memory is directionally negative; submodularity violations often **sign-flip** rather than show gentle diminishing returns.
 
-#### C.3 Error rate and amplification
+#### B.3 Error rate and amplification
 
-The insight is that error rate plays a large role in driving the financial performance of agents. Often, it can overpower the information/capability gains from the same agent configuration via cross-component interference:
-
-> **Agent configuration net effect = Information/Capability gain − Error cost**
+The insight is that error rate plays a large role in driving the financial performance of agents. Often, it can overpower the information/capability gains from the same agent configuration via cross-component interference.
 
 **Hallucination is only one error source.** For agents, the economically relevant failures are better split into (i) where the bad fact/action is *born*, and (ii) how the scaffold *amplifies* it.
 
@@ -513,17 +471,17 @@ The insight is that error rate plays a large role in driving the financial perfo
 **Key amplification channels:**
 
 
-| Channel                  | What happens                                                            | Usual culprit                                                                                                |
-| ------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Within-trace compounding | Mistake at step *t* treated as ground truth at *t+1…T* inside one agent | Long tool chains / ReAct with no checkpoints (Kim et al.: ~17× without verify → ~4× with centralized verify) |
-| Cross-agent propagation  | One agent’s bad claim becomes another’s premise                         | Debate / peer handoffs without a verifier who can *override*                                                 |
+| Channel                  | What happens                                                            | Usual culprit                                                                                                                                    |
+| ------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Within-trace compounding | Mistake at step *t* treated as ground truth at *t+1…T* inside one agent | Long tool chains / ReAct with no checkpoints (Kim et al.: Independent MAS ~17× vs Centralized ~4× error amplification — architecture comparison) |
+| Cross-agent propagation  | One agent’s bad claim becomes another’s premise                         | Debate / peer handoffs without a verifier who can *override*                                                                                     |
 
 
 Worth knowing but secondary here: path stochasticity (same agent configuration, wild score dispersion), retrieval miss / lost-in-the-middle (Liu et al., 2024; right tools, wrong snippet), and schema/emit failures.
 
-#### C.4 Net effect formula and plain-language rules
+#### B.4 Net effect formula and plain-language rules
 
-The same trade-off applies to **every layer** — model, scaffold, and components — not only tools and scaffolds. A stronger model can raise capability (information, reasoning, tools...), but it can also affect base error rate (e.g. more capable models may still hallucinate confidently) and amplification channels. The scaffold then scales that base error through amplification.
+The same trade-off applies to **every layer** — model, scaffold, and components — not only tools and scaffolds. A stronger model can raise capability (information, reasoning, tool use, useful context window...), but it can also affect base error rate (e.g. more capable models may still hallucinate confidently or better at masking uncertain claims). The scaffold then scales that base error through amplification.
 
 > **Net(agent configuration) ≈ capability delta − (Base error delta × Amplification delta)**
 
@@ -535,9 +493,9 @@ In plain language:
 1. Treat the **model** as another knob with the same mechanism: more intelligence ≠ free lunch if base error (hallucination rate) rises with it.
 2. Add a scaffold / tool / agent only if its **marginal information** still exceeds its **marginal error × amplification**.
 3. Prefer scaffolds that **cut amplification** (e.g. centralized verification on decomposable tasks) when errors are costly.
-4. Prefer **simpler adequate** scaffolds when capability is high enough that CCI shrinks — but do not assume “All-In” or “more tools” wins.
+4. Prefer **simpler adequate** scaffolds when capability is high enough that CCI shrinks — do not assume “All-In” or “more tools” wins.
 
-This is a conceptual and directional framework for now until we can directly measure the deltas and confirm whether it is applicable across a wide range of investment strategies and financial settings. Nonetheless, it has enabled me to first-shot a better ex-ante agent configuration compared to all agent configurations in the grounding grid and aligns with all further iterative findings.
+This is a conceptual and directional framework for now until we can directly measure the deltas and support applicability across a wide range of investment strategies and financial settings. Which is why I'm sharing it!
 
 ---
 
