@@ -33,6 +33,21 @@ Open http://localhost:1313/Optimized_Agent/
 
 Push to `main`. GitHub Actions builds with [Hugo PaperMod](https://github.com/adityatelange/hugo-PaperMod) and deploys to GitHub Pages.
 
+## Analytics (Google Analytics 4)
+
+The site uses **GA4** (free). Page views, referrers, and countries show in [Google Analytics](https://analytics.google.com/) — not individual reader identities.
+
+**One-time setup:**
+
+1. [Create a GA4 property](https://analytics.google.com/) → **Admin** → **Data streams** → **Add stream** → **Web**.
+2. Stream URL: `https://felixdaga.github.io/Optimized_Agent/` (or your custom domain).
+3. Copy the **Measurement ID** (`G-XXXXXXXXXX`).
+4. Either:
+   - Add a repo secret **`GA_MEASUREMENT_ID`** with that value (recommended for production), or
+   - Paste it in `hugo.toml` under `[params.analytics.google]` → `ID`.
+
+Redeploy (push to `main`). In GA4, open **Reports → Realtime** to confirm hits.
+
 ## Study data & charts
 
 Paper embeds **static SVG charts** under `static/charts/`, built from Pearson `report.json` files in `static/data/`.

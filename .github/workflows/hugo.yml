@@ -35,6 +35,8 @@ jobs:
           extended: true
 
       - name: Build
+        env:
+          HUGO_PARAMS_ANALYTICS_GOOGLE_ID: ${{ secrets.GA_MEASUREMENT_ID }}
         run: hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact

@@ -1,0 +1,11 @@
+{{- $id := site.Params.analytics.google.ID | default "" -}}
+{{- if $id -}}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ $id }}', { anonymize_ip: true });
+</script>
+{{- end -}}
