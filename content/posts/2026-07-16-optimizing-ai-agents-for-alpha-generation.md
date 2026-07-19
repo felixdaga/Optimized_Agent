@@ -157,8 +157,6 @@ Same fundamental stock-rating strategy, 9 different agent configurations - six f
 - Trading agent beat OpenClaw — structured roles helped vs open tools, but both trail the floor LLM on headline KPIs.
 - Higher benchmark IQ ≠ better. Floor LLM performance across the model axis demonstrates more alignment to hallucination rates vs intelligence (Grok 4.5 < 4.3).
 
-Deeper analytics: [Notable findings across layers](#notable-findings-across-layers).
-
 ## Notable findings across layers
 
 ### Twin continuity (nearest-neighbour test)
