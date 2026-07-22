@@ -363,38 +363,50 @@ Once a near-optimal agent configuration is confirmed, generate iterative runs �
 
 ## Closing off
 
-Who this framework is for, how to implement it in practice, and the execution stack used in this study.
+### Who is this framework for?
+
+It depends on how you are leveraging AI:
+
+1. **Automator** — automating workflows and reporting
+2. **Research companion** — generating market briefs; chat apps for querying across sources
+3. **Extractor** — extracting sentiment scores from text-based sources to form part of a signal
+4. **Decision maker** — actively making decisions/scores that will directly impact investment outcomes
+
+Most institutions are just leveraging AI to improve or enable existing processes (1–3); virtually none treat it as a decision-maker,[^mercer-2026-ai] which is where alpha comes from. This is very understandable — the stack is still new and there is no credible proof from industry yet that it works as a deployed strategy with a track record, not just being fancy on paper. While this is a chicken-and-egg problem, a transparent, scalable, and strategy-specific framework to understand and optimise your AI agents would go a long way. For the first three types of AI adoption, this framework could still be helpful, especially for any critical and quantifiable outputs from your agents along the workflow.
+
+[^mercer-2026-ai]: Mercer (2026). *How Artificial Intelligence is Shaping Asset Management* — 2026 AI in Asset Management Survey (131 global asset managers; February–March 2026). [Report](https://www.mercer.com/en-us/insights/investments/market-outlook-and-trends/asset-managers-use-of-ai/). Among respondents: 55% have integrated AI into at least one investment process; 74% describe their use as operational (automation/efficiency); 69% as co-pilot (insight/analysis); only 6% say AI is used for decision-making (the press release puts autonomous or semi-autonomous trade authority at ~5%).
+
+For retail investors and enthusiasts, AI adoption is arguably further along, with some already deploying agents to trade for them. This framework, which carries over standards from my institutional experience, could serve as a reference for you to take a step back and assess your strategy and agent. Don't rely on a single backtest — there are different dimensions and risks to consider before you let it touch your hard-earned money. For those who want to fully apply it, this is absolutely doable. I've spent around $300 on tokens and $50 on data for the study — see full breakdown in [Appendix A](#appendix-a--cost-and-data).
+
+This cost is justifiable for optimizing an agent behind the average personal portfolio. Note, however, I was using mainly open-weight models, a small universe of DJIA-30, quarterly cadence, and a short backtest window of only 16 dates. If you want to test a high-frequency S&P 500 strategy with frontier models, LLM cost could implode. Finally, the enabling infrastructure for backtesting can also cost far more than the runs themselves, which I'll touch on in the next section.
 
 ### Agent backtesting infrastructure
 
-- **Point-in-time (PIT) control first.** All dossiers or tools must enforce PIT strictly so the agent can only access data on or before the backtest date. Underlying LLMs may still encode look-ahead — frontier models, or a backtest window extending beyond model training (common for lower-frequency strategies or regime testing). Identifier masking (Glasserman & Lin, 2023) is plausible but imperfect and often impractical with the wide information sets current agents access; we often want inherent LLM asset knowledge for judgments.
+- **Point-in-time (PIT) control first.** All dossiers or tools must enforce PIT strictly so the agent can only access data on or before the backtest date. Underlying LLMs may still encode look-ahead — frontier models, or a backtest window extending beyond model training (common for lower-frequency strategies or regime testing). Identifier masking (Glasserman & Lin, 2023) is plausible but imperfect and often impractical with the wide information sets current agents can access; we often want inherent LLM asset knowledge for judgments as well.
 - **Respect agent autonomy.** To close the backtest–live gap, you must simulate as much as possible the agentic capability and autonomy. Some critical features/data may not satisfy PIT or be too costly to implement live — simulate what you can. Example: if the agent uses tools to explore its information space, generate a twin MCP server with hardcoded PIT controls for the original skills/tools and expose that instead.
 - **Good to have:**
   - **Strategy- and agent-agnostic infrastructure** — standardized runner and schema to feed data and catch outputs for comparability; central YAML to swap model, scaffold, components, and key variables (e.g. thinking level, temperature) for fingerprints and runtime traces.
   - **Data caching** — automatically cache PIT market data and prefetch packs on disk for repeated runs (K repeats, grid comparisons, Step 6 iterations). The same (universe, decision date, ticker, source) should hit cache instead of re-fetching from API — cutting unnecessary cost and speeding reruns.
   - **Concurrency** — runs are heavy and numerous; parallelism without sacrificing features (e.g. separate gateways if sub-agents cannot spawn in a local session such as for OpenClaw-like agents).
-  - **Retry mechanisms** — minimum impact when a single cell fails. Preferable at the state-level leveraging LangGraph capabilities.
-  - **Run-time diagnostics** — API/tool call failures happen more often than you expect and could poison your results
-  - **Cost tracing** — important factor for evaluation alongside additivity
-
-### Who is this framework for?
-
-- **Enthusiast/retail investors building their own agents:** Yes, since I am one. Total spend **~$300** for the full demonstration grid — **almost entirely LLM tokens** (OpenRouter), with data APIs (Massive/Brave) a small add-on thanks to caching. Justifiable for optimizing an agent behind the average personal portfolio. Nonetheless, I **controlled** model spend via open-weight models (would love OpenAI/Anthropic but restricted in my location; Gemini next), a smaller universe of DJIA-30, quarterly cadence, 16 dates. If you want a **high-frequency S&P 500** strategy with frontier models: LLM cost could **implode**. Infrastructure can potentially cost far more than the runs themselves — there are currently no open-source, agent-agnostic options at this scale; I am developing one below.
-- **Institutions or funds.** Yes, since cost is less of a concern; rigor and similar process for non-AI strategies is already common practice. However, most institutions leverage AI to **improve** an existing process, not yet as a direct alpha source. This framework still applies **inside** that process for any scorable overlay (daily brief, sentiment score) — backtest and optimise against metrics you care about. For **direct alpha generation**, this framework is a systematic framework to **power or inspire** your own process.
-
-Cost detail for this demonstration (tokens, data APIs, scaling): [Appendix A](#appendix-a--cost-and-data).
+  - **Retry mechanisms** — minimum impact when a single cell fails. Preferable at the state level, leveraging LangGraph capabilities.
+  - **Run-time diagnostics** — API/tool call failures happen more often than you expect and could poison your results.
+  - **Cost tracing** — important factor for evaluation alongside additivity.
 
 ### Execution stack (Delorean)
 
-**Execution.** All runs were orchestrated in **Delorean**, a research stack that encapsulates and automates the framework end-to-end (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its reports (`[static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data)` in the repo). Furthermore, it is designed as an agentic skill for which your agent can import and run tests on itself!
+**Execution.** All runs were orchestrated in **Delorean**, a research stack that encapsulates and automates the framework end-to-end (`verify` → `repeat` → `report` → `compare`). Charts and headline tables in this post are exported from its reports ([static/data/](https://github.com/felixdaga/Optimized_Agent/tree/main/static/data) in the repo). Furthermore, it is designed as an agentic skill for which your agent can import and run tests on itself!
 
-Swap model and their key params, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
+Swap the model and its key params, scaffold, or components in one YAML fingerprint; everything else (universe, schedule, KPI profile) stays fixed for fair grid comparison:
 
 {{< img "delorean-demo-1.png" "Delorean demo 1" >}}
 
 {{< img "delorean-demo-2.png" "Delorean demo 2" >}}
 
-All runs and analytics in this study were done with Delorean. Currently ironing out for V1 open source release — please star  [this repo](https://github.com/felixdaga/Optimized_Agent) so you can be the first to try it out! For those interested in accessing the pre-production version or want to join the project, you can email me at [felixlin1223@gmail.com](mailto:felixlin1223@gmail.com) 
+
+
+### Final words
+
+This framework is still in development. While all runs and analytics were done with Delorean, there are still a few things to iron out before I can open-source it — please star [this repo](https://github.com/felixdaga/Optimized_Agent) so you can be the first to try it out! For those interested in accessing the pre-production version or joining the project, you can email me at [felixlin1223@gmail.com](mailto:felixlin1223@gmail.com). I look forward to hearing your feedback!
 
 ---
 
@@ -534,6 +546,8 @@ Kim, Y., Gu, K., Park, C., Park, C., Schmidgall, S., Heydari, A. A., Yan, Y., Zh
 Liu, M. (2026). More Is Not Always Better: Cross-Component Interference in LLM Agent Scaffolding. arXiv:2605.05716. [https://arxiv.org/abs/2605.05716](https://arxiv.org/abs/2605.05716)
 
 Liu, N. F., et al. (2024). Lost in the Middle: How Language Models Use Long Contexts. *Transactions of the Association for Computational Linguistics*, 12, 157–173.
+
+Mercer. (2026). How Artificial Intelligence is Shaping Asset Management — 2026 AI in Asset Management Survey (131 global asset managers; February–March 2026). [https://www.mercer.com/en-us/insights/investments/market-outlook-and-trends/asset-managers-use-of-ai/](https://www.mercer.com/en-us/insights/investments/market-outlook-and-trends/asset-managers-use-of-ai/)
 
 Newey, W. K., and West, K. D. (1987). A Simple, Positive Semi-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix. *Econometrica*, 55(3), 703–708.
 
